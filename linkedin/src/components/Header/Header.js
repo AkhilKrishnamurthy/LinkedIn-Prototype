@@ -9,7 +9,6 @@ class Header extends Component {
     render() {
         return (
             <div className="header-container">
-
                 <div className="container">
                     <div className="header-content-container">
                         <img className="img-container linkedIn-logo" src="http://www.theredbrickroad.com/wp-content/uploads/2017/05/linkedin-logo-copy.png" alt="logo"></img>
