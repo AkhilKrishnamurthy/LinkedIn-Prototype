@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {login} from '../../actions/LoginAction';
+import Header from '../Header/Header';
 
 class Login extends Component{
 
@@ -16,6 +17,7 @@ class Login extends Component{
     render(){
         return(
             <div>
+            <Header/>
                 <h1>Login page!</h1>
                 <h3>{this.props.loginStateStore.result}</h3>
             </div>

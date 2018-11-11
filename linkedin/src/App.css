@@ -30,3 +30,48 @@
     transform: rotate(360deg);
   }
 }
+
+
+/*Custom styling*/
+.linkedIn-logo{
+  height: 40px;
+  width: 40px;
+}
+
+.header-container{
+  background: #283e4a;
+  padding: 0.25%;
+}
+
+.img-container{
+  background: white;
+}
+
+.header-content-container{
+  padding: 10px;
+  display: inline;
+}
+
+.search-box{
+  margin-left: 20px;
+  width: 250px;
+  height: 30px;
+  background: #e1e9ee;
+  text-indent: 10px;
+}
+
+.nav-links{
+  float: right;
+}
+.nav-links p{
+  display:inline;
+  padding: 5px;
+  color: white;
+}
+
+.nav-links a{
+  text-decoration: none;
+  padding: 5px;
+  color: white;
+}
+
