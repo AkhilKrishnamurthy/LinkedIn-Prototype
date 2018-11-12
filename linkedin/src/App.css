@@ -75,3 +75,38 @@
   color: white;
 }
 
+.invitation-container, .connections-container{
+  box-shadow: 10px 10px 5px grey;  
+  background:white;
+}
+.my-network-container{
+  background: #e1e9ee;
+}
+.center-content{
+  text-align: center;
+}
+.pad-3-pc{
+  padding: 3%;
+}
+
+.content-left-align{
+  text-align: initial;
+}
+
+.pad-1-pc{
+  padding: 1%;
+}
+
+.connection-img{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.people-search-container{
+ margin-left: 25%;
+}
+
+.search-box{
+  text-align: center;
+}
