@@ -110,3 +110,32 @@
 .search-box{
   text-align: center;
 }
+
+.homepage{
+  margin-top: 30px;
+}
+.homeProfileImage {
+  border-radius: 200%;
+  height: 50px;
+  width: 50px;
+  margin-top: -20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.profileDescriptionHome {
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+}
+.homeConnectionDetails {
+  font-size: 15px;
+}
+.floatHome {
+  float: left;
+  margin: 0 0 0 30px;
+}
+.companyDescImage {
+  float: left;
+  margin-right: 10px;
+}
