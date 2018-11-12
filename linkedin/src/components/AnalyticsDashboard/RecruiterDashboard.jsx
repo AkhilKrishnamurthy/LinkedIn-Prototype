@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Chart from "../../components/AnalyticsDashboard/Chart";
-class LandingPage extends Component {
+import RecruiterChart from "../../components/AnalyticsDashboard/RecruiterChart";
+class RecruiterDashoard extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -44,7 +44,7 @@ class LandingPage extends Component {
     return (
       <div>
         <h1>Analytics Landing page!</h1>
-        <Chart
+        <RecruiterChart
           chartData={this.state.chartData}
           location="Massachusetts"
           legendPosition="bottom"
@@ -54,4 +54,4 @@ class LandingPage extends Component {
   }
 }
 
-export default LandingPage;
+export default RecruiterDashoard;
