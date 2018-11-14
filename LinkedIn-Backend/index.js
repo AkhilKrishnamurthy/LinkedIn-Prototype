@@ -87,16 +87,13 @@ app.post("/login", function(req, res) {
       console.log("Inside else");
       console.log("success login");
       // res.value = user;
+      console.log("session to be set",results.value.user.email);
       console.log("resres", results);
-      // req.session.user = results.value.username;
-      // res.cookie('cookie',"admin",{maxAge: 900000, httpOnly: false, path : '/'});
-      //  console.log("token",token);
-      // res.status(200).json({success: true, token: 'JWT ' + token});
       res.sendStatus(200).end();
     } else {
       res.value =
         "The email and password you entered did not match our records. Please double-check and try again.";
-      res.sendStatus(400).end();
+         res.sendStatus(400).end();
     }
   });
 });

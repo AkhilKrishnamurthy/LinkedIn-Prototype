@@ -311,4 +311,9 @@ background-color: blue;
 .profileDescriptionHome {
   text-align: center;
 }
-
+.floatHome {
+  float: left;
+}
+.companyDescImage {
+  float: left;
+}
