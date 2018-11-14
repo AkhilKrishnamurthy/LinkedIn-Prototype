@@ -310,6 +310,7 @@ background-color: blue;
 }
 .profileDescriptionHome {
   text-align: center;
+<<<<<<< Updated upstream
   margin-top: 20px;
   font-weight: bold;
 }
@@ -350,3 +351,7 @@ background-color: blue;
 .profileDescription1 {
   font-size: 20px;
 }
+=======
+}
+
+>>>>>>> Stashed changes
