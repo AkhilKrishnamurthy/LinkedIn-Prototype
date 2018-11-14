@@ -18,8 +18,9 @@ var UserSchema = new Schema({
   gender: { type: String, trim: true, default: "" },
   experience: { type: String, trim: true, default: "" },
   skills: { type: String, trim: true, default: "" },
-  isRecruiter: { type: Boolean, trim: true, default: `0` },
-  isApplicant: { type: Boolean, trim: true, default: `0` }
+  //   isRecruiter: { type: Boolean, trim: true, default: `0` },
+  //   isApplicant: { type: Boolean, trim: true, default: `0` }
+  accountType: { type: Number, trim: true, default: "" } //1.Applicant2.Recruiter3.Both
 });
 var Job = new Schema({
   job_id: { type: Number, trim: true },
@@ -63,5 +64,5 @@ var LinkedInSchema = new Schema({
   //  jobDetails: [{ type: JobDetails }]
 });
 
-let LinkedIn = mongoose.model("linkedin", LinkedInSchema, "linkedin");
+let LinkedIn = mongoose.model("LinkedIn", LinkedInSchema, "LinkedIn");
 module.exports = LinkedIn;
