@@ -1,20 +1,13 @@
-<<<<<<< HEAD
 //var connection =  new require('./kafka/connections');
 var connection = require("./Kafka/connections");
 var mongoose = require("mongoose");
 var applicantsignup = require("./services/applicantsignup");
+var user_login = require("./services/userLoginKafka");
 var producer = connection.getProducer();
-var consumer_applicant_signup = connection.getConsumer(
-  "applicant_signup_topic"
-);
-=======
-var connection =  new require('./kafka/connections');
-var producer = connection.getProducer();
-
-var user_login = require('./services/userLoginKafka.js');
-
->>>>>>> 22ab903d25c2b890d7635734428f32ffaab3477b
-
+// var consumer_applicant_signup = connection.getConsumer(
+//   "applicant_signup_topic"
+// );
+/*
 consumer_applicant_signup.on("message", function(message) {
   console.log("applicant signup message received");
   console.log(JSON.stringify(message.value));
@@ -36,12 +29,12 @@ consumer_applicant_signup.on("message", function(message) {
       console.log(payloads);
       console.log(data);
     });
-<<<<<<< HEAD
+
     return;
   });
 });
 
-/*
+*/
 
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
@@ -71,9 +64,6 @@ function handleTopicRequest(topic_name, fname) {
     });
   });
 }
-*/
-=======
-}
 
-handleTopicRequest("user_login",user_login)
->>>>>>> 22ab903d25c2b890d7635734428f32ffaab3477b
+handleTopicRequest("user_login_topic", user_login),
+  handleTopicRequest("applicant_signup_topic", applicantsignup);
