@@ -10,12 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "circular-json": "^0.5.9",
     "FileReader": "^0.10.2",
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "chai": "^4.1.2",
     "chai-http": "^4.2.0",
+    "chart.js": "^2.7.3",
+    "circular-json": "^0.5.9",
     "client-sessions": "^0.8.0",
     "connect-mongo": "^2.0.1",
     "cookie-parser": "^1.4.3",
@@ -38,7 +39,8 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "react-chartjs-2": "^2.7.4"
   },
   "directories": {
     "test": "test"

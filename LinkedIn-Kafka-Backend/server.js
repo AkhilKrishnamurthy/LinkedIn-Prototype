@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //var connection =  new require('./kafka/connections');
 var connection = require("./Kafka/connections");
 var mongoose = require("mongoose");
@@ -6,6 +7,13 @@ var producer = connection.getProducer();
 var consumer_applicant_signup = connection.getConsumer(
   "applicant_signup_topic"
 );
+=======
+var connection =  new require('./kafka/connections');
+var producer = connection.getProducer();
+
+var user_login = require('./services/userLoginKafka.js');
+
+>>>>>>> 22ab903d25c2b890d7635734428f32ffaab3477b
 
 consumer_applicant_signup.on("message", function(message) {
   console.log("applicant signup message received");
@@ -28,6 +36,7 @@ consumer_applicant_signup.on("message", function(message) {
       console.log(payloads);
       console.log(data);
     });
+<<<<<<< HEAD
     return;
   });
 });
@@ -63,3 +72,8 @@ function handleTopicRequest(topic_name, fname) {
   });
 }
 */
+=======
+}
+
+handleTopicRequest("user_login",user_login)
+>>>>>>> 22ab903d25c2b890d7635734428f32ffaab3477b

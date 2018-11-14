@@ -129,6 +129,7 @@
 .jobs-result-filter-container span .custom-select:hover{
   border: 2px solid black;
 }
+
 .jobs-result-container{
   /* text-align: initial; */
   /* background-color: #61dafb; */
@@ -330,3 +331,22 @@ background-color: blue;
   background-color: white;
 }
 
+.ProfileImage {
+  border-radius: 300%;
+  height: 152px;
+  width: 152px;
+  margin-top: -60px;
+
+  margin-right: auto;
+  display: block;
+}
+
+.profileDescription {
+  margin-top: 20px;
+  font-size: 25px;
+}
+
+
+.profileDescription1 {
+  font-size: 20px;
+}
