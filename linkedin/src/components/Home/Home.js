@@ -114,8 +114,10 @@ class Home extends Component{
 
                     <div className="col-lg-3 border floatHome">
                     <p>What people are talking about now</p>
+                    <br/>
                     <div class="bulletPoints">
-                    <p> Immigration crackdown hits 7-Eleven</p>
+                    <p>Immigration crackdown hits 7-Eleven</p>
+                    <p>Blco</p>
                     </div>
                     </div>
 

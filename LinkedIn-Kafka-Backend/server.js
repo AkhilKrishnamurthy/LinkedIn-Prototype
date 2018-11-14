@@ -1,4 +1,8 @@
 var connection =  new require('./kafka/connections');
+var producer = connection.getProducer();
+
+var user_login = require('./services/userLoginKafka.js');
+
 
 function handleTopicRequest(topic_name,fname){
     var consumer = connection.getConsumer(topic_name);
@@ -28,3 +32,5 @@ function handleTopicRequest(topic_name,fname){
         
     });
 }
+
+handleTopicRequest("user_login",user_login)
