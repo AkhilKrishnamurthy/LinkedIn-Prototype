@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Header1 from '../Header/Header1';
+import LoginHeader from '../Header/LoginHeader';
 class RecruiterSignup extends Component{
 
     constructor(props){
@@ -10,7 +10,7 @@ class RecruiterSignup extends Component{
     render(){
         return(
             <div>
-            <Header1/>
+            <LoginHeader/>
             <div class="login-form">
                     <div class="main-div">
                         <div class="panel">

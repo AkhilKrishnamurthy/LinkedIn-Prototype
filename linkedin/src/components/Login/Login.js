@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import { Field, reduxForm } from "redux-form";
 import {connect} from 'react-redux';
 import {login} from '../../actions/LoginAction';
-import Header from '../Header/Header';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import {Redirect} from 'react-router';

@@ -129,6 +129,7 @@
 .jobs-result-filter-container span .custom-select:hover{
   border: 2px solid black;
 }
+
 .jobs-result-container{
   /* text-align: initial; */
   /* background-color: #61dafb; */
@@ -173,6 +174,14 @@
 }
 
 .apply-btn{
+  background-color:  #0073b1;
+  border-radius: 2px;
+  border: 1px solid #0073b1;
+  color:white;
+  display: none;
+}
+
+.easy-apply-btn{
   background-color:  #0073b1;
   border-radius: 2px;
   border: 1px solid #0073b1;
@@ -275,9 +284,9 @@
   width: 300px;
 }
 
-.btn.btn-success{
+/* .btn.btn-success{
 background-color: blue;
-}
+} */
 
 .navbar.navbar-expand-lg.navbar-light.bg-light{
   font-size: 35px;
@@ -316,3 +325,28 @@ background-color: blue;
   margin-right: 10px;
 }
 
+.apply-logo{
+  height: 25px;
+  width: 25px;
+  background-color: white;
+}
+
+.ProfileImage {
+  border-radius: 300%;
+  height: 152px;
+  width: 152px;
+  margin-top: -60px;
+
+  margin-right: auto;
+  display: block;
+}
+
+.profileDescription {
+  margin-top: 20px;
+  font-size: 25px;
+}
+
+
+.profileDescription1 {
+  font-size: 20px;
+}

@@ -118,6 +118,8 @@ class JobsResultsPage extends Component {
                                         <div>345 Park Avenue, San Jose, CA 95110-2704, US</div>
                                         <div className="mt-2">
                                             <button className="btn btn-lg save-btn">Save</button>
+                                            <button className="btn btn-lg ml-3 easy-apply-btn">
+                                            <span className="apply-logo-container"><img className="apply-logo mr-2" src="http://www.theredbrickroad.com/wp-content/uploads/2017/05/linkedin-logo-copy.png" alt="logo"></img></span><span>Easy apply</span></button>
                                             <button className="btn btn-lg ml-3 apply-btn">Apply</button>
                                         </div>
                                     </div>
