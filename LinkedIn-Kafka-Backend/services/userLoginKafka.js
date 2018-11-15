@@ -15,7 +15,6 @@ function handle_request(msg, callback) {
             console.log("mismatch1");
             res.value = "The email and password you entered did not match our records. Please double-check and try again.";
             console.log(res.value);
-            // || msg.password==user.password
         }
         else {
             console.log("response from db", result);
@@ -25,11 +24,11 @@ function handle_request(msg, callback) {
                 res.value = "The email and password you entered did not match our records. Please double-check and try again.";
                 console.log(res.value);
             }
-            else if (bcrypt.compareSync(msg.password, user.password)==true){
+            else if (bcrypt.compareSync(msg.password, result.password)==true){
                     console.log("success login");
                     res.code = "200";
-                    res.value = user;
-                    console.log(user.username);
+                    res.value = result;
+                    console.log(result.username);
                 }
                 else {
                     console.log("bcrypt mismatch");
@@ -37,17 +36,6 @@ function handle_request(msg, callback) {
                     
                 }
         }
-    // (username=="Linkedin" && password=="Linkedin"),
-    //     function(err,user){
-    //     if (err) {
-    //         res.code = "400";
-    //         console.log("mismatch1");
-    //         res.value = "The email and password you entered did not match our records. Please double-check and try again.";
-    //         console.log(res.value);
-    //     }
-    //     else {
-            
-    // }
         callback(null,res);
     })
 
