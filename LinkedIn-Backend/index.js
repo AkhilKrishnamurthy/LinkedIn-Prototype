@@ -69,7 +69,7 @@ app.post("/applicant/signup", (req, res) => {
 
 app.post("/login", function(req, res) {
   console.log("Inside Login Post Request", req.body);
-  kafka.make_request("user_login", req.body, function(err, results) {
+  kafka.make_request("user_login_topic", req.body, function(err, results) {
     console.log("in result");
     console.log(results.code);
     if (err) {
@@ -100,7 +100,7 @@ app.post("/login", function(req, res) {
     }
   });
 });
-app.listen(3001);
+
 console.log("Linked Backend!");
 app.listen(3001);
 console.log("Server Listening on port 3001");

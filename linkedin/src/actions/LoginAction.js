@@ -9,13 +9,14 @@ export function login(data){
 
         axios.post('http://localhost:3001/login', data)
         .then(response => { 
+            var data = {responseFlag: ""}
             console.log("response",response.data);
             var data = {responseFlag: ""}
             if(response.status==200) {
-                data.responseFlag = "loginSuccess";
+                data.responseFlag = "true";
                 dispatch({
                     type: AUTH_LOGIN,
-                    payload: "Redux Store setup done"
+                    payload: data
                 });
             }        
             })

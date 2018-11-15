@@ -29,6 +29,7 @@ class Main extends Component {
         <Route path="/signup" component={Signup} />
         <Route path="/recruiter-signup" component={RecruiterSignup} />
         <Route exact path="/" component={Home} />
+        <Route exact path="/home" component={Home} />
         <Route path="/profile" component={Profile} />
         <Route path="/my-network" component={MyNetwork} />
         <Route

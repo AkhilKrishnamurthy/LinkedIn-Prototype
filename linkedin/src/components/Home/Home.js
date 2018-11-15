@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Header from '../Header/Header';
 import '../../App.css';
+import {login} from '../../actions/LoginAction';
+import {Redirect} from 'react-router';
 
 class Home extends Component{
 
@@ -11,8 +13,18 @@ class Home extends Component{
     }
 
     render(){
+        var redirectVar = null;
+        console.log(this.props.loginStateStore);
+        if(this.props.loginStateStore==undefined) {
+            redirectVar = <Redirect to= "/login"/>
+        }
+        // else {
+        //     redirectVar = <Redirect to= "/login"/>
+        // }
+        
         return(
             <div>
+                 {redirectVar}
                 <Header/>
                 <div className = "homepage">
                     <div className="col-lg-2 border floatHome">
@@ -132,4 +144,8 @@ class Home extends Component{
     }
 }
 
-export default Home;
+function mapStateToProps(state) {
+    console.log("Login state update",state);
+    return { loginStateStore : state.Login.result };
+  }
+export default connect(mapStateToProps, {})(Home);
