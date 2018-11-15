@@ -42,18 +42,6 @@ function handle_request(msg, callback) {
           callback(null, res);
         }
       }
-      // (username=="Linkedin" && password=="Linkedin"),
-      //     function(err,user){
-      //     if (err) {
-      //         res.code = "400";
-      //         console.log("mismatch1");
-      //         res.value = "The email and password you entered did not match our records. Please double-check and try again.";
-      //         console.log(res.value);
-      //     }
-      //     else {
-
-      // }
-      //   callback(null, res);
     }
   );
 }

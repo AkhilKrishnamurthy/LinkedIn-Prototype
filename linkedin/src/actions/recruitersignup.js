@@ -3,10 +3,10 @@ import * as UserConstants from "../Constants/UserConstants";
 var jwtDecode = require("jwt-decode");
 
 export const userActions = {
-  applicantsignup
+  recruitersignup
 };
 
-function applicantsignup(data) {
+function recruitersignup(data) {
   console.log("inside applicant signup action ");
   return dispatch => {
     axios.defaults.withCredentials = true;
@@ -30,7 +30,7 @@ function applicantsignup(data) {
 }
 function signupsuccess(message) {
   return {
-    type: UserConstants.APPLICANT_SIGNUP_SUCCESS,
+    type: UserConstants.RECRUITER_SIGNUP_SUCCESS,
     message: message
   };
 }
