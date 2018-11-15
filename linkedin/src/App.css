@@ -310,43 +310,5 @@ background-color: blue;
 }
 .profileDescriptionHome {
   text-align: center;
-  margin-top: 20px;
-  font-weight: bold;
-}
-.homeConnectionDetails {
-  font-size: 15px;
-}
-.floatHome {
-  float: left;
-  margin: 0 0 0 30px;
-}
-.companyDescImage {
-  float: left;
-  margin-right: 10px;
 }
 
-.apply-logo{
-  height: 25px;
-  width: 25px;
-  background-color: white;
-}
-
-.ProfileImage {
-  border-radius: 300%;
-  height: 152px;
-  width: 152px;
-  margin-top: -60px;
-
-  margin-right: auto;
-  display: block;
-}
-
-.profileDescription {
-  margin-top: 20px;
-  font-size: 25px;
-}
-
-
-.profileDescription1 {
-  font-size: 20px;
-}
