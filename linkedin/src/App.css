@@ -317,3 +317,9 @@ background-color: blue;
 .companyDescImage {
   float: left;
 }
+.jobPostingDescriptionInbutBox {
+  padding-bottom: 90px;
+}
+.post-job-border {
+  border-radius: 2px;
+}

@@ -1,7 +1,7 @@
 var express = require("express");
 
 var app = express();
-
+const multer = require('multer');
 var bodyParser = require("body-parser");
 var session = require("express-session");
 var cookieParser = require("cookie-parser");
@@ -12,16 +12,18 @@ var cors = require("cors");
 //Passport authentication
 var passport = require("passport");
 
-// mongoClient.connect('mongodb://linkedin:linkedinteam1@ds159263.mlab.com:59263/linkedin', (err,client) => {
-//       if(err) {
-//           console.log("Error connecting to mongo database");
-//       }
-//       else {
-//           console.log("connection successul");
-//           client.close();
-//       }
-//       callback(null,)
-//   })
+
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      console.log("multer file", file);
+    cb(null, './uploads');
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  }
+});
+
+const upload = multer({ storage });
 
 //set up cors
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
@@ -56,15 +58,21 @@ app.use(function(req, res, next) {
   next();
 });
 
-// Bring in defined Passport Strategy
 require("./config/passport")(passport);
 
 //Kafka
 var kafka = require("./kafka/client");
 var applicantsignup = require("./controllers/applicantsignup");
+var postJobRecruiter = require("./controllers/postJobRecruiter");
 
 app.post("/applicant/signup", (req, res) => {
   applicantsignup.applicantsignup(req, res);
+});
+
+app.post("/submitJobDetails", (req, res) => {
+  console.log(req.body);
+  req.body.user = req.session.user;
+  postJobRecruiter.postJobRecruiter(req,res);
 });
 
 app.post("/login", function(req, res) {
@@ -87,6 +95,7 @@ app.post("/login", function(req, res) {
       console.log("Inside else");
       console.log("success login");
       // res.value = user;
+      req.session.user = results.value.user.email;
       console.log("session to be set",results.value.user.email);
       console.log("resres", results);
       res.sendStatus(200).end();
@@ -97,6 +106,11 @@ app.post("/login", function(req, res) {
     }
   });
 });
+
+app.post('/upload_file', upload.any(), (req, res) => {
+res.send();
+});
+
 
 console.log("Linked Backend!");
 app.listen(3001);

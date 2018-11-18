@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Header from '../Header/Header';
 
 class JobPostingDetails extends Component{
     constructor(props){
@@ -9,7 +10,7 @@ class JobPostingDetails extends Component{
     render(){
         return(
             <div>
-                <h1>Job Psoting Details Page!</h1>
+                <p>Posting Details</p>
             </div>
         );
     }

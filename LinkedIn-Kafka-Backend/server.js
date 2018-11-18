@@ -2,7 +2,7 @@ var connection =  new require('./kafka/connections');
 var mongoose = require("mongoose");
 var applicantsignup = require("./services/applicantsignup");
 var user_login = require("./services/userLoginKafka");
-
+var postJob_recruiter = require("./services/postJobRecruiterKafka");
 
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
@@ -34,4 +34,5 @@ function handleTopicRequest(topic_name, fname) {
 }
 
 handleTopicRequest("user_login_topic", user_login),
-  handleTopicRequest("applicant_signup_topic", applicantsignup);
+handleTopicRequest("applicant_signup_topic", applicantsignup),
+handleTopicRequest("postJob_recruiter_topic", postJob_recruiter);

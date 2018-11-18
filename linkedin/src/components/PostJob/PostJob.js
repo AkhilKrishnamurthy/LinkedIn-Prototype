@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import Header from '../Header/Header';
-import '../../App.css';
+
 
 class PostJob extends Component{
 
@@ -14,7 +12,8 @@ class PostJob extends Component{
         return(
             <div>
                 <Header/>
-                <div className = "postJob">
+                <p>post job</p>
+                <div className = "post-job-container">
                 </div>
             </div>
         );
