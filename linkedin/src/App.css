@@ -323,3 +323,8 @@ background-color: blue;
 .post-job-border {
   border-radius: 2px;
 }
+.apply-logo{
+  height: 25px;
+  width: 25px;
+  background-color: white;
+}

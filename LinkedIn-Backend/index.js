@@ -64,6 +64,7 @@ require("./config/passport")(passport);
 var kafka = require("./kafka/client");
 var applicantsignup = require("./controllers/applicantsignup");
 var postJobRecruiter = require("./controllers/postJobRecruiter");
+var jobs = require("./controllers/jobs");
 
 app.post("/applicant/signup", (req, res) => {
   applicantsignup.applicantsignup(req, res);
@@ -111,6 +112,7 @@ app.post('/upload_file', upload.any(), (req, res) => {
 res.send();
 });
 
+app.use('/jobs', jobs);
 
 console.log("Linked Backend!");
 app.listen(3001);

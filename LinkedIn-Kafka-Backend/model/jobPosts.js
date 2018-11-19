@@ -21,3 +21,4 @@ var JobPosts = new Schema({
 
 let JobPost = mongoose.model("jobPosts", JobPosts, "jobPosts");
 module.exports = JobPost;
+
