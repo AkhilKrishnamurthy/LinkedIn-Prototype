@@ -354,3 +354,7 @@ background-color: blue;
   width: 25px;
   background-color: white;
 }
+
+.pad-left-5-pc {
+  padding-left: 5%; 
+}

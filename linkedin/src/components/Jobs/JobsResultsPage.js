@@ -2,13 +2,19 @@ import React, { Component } from "react";
 import Header from "../Header/Header";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import {Redirect} from 'react-router';
+
+import {connect} from 'react-redux';
+import {saveJobDetailsToStore} from '../../actions/jobResultsAction';
 
 class JobsResultsPage extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       jobData: [],
-      jobDetails: ""
+      jobDetails: "",
+      redirectToJobDisplayPage: false
     };
   }
 
@@ -37,14 +43,21 @@ class JobsResultsPage extends Component {
         });
   }
 
-  saveJobDetailstoStore = () =>{
-    
+  saveJobDetailsToStore = () =>{
+    console.log('Inside saveJobDetailstoStore');
+    this.props.saveJobDetailsToStore(this.state.jobDetails);
+    this.setState({
+      redirectToJobDisplayPage : true
+    });
   }
 
 
   render() {
     //left-pane content
-
+    var redirectVar = null;
+    if(this.state.redirectToJobDisplayPage === true){
+      redirectVar = <Redirect to="/jobs/display"/>
+    }
     var briefPaneContent = this.state.jobData.map((job, index)=> {
       return (
         <div className="job-result-data p-3 mt-2 mb-2 row border" key={index}>
@@ -83,8 +96,8 @@ class JobsResultsPage extends Component {
           </div>
           <div className="col-lg-9">
             <div className="">
-              <b>
-                <Link to="#">{this.state.jobDetails.jobTitle}</Link>
+              <b> 
+                <Link to="#" onClick={this.saveJobDetailsToStore}>{this.state.jobDetails.jobTitle}</Link>
               </b>
               <br />
             </div>
@@ -118,6 +131,7 @@ class JobsResultsPage extends Component {
 
     return (
       <div>
+        {redirectVar}
         <Header />
 
         <div>
@@ -174,5 +188,12 @@ class JobsResultsPage extends Component {
     );
   }
 }
+//mapStateToProps
 
-export default JobsResultsPage;
+const mapStateToProps  = state =>({
+  jobResultsStateStore : state.jobResultsStateStore
+});
+
+
+//export default JobsResultsPage;
+export default connect(mapStateToProps, {saveJobDetailsToStore})(JobsResultsPage);
