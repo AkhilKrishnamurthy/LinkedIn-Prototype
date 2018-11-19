@@ -349,3 +349,8 @@ background-color: blue;
   height: 50px;
   width: 200px;
 }
+.apply-logo{
+  height: 25px;
+  width: 25px;
+  background-color: white;
+}
