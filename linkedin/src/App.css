@@ -314,6 +314,11 @@ background-color: blue;
 .floatHome {
   float: left;
 }
+
+.post_job_columns {
+  margin-left: 10px;
+  float: left;
+}
 .companyDescImage {
   float: left;
 }
@@ -322,4 +327,25 @@ background-color: blue;
 }
 .post-job-border {
   border-radius: 2px;
+  margin: 50px 0 0 50px;
+}
+.inputfield {
+  height:50px;
+}
+.jobPosting_boxes {
+  padding-left: 30px; 
+}
+.addJob_title {
+  margin: 20px 0 20px 20px;
+  font-size: 30px;
+  font-weight: bold;
+  color: rgba(0,0,0,.9);
+}
+.form_control_home_location {
+  width: 400px;
+  margin-right: 10px;
+} 
+.selectBox_postJob {
+  height: 50px;
+  width: 200px;
 }

@@ -1,10 +1,13 @@
 var postJob = require("../model/jobPosts");
+var mongooseTypes = require('mongoose').Types;
 
 function handle_request(msg, callback) {
   console.log("Connected to kafka post job!");
   console.log(msg);
   var res = {};
+  const newObjectId =  mongooseTypes.ObjectId();
   var myobj = new postJob({
+      jobId: newObjectId,
       user: msg.user,  
       companyName: msg.companyName,
       jobTitle: msg.jobTitle,
@@ -13,6 +16,7 @@ function handle_request(msg, callback) {
       location: msg.location,
       seniorityLevel: msg.seniorityLevel,
       jobDescription: msg.jobDescription,
+      postedDate: msg.postedDate,
       companyLogo: msg.images
   });
   var promise = myobj.save();
