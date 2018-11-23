@@ -65,6 +65,8 @@ var kafka = require("./kafka/client");
 var applicantsignup = require("./controllers/applicantsignup");
 var postJobRecruiter = require("./controllers/postJobRecruiter");
 var jobs = require("./controllers/jobs");
+var saveJob = require('./controllers/saveJob');
+var savedJobs = require('./controllers/savedJobs');
 
 app.post("/applicant/signup", (req, res) => {
   applicantsignup.applicantsignup(req, res);
@@ -113,6 +115,9 @@ res.send();
 });
 
 app.use('/jobs', jobs);
+
+app.use('/save-job', saveJob);
+app.use('/saved-jobs', savedJobs);
 
 console.log("Linked Backend!");
 app.listen(3001);

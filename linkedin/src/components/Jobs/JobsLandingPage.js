@@ -64,7 +64,7 @@ class JobLandingPage extends Component {
                   <div className="row mt-3 pull-center-1 pull-center-2">
                             
                             <div className="jobs-landing-bar-container ">
-                            <span className="pad-1-pc">5 Saved Jobs</span>
+                            <span className="pad-1-pc">5 <Link to="/jobs/saved-jobs">Saved Jobs</Link></span>
                             <span className="pad-1-pc">10 Applied Jobs</span>
                             <span className="pad-3-pc">Career Interests</span>
                             <span className="pad-6-pc">LinkedIn Salary</span>

@@ -15,7 +15,8 @@ import JobPostings from "./Jobs/JobPostings";
 import JobsLandingPage from "./Jobs/JobsLandingPage";
 import JobsResultsPage from "./Jobs/JobsResultsPage";
 import RecruiterDashboard from "./AnalyticsDashboard/RecruiterDashboard";
-
+import SavedJobs from "./Jobs/SavedJobs";
+import JobApplication from './Jobs/JobApplication';
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -44,6 +45,8 @@ class Main extends Component {
         <Route path="/jobs/postings" component={JobPostings} />
         <Route exact path="/jobs" component={JobsLandingPage} />
         <Route path="/jobs/results" component={JobsResultsPage} />
+        <Route path="/jobs/saved-jobs" component={SavedJobs} />
+        <Route path="/jobs/apply-job" component={JobApplication} />
       </div>
     );
   }

@@ -14,8 +14,13 @@ class JobsResultsPage extends Component {
     this.state = {
       jobData: [],
       jobDetails: "",
-      redirectToJobDisplayPage: false
+      redirectToJobDisplayPage: false,
+      saveClicked: false,
+      redirectToJobApplication:false
     };
+
+    //bind
+    this.handleSaveClick = this.handleSaveClick.bind(this);
   }
 
   componentDidMount() {
@@ -51,6 +56,38 @@ class JobsResultsPage extends Component {
     });
   }
 
+  handleSaveClick = () =>{
+    console.log('Job details',this.state.jobDetails);
+    if(this.state.saveClicked === false){
+      var data = {
+        jobDetails : this.state.jobDetails
+      };
+
+      axios.post('http://localhost:3001/save-job', data)
+      .then((response) =>{
+        if(response.status === 200){
+          this.setState({
+            saveClicked: true
+          });
+        }
+      });
+    }
+    
+  }
+
+  handleApplyJob = ()=>{
+    this.setState({
+      redirectToJobApplication: true
+    });
+  }
+
+  handleEasyApply = ()=>{
+    this.setState({
+      redirectToJobApplication: true
+    });
+  }
+
+
 
   render() {
     //left-pane content
@@ -58,6 +95,11 @@ class JobsResultsPage extends Component {
     if(this.state.redirectToJobDisplayPage === true){
       redirectVar = <Redirect to="/jobs/display"/>
     }
+
+    if(this.state.redirectToJobApplication === true){
+      redirectVar = <Redirect to="/jobs/apply-job"/>
+    }
+
     var briefPaneContent = this.state.jobData.map((job, index)=> {
       return (
         <div className="job-result-data p-3 mt-2 mb-2 row border" key={index}>
@@ -106,8 +148,8 @@ class JobsResultsPage extends Component {
             </div>
             <div>{this.state.jobDetails.location}</div>
             <div className="mt-2">
-              <button className="btn btn-lg save-btn">Save</button>
-              <button className="btn btn-lg ml-3 easy-apply-btn">
+              <button className="btn btn-lg save-btn" onClick={this.handleSaveClick}>Save</button>
+              <button className="btn btn-lg ml-3 easy-apply-btn" onClick={this.handleEasyApply}>
                 <span className="apply-logo-container">
                   <img
                     className="apply-logo mr-2"
@@ -117,7 +159,7 @@ class JobsResultsPage extends Component {
                 </span>
                 <span>Easy apply</span>
               </button>
-              <button className="btn btn-lg ml-3 apply-btn">Apply</button>
+              <button className="btn btn-lg ml-3 apply-btn" onClick={this.handleApplyJob}>Apply</button>
             </div>
           </div>
         </div>
