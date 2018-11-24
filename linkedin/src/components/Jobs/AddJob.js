@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Header from '../Header/Header';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 
 class AddJobs extends Component{
     constructor(){
@@ -175,7 +176,7 @@ class AddJobs extends Component{
             </span>
             </div>
 
-            <button className="btn btn-primary" onClick = {this.submitJobDetails}>Submit</button>
+            <button className="btn btn-primary" onClick = {this.submitJobDetails}><Link to={'/home'}>Submit</Link></button>
             </div>
 
          <div class="post_job_columns col-lg-3 border post-job-border">
