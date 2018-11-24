@@ -40,7 +40,7 @@
 
 .header-container{
   background: #283e4a;
-  padding: 0.3%;
+  padding: 0.25%;
 }
 
 .img-container{
@@ -51,35 +51,17 @@
   padding: 10px;
   display: inline;
 }
-.iconDesc {
-  float: left;
-  margin-top:-15px;
-}
-.myNetworkimg {
-  margin-top: -30px;
-}
-.iconColor {
-  margin-left: 10px;
-  fill: white;
-}
-.homeiconDesc {
-  margin-top: -25px;
-}
-.myJobs {
-  margin-top: -24px;
-  margin-right: 25px;
-}
+
 .search-box{
-  margin-left: 10px;
+  margin-left: 20px;
   width: 250px;
-  height: 40px;
+  height: 30px;
   background: #e1e9ee;
   text-indent: 10px;
 }
 
 .nav-links{
   float: right;
-  margin-right: 200px;
 }
 .nav-links p{
   display:inline;
@@ -261,7 +243,7 @@
 .back { text-align: left; margin-top:10px;}
 
 .navbar{
- margin-right: 20px;
+ 
   margin-top: -5px;
   padding-left: 5px;
   font-size: 35px;
@@ -331,19 +313,14 @@ background-color: blue;
 }
 .floatHome {
   float: left;
-  width: 100%;
-}
-.homeConnectionDetails {
-  font-size: 15px;
 }
 
 .post_job_columns {
   margin-left: 10px;
   float: left;
 }
-.companyDescImage img{
+.companyDescImage {
   float: left;
-  border-radius: 200%;
 }
 .jobPostingDescriptionInbutBox {
   padding-bottom: 90px;
@@ -381,34 +358,3 @@ background-color: blue;
 .pad-left-5-pc {
   padding-left: 5%; 
 }
-
-
-
-
-body {
-  background:#f0f0f0;
-}
-.nav {
-  top:2px;
-  position:absolute;
-}
-.dropdown {
-  border-radius:4px;
-  width:300px;    
-}
-.dropdown-menu>li>a {
-  color:#428bca;
-}
-.dropdown ul.dropdown-menu {
-  border-radius:4px;
-  box-shadow:none;
-  margin-top:20px;
-}
-.dropdownFontColor {
-  color: white
-}
-.profileimage {
-  border-radius: 200%;
-  width: 30px;
-  height: 25px;
-} 
