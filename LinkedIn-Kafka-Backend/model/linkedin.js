@@ -57,7 +57,7 @@ var JobDetails = new Schema({
 var LinkedInSchema = new Schema({
   user: { type: UserSchema },
   JobPostings: [{ type: JobDetails }],
-  appliedJobs: [{ type: JobDetails }],
+  appliedJobs: Array,
   connections: [{ type: UserSchema }],
   savedjobs: Array,
   profileviews: [{ type: UserSchema }]

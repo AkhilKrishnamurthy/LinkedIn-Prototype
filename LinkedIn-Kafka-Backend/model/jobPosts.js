@@ -13,7 +13,8 @@ var JobPosts = new Schema({
   seniorityLevel: { type: String, trim: true, default: "" },
   jobDescription: { type: String, trim: true, default: "" },
   postedDate: { type: Date, trim: true, default: "" },
-  companyLogo: { type: String, trim: true, default: "" }
+  companyLogo: { type: String, trim: true, default: "" },
+  applicantData: Array
    //   jobfunction: { type: String, trim: true, default: "" },
 //   companyid: { type: Number, trim: true },
 // emptype: { type: String, trim: true, default: "" },
