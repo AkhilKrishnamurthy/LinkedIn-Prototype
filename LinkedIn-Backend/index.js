@@ -6,7 +6,6 @@ var bodyParser = require("body-parser");
 var session = require("express-session");
 var jobPosts = require('./model/jobPosts');
 var cookieParser = require("cookie-parser");
-var {job1Posts} = require('./model/job1Posts');
 const mongoClient = require("mongodb").MongoClient();
 var {mongoose} = require('./mongoose');
 
