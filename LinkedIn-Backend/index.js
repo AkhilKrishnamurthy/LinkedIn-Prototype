@@ -152,6 +152,14 @@ app.use('/jobs', jobs);
 
 app.use('/save-job', saveJob);
 app.use('/saved-jobs', savedJobs);
+var analytics = require("./controllers/analytics");
+app.post("/analytics/userclicks",
+ function(req, res) {
+   analytics.userclicks(req, res);
+ });
+
+
+
 
 
 console.log("Linked Backend!");

@@ -7,6 +7,7 @@ var getJobs = require("./services/getJobs");
 var saveJob = require('./services/saveJob');
 var savedJobs = require('./services/savedJobs');
 var applyJob = require('./services/applyJob');
+var userclicktrack = require("./services/userclick");
 
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
@@ -44,3 +45,6 @@ handleTopicRequest("get_jobs_topic", getJobs);
 handleTopicRequest("save_job_topic", saveJob);
 handleTopicRequest("saved_jobs_topic", savedJobs);
 handleTopicRequest("apply_job_topic", applyJob);
+handleTopicRequest("user_click_topic", userclicktrack);
+
+
