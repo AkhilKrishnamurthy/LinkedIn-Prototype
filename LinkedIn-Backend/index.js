@@ -4,8 +4,12 @@ var app = express();
 const multer = require('multer');
 var bodyParser = require("body-parser");
 var session = require("express-session");
+var jobPosts = require('./model/jobPosts');
 var cookieParser = require("cookie-parser");
+var {job1Posts} = require('./model/job1Posts');
 const mongoClient = require("mongodb").MongoClient();
+var {mongoose} = require('./mongoose');
+
 
 var cors = require("cors");
 
@@ -67,6 +71,7 @@ var postJobRecruiter = require("./controllers/postJobRecruiter");
 var jobs = require("./controllers/jobs");
 var saveJob = require('./controllers/saveJob');
 var savedJobs = require('./controllers/savedJobs');
+var jobsearch = require("./controllers/jobsearch")
 
 app.post("/applicant/signup", (req, res) => {
   applicantsignup.applicantsignup(req, res);
@@ -110,14 +115,45 @@ app.post("/login", function(req, res) {
   });
 });
 
+app.post('/jobs/search', function(req,res){
+  // console.log("Inside search jobs" + req.body.jobTitle + " " + req.body.location);
+ 
+    jobPosts.find(
+         {$and: [
+               {jobTitle : req.body.jobTitle} , 
+               {location : req.body.location } 
+           ]
+         }, function(err,jobs){
+             console.log("Inside jobs search again")
+             if (err) {
+                 console.log("err");
+                 res.code = "400";
+                 res.value = "Fetching jobs failed";
+                 console.log(res.value);
+                 res.sendStatus(400).end(); 
+             } else{
+                 console.log("success")
+                 res.code = "200";
+                 res.value = jobs;
+                 console.log("Jobs list fetched" + JSON.stringify(jobs));
+                 res.send(JSON.stringify(jobs));
+             }
+         })
+   
+ })
+
+
 app.post('/upload_file', upload.any(), (req, res) => {
 res.send();
 });
+
+
 
 app.use('/jobs', jobs);
 
 app.use('/save-job', saveJob);
 app.use('/saved-jobs', savedJobs);
+
 
 console.log("Linked Backend!");
 app.listen(3001);

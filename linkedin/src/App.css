@@ -38,14 +38,19 @@
   width: 40px;
 }
 
+.linkedIn-logo-login{
+  height: 40px;
+  width: 120px;
+}
+
 .header-container{
   background: #283e4a;
   padding: 0.3%;
 }
-
-.img-container{
-  background: white;
-}
+ 
+ .img-container{
+  background: white
+}  
 
 .header-content-container{
   padding: 10px;
@@ -224,11 +229,11 @@
 }
 .main-div {
   background: #ffffff none repeat scroll 0 0;
-  border-radius: 2px;
-  margin: 10px auto 30px;
+  /* border-radius: 2px; */
+  margin: 0px auto 30px;
   max-width: 38%;
-  padding: 50px 70px 70px 71px;
-  border: 2px solid black;
+  /* padding: 50px 70px 70px 71px; */
+  /* border: 2px solid black; */
 }
 
 .login-form .form-group {
@@ -260,8 +265,8 @@
 }
 .back { text-align: left; margin-top:10px;}
 
-.navbar{
- margin-right: 20px;
+/* .navbar{
+ 
   margin-top: -5px;
   padding-left: 5px;
   font-size: 35px;
@@ -275,7 +280,7 @@
   font-weight:bold;
   background-color: #F8F8F8;
     border-color: #E7E7E7;
-}
+} */
 
 .wrapper {
   width: 1500px;
