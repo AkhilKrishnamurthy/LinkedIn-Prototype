@@ -1,4 +1,6 @@
 var express = require("express");
+var redis = require("redis");
+var client = redis.createClient();
 
 var app = express();
 const multer = require('multer');
@@ -6,7 +8,7 @@ var bodyParser = require("body-parser");
 var session = require("express-session");
 var cookieParser = require("cookie-parser");
 const mongoClient = require("mongodb").MongoClient();
-
+var mysql = require("mysql");
 var cors = require("cors");
 
 //Passport authentication
@@ -28,7 +30,17 @@ const upload = multer({ storage });
 //set up cors
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
+
+var con = mysql.createPool({
+  connectionLimit: 100,
+  host: "linkedinteam1.c4redet1j4es.us-west-1.rds.amazonaws.com",
+  user: "linkedin",
+  password: "linkedin",
+  database: "linkedin"
+});
+
 //set up session variable
+
 
 app.use(
   session({
@@ -68,6 +80,23 @@ var jobs = require("./controllers/jobs");
 var saveJob = require('./controllers/saveJob');
 var savedJobs = require('./controllers/savedJobs');
 
+
+client.on("connect", function() {
+  console.log("Redis client connected");
+});
+
+client.on("error", function(err) {
+  console.log("Something went wrong " + err);
+});
+client.set("my test key", "my test value", redis.print);
+client.get("my test key", function(error, result) {
+  if (error) {
+    console.log(error);
+    throw error;
+  }
+  console.log("GET result ->" + result);
+});
+
 app.post("/applicant/signup", (req, res) => {
   applicantsignup.applicantsignup(req, res);
 });
@@ -79,33 +108,58 @@ app.post("/submitJobDetails", (req, res) => {
 });
 
 app.post("/login", function(req, res) {
+  console.log("req.url", req.query);
   console.log("Inside Login Post Request", req.body);
-  kafka.make_request("user_login_topic", req.body, function(err, results) {
-    console.log("in result");
-    console.log(results.code);
-    if (err) {
-      console.log("Inside err");
-      res.json({
-        status: "error",
-        msg: "System Error, Try Again."
-      });
-      console.log("mismatch login");
-      res.value =
-        "The email and password you entered did not match our records. Please double-check and try again.";
-      console.log(res.value);
-      res.sendStatus(400).end();
-    } else if (results.code == 200) {
-      console.log("Inside else");
-      console.log("success login");
-      // res.value = user;
-      req.session.user = results.value.user.email;
-      console.log("session to be set",results.value.user.email);
-      console.log("resres", results);
-      res.sendStatus(200).end();
+
+  // return client.get("/login", (err, result) => {
+  const query = req.body.username + req.body.password;
+  return client.get(`login:${query}`, (err, result) => {
+    console.log("result redis", JSON.stringify(result));
+    // If that key exist in Redis store
+    if (result) {
+      console.log("result redis", JSON.stringify(result));
+      const resultJSON = result;
+      return res.status(200).send(resultJSON);
     } else {
-      res.value =
-        "The email and password you entered did not match our records. Please double-check and try again.";
-         res.sendStatus(400).end();
+      kafka.make_request("user_login_topic", req.body, function(err, results) {
+        console.log("in result");
+        console.log(results.code);
+        if (err) {
+          console.log("Inside err");
+          res.json({
+            status: "error",
+            msg: "System Error, Try Again."
+          });
+          console.log("mismatch login");
+          res.value =
+            "The email and password you entered did not match our records. Please double-check and try again.";
+          console.log(res.value);
+          res.sendStatus(400).end();
+        } else if (results.code == 200) {
+          console.log("Inside else");
+          console.log("success login");
+          // res.value = user;
+          req.session.user = results.value.user.email;
+          console.log("session to be set", results.value.user.email);
+          console.log("resres", results);
+          //res.sendStatus(200).end();
+          // const responseJSON = req.session.user;
+          const responseJSON = { value: req.session.user };
+          // Save the Wikipedia API response in Redis store
+          client.setex(
+            `login:${query}`,
+            3600,
+            //source: "Redis Cache",
+            JSON.stringify({ source: "Redis cache", value: req.session.user })
+          );
+          console.log("respnose json", responseJSON);
+          res.status(200).send({ value: req.session.user });
+        } else {
+          res.value =
+            "The email and password you entered did not match our records. Please double-check and try again.";
+          res.sendStatus(400).end();
+        }
+      });
     }
   });
 });
