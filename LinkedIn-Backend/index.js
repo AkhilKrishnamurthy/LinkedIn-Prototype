@@ -71,6 +71,7 @@ var jobs = require("./controllers/jobs");
 var saveJob = require('./controllers/saveJob');
 var savedJobs = require('./controllers/savedJobs');
 var jobsearch = require("./controllers/jobsearch")
+var applyJob = require("./controllers/applyJob");
 
 app.post("/applicant/signup", (req, res) => {
   applicantsignup.applicantsignup(req, res);
@@ -157,6 +158,8 @@ app.post("/analytics/userclicks",
  function(req, res) {
    analytics.userclicks(req, res);
  });
+
+ app.use('/apply-job', applyJob);
 
 
 

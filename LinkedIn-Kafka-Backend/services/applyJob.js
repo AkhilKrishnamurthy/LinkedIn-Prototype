@@ -8,7 +8,7 @@ function handle_request(message, callback){
         "user.email" : message.session.user
     }, {
         $push: {
-            appliedJobs : message.body.applicationData
+            appliedJobs : message.body.jobData
         }
     }, (err, doc)=>{
             if(err){

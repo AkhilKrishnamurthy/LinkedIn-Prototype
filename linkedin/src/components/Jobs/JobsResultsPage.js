@@ -86,12 +86,14 @@ class JobsResultsPage extends Component {
   }
 
   handleApplyJob = ()=>{
+    this.saveJobDetailsToStore();
     this.setState({
       redirectToJobApplication: true
     });
   }
 
   handleEasyApply = ()=>{
+    this.saveJobDetailsToStore();
     this.setState({
       redirectToJobApplication: true
     });
