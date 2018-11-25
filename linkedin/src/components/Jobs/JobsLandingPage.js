@@ -16,7 +16,8 @@ class JobsLandingPage extends Component {
     
     this.state = {
         redirectToJobResultsPage: false,
-        savedJobsCount:0
+        savedJobsCount:0,
+        appliedJobsCount: 0
     }
 
     //bind
@@ -28,6 +29,7 @@ class JobsLandingPage extends Component {
 
   componentDidMount(){
     this.getSavedJobs();
+    this.getAppliedJobs();
   }
 
   getSavedJobs = ()=>{
@@ -43,6 +45,20 @@ class JobsLandingPage extends Component {
                     });
                 }
     });
+  }
+
+  getAppliedJobs = ()=>{
+    axios.defaults.withCredentials=true;
+    axios.get('http://localhost:3001/getAppliedJobs')
+      .then((response)=>{
+        if(response.status === 200){
+          console.log('Response applied jobs', response.data);
+          this.setState({
+            appliedJobs: response.data,
+            appliedJobsCount : response.data.length
+          });
+        }
+      })
   }
 
   searchResultsHandler = (e) => {
@@ -81,6 +97,8 @@ class JobsLandingPage extends Component {
         if(this.state.savedJobs != null){
           this.props.saveSavedJobsToStore(this.state.savedJobs);
         }
+
+
 
         return(
             <div>
@@ -131,7 +149,7 @@ class JobsLandingPage extends Component {
                                     
                             <div className="jobs-landing-bar-container ">
                                     <span className="pad-1-pc"><Link to="/jobs/saved-jobs">{this.state.savedJobsCount}  Saved Jobs</Link></span>
-                                    <span className="pad-1-pc">10 Applied Jobs</span>
+                                    <span className="pad-1-pc"><Link to="#">{this.state.appliedJobsCount} Applied Jobs</Link></span>
                                     <span className="pad-3-pc">Career Interests</span>
                                     <span className="pad-6-pc">LinkedIn Salary</span>
                                     <span className="pad-3-pc">Looking for talent?</span>
