@@ -7,16 +7,42 @@ import {saveSearchFieldToStore} from '../../actions/jobSearchAction';
 import JobHeader from "../Header/JobHeader";
 import "./JobsLanding.css";
 
+import {saveSavedJobsToStore} from '../../actions/jobsLandingPageAction';
+
 class JobsLandingPage extends Component {
   constructor(props) {
     super(props);
     console.log(props);
+    
+    this.state = {
+        redirectToJobResultsPage: false,
+        savedJobsCount:0
+    }
+
+    //bind
     this.searchResultsHandler = this.searchResultsHandler.bind(this);
     this.handleJobTitle = this.handleJobTitle.bind(this);
     this.handleLocation = this.handleLocation.bind(this);
-    this.state = {
-        redirectToJobResultsPage: false
-    }
+    this.getSavedJobs = this.getSavedJobs.bind(this);
+  }
+
+  componentDidMount(){
+    this.getSavedJobs();
+  }
+
+  getSavedJobs = ()=>{
+    axios.defaults.withCredentials=true;
+    axios.get('http://localhost:3001/saved-jobs')
+            .then((response)=>{
+                if(response.status === 200){
+                    console.log('saved jobs: ', response.data);
+                    console.log('saved jobs count', response.data.length);
+                    this.setState({
+                        savedJobs: response.data,
+                        savedJobsCount: response.data.length
+                    });
+                }
+    });
   }
 
   searchResultsHandler = (e) => {
@@ -51,28 +77,16 @@ class JobsLandingPage extends Component {
         if(this.state.redirectToJobResultsPage == true){
           redirectVar = <Redirect to="/jobs/results"/>
         }
+
+        if(this.state.savedJobs != null){
+          this.props.saveSavedJobsToStore(this.state.savedJobs);
+        }
+
         return(
             <div>
                 {redirectVar}
                 <JobHeader />
-
-                    {/* <div className="row"> */}
                       <div className="jobs-landing-header-container pad-top-1-pc">
-                          {/* <div className="jobs-landing-search-container pull-center-1 col-lg-5 col-md-5 col-sm-5">
-                            <input
-                              type="text"
-                              className="form-control form-control-lg"
-                              placeholder="Search Jobs"
-                            />
-                          </div>
-
-                        <div className="jobs-landing-search-container pull-center-2 col-lg-5 col-md-5 col-sm-5">
-                          <input
-                            type="text"
-                            className="form-control form-control-lg"
-                            placeholder="Search Location"
-                          />
-                        </div> */}
                         <form>
                             <input type = "text" onChange = {this.handleJobTitle} className = "jobs" placeholder = "Search Jobs"></input>
                             &nbsp;&nbsp;
@@ -83,14 +97,6 @@ class JobsLandingPage extends Component {
                             Search
                             </button>
                       </form>
-                        {/* <div className="jobs-landing-search-container pull-center-2 col-lg-2 col-md-2 col-sm-2">
-                          <input
-                            type="button"
-                            className="button btn btn-outline-default"
-                            value = "Search"
-                          />
-                        </div> */}
-                      {/* </div> */}
                    </div>
 
                   <div className="row">
@@ -124,7 +130,7 @@ class JobsLandingPage extends Component {
                         <div className="row mt-3 pull-center-1 pull-center-2">
                                     
                             <div className="jobs-landing-bar-container ">
-                                    <span className="pad-1-pc">5 Saved Jobs</span>
+                                    <span className="pad-1-pc"><Link to="/jobs/saved-jobs">{this.state.savedJobsCount}  Saved Jobs</Link></span>
                                     <span className="pad-1-pc">10 Applied Jobs</span>
                                     <span className="pad-3-pc">Career Interests</span>
                                     <span className="pad-6-pc">LinkedIn Salary</span>
@@ -349,4 +355,4 @@ const mapStateToProps  = state =>({
   
   
 //export default JobsLandingPage;
-export default connect(mapStateToProps, {saveSearchFieldToStore})(JobsLandingPage);
+export default connect(mapStateToProps, {saveSearchFieldToStore, saveSavedJobsToStore})(JobsLandingPage);

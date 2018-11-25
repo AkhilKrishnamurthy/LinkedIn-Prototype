@@ -23,9 +23,30 @@ class JobApplication extends Component{
         const name = target.name;
         const value = target.value;
 
-        this.setState({
-            [name] : value
-        });
+        if(name == "resume"){
+
+            var resume = target.files[0];
+            var data = new FormData();
+            data.append('resume', resume);
+            console.log('Resume uploaded!');
+            axios.defaults.withCredentials=true;
+            axios.post('http://localhost:3001/upload_file', data)
+                .then((response)=>{
+                    if(response.status === 200){
+                        console.log('Resume data', resume.name);
+                        this.setState({
+                            resume : resume.name
+                        });
+                    }
+                });
+        }
+        else{
+            this.setState({
+                [name] : value
+            });
+        }
+
+        
     }
     
     submitApplication = () =>{
@@ -40,8 +61,8 @@ class JobApplication extends Component{
                 address : this.state.address,
                 city : this.state.city,
                 state : this.state.state,
-                zipcode : this.state.zipcode
-
+                zipcode : this.state.zipcode,
+                resume : this.state.resume
             }, 
             jobId : this.props.jobResultsStateStore.result.jobId,
             jobData : this.props.jobResultsStateStore.result
@@ -102,7 +123,7 @@ class JobApplication extends Component{
                                 <div> Will you now, or in the future, require sponsorship for employment visa status (e.g. H-1B visa status)? </div>
                                 <div className="form-group form-check">
                                     <label className="form-check-label">
-                                    <input type="radio" name="yes" className="form-check-input"/>Yes</label>
+                                    <input type="radio" name="yes" className="form-check-input" />Yes</label>
                                 </div>
                                 <div className="form-group form-check">
                                     <label className="form-check-label">
