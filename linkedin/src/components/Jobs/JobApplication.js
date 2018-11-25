@@ -3,6 +3,7 @@ import Header from '../Header/Header';
 import "../../static/css/JobApplication.css";
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 class JobApplication extends Component{
     constructor(props){
@@ -29,7 +30,25 @@ class JobApplication extends Component{
     
     submitApplication = () =>{
 
-        axios.post('/apply-job')
+
+        var data = {
+            applicationData : {
+                firstname : this.state.firstname,
+                lastname : this.state.lastname,
+                email : this.state.email,
+                country : this.state.country,
+                address : this.state.address,
+                city : this.state.city,
+                state : this.state.state,
+                zipcode : this.state.zipcode
+
+            }, 
+            jobId : this.props.jobResultsStateStore.result.jobId,
+            jobData : this.props.jobResultsStateStore.result
+            
+        }
+        axios.defaults.withCredentials=true;
+        axios.post('http://localhost:3001/apply-job', data)
             .then((response)=>{
                 if(response.status === 200){
                     this.setState({
@@ -95,7 +114,7 @@ class JobApplication extends Component{
                                     </div>
                                     <div className="custom-file form-group">
                                         <input type="file" className="custom-file-input form-control form-control-lg" name="resume" id="inputGroupFile01" onChange={this.handleChange} required/>
-                                        <label className="custom-file-label" For="inputGroupFile01">Choose file</label>
+                                        <label className="custom-file-label" htmlFor="inputGroupFile01">Choose file</label>
                                     </div>
                                 </div>
                                 <div className="form-group">
@@ -109,5 +128,9 @@ class JobApplication extends Component{
         )
     }
 }
+//mapstatetoProps
+const mapStateToProps  = state =>({
+    jobResultsStateStore : state.jobResultsStateStore
+  });
 
-export default JobApplication;
+export default connect(mapStateToProps)(JobApplication);

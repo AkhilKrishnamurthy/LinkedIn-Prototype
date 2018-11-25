@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import linkedinlogo from '../../images/linkedin_signup_logo.png';
+
 class LoginHeader extends Component {
   constructor(props) {
     super(props);
@@ -12,8 +14,9 @@ class LoginHeader extends Component {
         <div className="container">
           <div className="header-content-container">
             <img
-              className="img-container linkedIn-logo"
-              src="http://www.theredbrickroad.com/wp-content/uploads/2017/05/linkedin-logo-copy.png"
+              className="linkedIn-logo-login"
+              // src="http://www.theredbrickroad.com/wp-content/uploads/2017/05/linkedin-logo-copy.png"
+              src = {linkedinlogo}
               alt="logo"
             />
             <span className="nav-links">
@@ -24,7 +27,7 @@ class LoginHeader extends Component {
                 aria-label="Password"
               />
               <button
-                className="btn btn-outline-success my-2 my-sm-0"
+                className="btn btn-outline-success btn-login my-2 my-sm-0"
                 type="submit"
               >
                 Sign in

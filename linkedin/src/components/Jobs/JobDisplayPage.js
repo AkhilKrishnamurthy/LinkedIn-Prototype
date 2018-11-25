@@ -2,11 +2,28 @@ import React, { Component } from "react";
 import "../../static/css/JobDisplay.css";
 
 import {connect} from 'react-redux';
+import axios from 'axios';
 
 class JobDisplayPage extends Component {
     constructor(props) {
         super(props);
         console.log(props);
+    }
+
+    componentDidMount(){
+        axios.defaults.withCredentials=true;
+        var data = {
+            jobData : this.props.jobResultsStateStore.result
+        };
+        axios.post("http://localhost:3001/analytics/userclicks", data).then(
+            response => {
+              console.log("job click updated");
+              console.log(response.data)
+            },
+            error => {
+              console.log(error);
+            }
+        );
     }
 
     render() {

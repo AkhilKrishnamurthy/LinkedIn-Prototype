@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import '../../static/css/Navbar.css'
+
 class JobHeader extends Component {
     constructor(props) {
         super(props);
@@ -8,21 +10,57 @@ class JobHeader extends Component {
 
     render() {
         return (
-            <div className="header-container">
-                <div className="container">
-                    <div className="header-content-container">
-                        <img className="img-container linkedIn-logo" src="http://www.theredbrickroad.com/wp-content/uploads/2017/05/linkedin-logo-copy.png" alt="logo"></img>
-                       {/* <input className="search-box" type="text" placeholder="Search"></input> */}
-                       <span className="nav-links">
-                        <Link to="/">Home</Link>
-                        <Link to="/my-network">My Network</Link>
-                        <Link to="/jobs">Jobs</Link>
-                        <Link to="#">Messaging</Link>
-                        <Link to="/profile">Profile</Link>
-                        </span>
-                    </div>
-                </div>
-            </div>
+          <div className = "job-header-main-div">
+          <nav className="navbar navbar-expand-md jobheader">
+          <div className = "job-header-logo-holder">
+           <img className="img-container linkedIn-logo" src="http://www.theredbrickroad.com/wp-content/uploads/2017/05/linkedin-logo-copy.png" alt="logo"></img>
+          </div>
+
+        <div className="collapse navbar-collapse navbar-right nav-links" id="navbarSupportedContent">
+          <ul className="navbar-nav mr-auto"> 
+            <li className="nav-item">
+              <a className="nav-link" href="#"><center><i className="fas fa-home"></i></center><Link to="/home">Home</Link></a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#"><center><i className="fas fa-user-friends"></i></center><Link to="/my-network">My Network</Link></a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#"><center><i className="fas fa-briefcase"></i></center><Link to="/jobs">Jobs</Link></a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#"><center><i className="fas fa-envelope object-align-top"></i></center>Messaging</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#"><center><i className="fas fa-bell"></i></center>Notifications</a>
+            </li>
+            <li className="nav-item">
+                         <ul class="nav navbar-nav">
+                             <li class="dropdown">
+           <a href="#" class="dropdown-toggle dropdownFontColor" data-toggle="dropdown">
+           {/* <img src=""/> */}
+           <img src = "" height="50" className="profileimage"/>
+                         <br/>
+           Me<span class="glyphicon glyphicon-user pull-right"></span></a>
+           <ul class="dropdown-menu">
+           <li><Link to= "/jobs/posting-details">Posted Jobs</Link><span class="glyphicon glyphicon-log-out pull-right"></span></li>
+           <li><a>Profile<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+             <li class="divider"></li>
+             <li><a onClick = {this.handleLogout}>Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+           </ul>
+         </li>
+       </ul>
+              {/* <a className="nav-link" href="#"><center><i className="fas fa-user"></i></center>Me</a> */}
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#"><center><i className="fas fa-th"></i></center>Work</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#"><center><i className="fas fa-suitcase"></i></center>Post a Job</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      </div>
         );
     }
 }

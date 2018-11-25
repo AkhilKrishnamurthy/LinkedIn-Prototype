@@ -7,6 +7,8 @@ var getJobs = require("./services/getJobs");
 var saveJob = require('./services/saveJob');
 var savedJobs = require('./services/savedJobs');
 var applyJob = require('./services/applyJob');
+var userclicktrack = require("./services/userclick");
+var jobPostingHistory = require("./services/jobPostingHistory");
 
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
@@ -39,8 +41,12 @@ function handleTopicRequest(topic_name, fname) {
 
 handleTopicRequest("user_login_topic", user_login),
 handleTopicRequest("applicant_signup_topic", applicantsignup),
-handleTopicRequest("postJob_recruiter_topic", postJob_recruiter);
-handleTopicRequest("get_jobs_topic", getJobs);
-handleTopicRequest("save_job_topic", saveJob);
-handleTopicRequest("saved_jobs_topic", savedJobs);
-handleTopicRequest("apply_job_topic", applyJob);
+handleTopicRequest("postJob_recruiter_topic", postJob_recruiter),
+handleTopicRequest("get_jobs_topic", getJobs),
+handleTopicRequest("save_job_topic", saveJob),
+handleTopicRequest("saved_jobs_topic", savedJobs),
+handleTopicRequest("apply_job_topic", applyJob),
+handleTopicRequest("user_click_topic", userclicktrack),
+handleTopicRequest("job_posting_history_topic", jobPostingHistory);
+
+

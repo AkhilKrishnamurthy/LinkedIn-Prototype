@@ -3,14 +3,17 @@ import Header from "../Header/Header";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import {Redirect} from 'react-router';
-
 import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
 import {saveJobDetailsToStore} from '../../actions/jobResultsAction';
+import {saveSearchFieldToStore} from '../../actions/jobSearchAction';
+import '../../static/css/JobResultsPage.css'
 
 class JobsResultsPage extends Component {
   constructor(props) {
     super(props);
     console.log(props);
+    const MAX_LENGTH = 250;
     this.state = {
       jobData: [],
       jobDetails: "",
@@ -23,9 +26,16 @@ class JobsResultsPage extends Component {
     this.handleSaveClick = this.handleSaveClick.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     axios.defaults.withCredentials = true;
-    axios.get("http://localhost:3001/jobs").then(response => {
+    var values = {
+      jobTitle :  this.props.searchFieldToStore.searchfieldresult.jobTitle,
+      location : this.props.searchFieldToStore.searchfieldresult.location
+  }
+
+  console.log("values" + values.jobTitle + values.location)
+  
+    axios.post("http://localhost:3001/jobs/search",values).then(response => {
       if (response.status === 200) {
         var jobResult = response.data;
         console.log("job data", jobResult);
@@ -76,12 +86,14 @@ class JobsResultsPage extends Component {
   }
 
   handleApplyJob = ()=>{
+    this.saveJobDetailsToStore();
     this.setState({
       redirectToJobApplication: true
     });
   }
 
   handleEasyApply = ()=>{
+    this.saveJobDetailsToStore();
     this.setState({
       redirectToJobApplication: true
     });
@@ -121,6 +133,8 @@ class JobsResultsPage extends Component {
               <b>{job.companyName}</b>
             </div>
             <div>{job.location}</div>
+            <small className="text-muted"><p className = "overflow-ellipsis">{job.jobDescription}</p></small>
+            <small className="text-muted">{job.postedDate}</small>
           </span>
         </div>
       );
@@ -233,9 +247,12 @@ class JobsResultsPage extends Component {
 //mapStateToProps
 
 const mapStateToProps  = state =>({
-  jobResultsStateStore : state.jobResultsStateStore
+  jobResultsStateStore : state.jobResultsStateStore,
+  searchFieldToStore : state.jobSearchFieldsStateStore
 });
 
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ saveSearchFieldToStore, saveJobDetailsToStore }, dispatch);
+}
 
-//export default JobsResultsPage;
-export default connect(mapStateToProps, {saveJobDetailsToStore})(JobsResultsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(JobsResultsPage);

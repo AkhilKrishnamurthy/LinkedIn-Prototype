@@ -1,0 +1,26 @@
+var kafka = require("../kafka/client");
+exports.jobPostingHistory = function(req, res) {
+  console.log("Inside postJob as a recruiter Handler");
+  var user = {
+      username : "abc@gmail.com"
+  };
+  kafka.make_request("job_posting_history_topic", user, function(err, results) {
+      console.log(user);
+      console.log("resultresult", results);
+    if (err) {
+        console.log("unable to reach kafka job post history");
+        res.value = "unable to reach kafka job post history";
+        console.log(res.value);
+        res.sendStatus(400).end();
+      } else if (results.code == 200) {
+          results.code = 200;
+        console.log("resres", results);
+        res.send(results);
+      } else {
+        res.value =
+          "job post history fetch failed";
+           res.sendStatus(400).end();
+      }
+
+  });
+};
