@@ -230,10 +230,6 @@ app.post("/analytics/userclicks",
 app.use('/apply-job', applyJob);
 app.use('/getAppliedJobs',getAppliedJobs);
 app.use('/get-profile', getProfile);
-
-
-
-
 console.log("Linked Backend!");
 app.listen(3001);
 console.log("Server Listening on port 3001");
