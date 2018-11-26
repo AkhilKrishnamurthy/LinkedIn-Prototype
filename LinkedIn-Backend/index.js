@@ -86,6 +86,7 @@ var savedJobs = require('./controllers/savedJobs');
 var jobsearch = require("./controllers/jobsearch")
 var applyJob = require("./controllers/applyJob");
 var jobPostingHistory = require("./controllers/jobPostingHistory");
+var getProfile = require('./controllers/getProfile');
 
 
 client.on("connect", function() {
@@ -228,6 +229,7 @@ app.post("/analytics/userclicks",
 
 app.use('/apply-job', applyJob);
 app.use('/getAppliedJobs',getAppliedJobs);
+app.use('/get-profile', getProfile);
 
 
 
