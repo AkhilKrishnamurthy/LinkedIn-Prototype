@@ -21,7 +21,7 @@ function handle_request(msg, callback) {
             console.log("profileGet",sql);
     con.query(sql,function(err,result){
       console.log(result);
-        if(err || result == null){
+        if(err || result == null || result.length<1){
           res.code = "400";
           console.log("mismatch1");
           res.value = "The email and password you entered did not match our records. Please double-check and try again.";
