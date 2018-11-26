@@ -157,8 +157,8 @@ app.post("/login", function(req, res) {
           console.log("success login");
           // res.value = user;
           console.log(results);
-          req.session.user = results.value.user.email;
-          console.log("session to be set", results.value.user.email);
+          console.log("session to be set", results.value[0].email);
+          req.session.user = results.value[0].email;
           console.log("resres", results);
           //res.sendStatus(200).end();
           // const responseJSON = req.session.user;
