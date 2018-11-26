@@ -1,8 +1,29 @@
-var Model = require('../model/linkedin_mockup');
+var model = require('../model/linkedin_mockup');
 
 function handle_request(message, callback){
 
-    Model.find({
+    var res = {};
+    // var promise = profileModel.find({
+    //     "email" : "khannay0@narod.ru"
+    // })
+    // promise
+    // .then(function(result) {
+    //   console.log("user profile from DB");
+    //   res.value = result;
+    //   res.code = 200;
+    //   callback(null, res);
+    // })
+
+    // .catch(function(err) {
+    //     console.log("error:", err);
+    //     res.value = "unable to get profile";
+    //     res.code = "400";
+    //     callback(null, res);
+    // });
+
+    
+
+    model.find({
         "email" : "khannay0@narod.ru"
     }, (err, result)=>{
         if(err){
@@ -11,7 +32,9 @@ function handle_request(message, callback){
         }
         else{
             console.log('Profile data', result);
-            callback(null, result);
+            res.code = 200;
+            res.value = result;
+            callback(null, res);
         }
     });
 
