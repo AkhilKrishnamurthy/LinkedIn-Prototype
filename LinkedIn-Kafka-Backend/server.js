@@ -10,6 +10,7 @@ var applyJob = require('./services/applyJob');
 var userclicktrack = require("./services/userclick");
 var getAppliedJobs = require('./services/getAppliedJobs');
 var jobPostingHistory = require("./services/jobPostingHistory");
+var getProfile = require('./services/getProfile');
 
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
@@ -50,3 +51,4 @@ handleTopicRequest("apply_job_topic", applyJob);
 handleTopicRequest("user_click_topic", userclicktrack);
 handleTopicRequest("get_applied_jobs_topic", getAppliedJobs);
 handleTopicRequest("job_posting_history_topic", jobPostingHistory);
+handleTopicRequest("get_profile_topic", getProfile);
