@@ -8,6 +8,7 @@ var saveJob = require('./services/saveJob');
 var savedJobs = require('./services/savedJobs');
 var applyJob = require('./services/applyJob');
 var userclicktrack = require("./services/userclick");
+var getAppliedJobs = require('./services/getAppliedJobs');
 var jobPostingHistory = require("./services/jobPostingHistory");
 
 function handleTopicRequest(topic_name, fname) {
@@ -39,14 +40,13 @@ function handleTopicRequest(topic_name, fname) {
   });
 }
 
-handleTopicRequest("user_login_topic", user_login),
-handleTopicRequest("applicant_signup_topic", applicantsignup),
-handleTopicRequest("postJob_recruiter_topic", postJob_recruiter),
-handleTopicRequest("get_jobs_topic", getJobs),
-handleTopicRequest("save_job_topic", saveJob),
-handleTopicRequest("saved_jobs_topic", savedJobs),
-handleTopicRequest("apply_job_topic", applyJob),
-handleTopicRequest("user_click_topic", userclicktrack),
+handleTopicRequest("user_login_topic", user_login);
+handleTopicRequest("applicant_signup_topic", applicantsignup);
+handleTopicRequest("postJob_recruiter_topic", postJob_recruiter);
+handleTopicRequest("get_jobs_topic", getJobs);
+handleTopicRequest("save_job_topic", saveJob);
+handleTopicRequest("saved_jobs_topic", savedJobs);
+handleTopicRequest("apply_job_topic", applyJob);
+handleTopicRequest("user_click_topic", userclicktrack);
+handleTopicRequest("get_applied_jobs_topic", getAppliedJobs);
 handleTopicRequest("job_posting_history_topic", jobPostingHistory);
-
-

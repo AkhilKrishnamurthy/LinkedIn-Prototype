@@ -9,6 +9,20 @@ class JobPostingDetails extends Component{
     constructor(props){
         super(props);
         console.log(props);
+        this.state = {  
+        postedJobs: []
+        }
+        this.handleApplyClick = this.handleApplyClick.bind(this);
+    }
+
+    handleApplyClick = (e) =>{
+        const target = e.target;
+        const id = target.id;
+
+        // this.props.saveJobDetailsToStore(this.props.jobsLandingPageStateStore.result[id]);
+        // this.setState({
+        //     redirectToApplicationPage : true
+        // });
     }
 
     async componentDidMount(){
@@ -16,6 +30,11 @@ class JobPostingDetails extends Component{
         axios.get('http://localhost:3001/JobPostingHistory')
             .then(async (response) => {
                 console.log(response);
+                var arr = response.data.value;
+                console.log(arr);
+                this.setState({
+                    postedJobs : this.state.postedJobs.concat(arr) 
+                });   
             // var arr = response.data;
     //         for(var i=0;i<arr.length;i++) {
     //         var images = arr[i].imageFiles;
@@ -33,51 +52,41 @@ class JobPostingDetails extends Component{
     }
 
     render(){
-        return(
-            <div>
-                <JobHeader />
-                <div class="row">
-          <div class="col-md-3">
-              <div className="card mb-3 shadow-sm pad-3-pc">
-                <center><img class="card-img-top" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="Card image cap"/></center>
-                <div class="card-body center-content">
-                <p><b>Software Engineer</b></p>
-                <p>Snowflake Computing</p>
-                <p>San Mateo, CA, USA</p> 
-                  <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">9 mins</small>
-                  </div>
+        if(this.state.postedJobs.length>0) {
+        console.log(this.state.postedJobs);
+        }
+        var redirectVar = null;
+        var savedJobsContent = this.state.postedJobs.map((job, index)=>{
+            return(
+                <div key={index}>
+                    <div className="job-title"><b><Link to="#" id={index} onClick={this.handleClick}>{job.jobTitle}</Link></b></div>
+                    <button className="btn btn-lg save-btn flt-right" id={index} onClick={this.handleApplyClick}>Edit</button>
+                    <div className="">{job.companyName}</div>
+                    <div className="">{job.employmentType}</div>
+                    <hr/>
                 </div>
-              </div>
-            </div>
-            {/* <div class="col-md-3">
-              <div className="card mb-3 shadow-sm pad-3-pc">
-                <center><img class="card-img-top" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="Card image cap"/></center>
-                <div class="card-body center-content">
-                <p><b>Software Engineer</b></p>
-                <p>Snowflake Computing</p>
-                <p>San Mateo, CA, USA</p> 
-                  <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">9 mins</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div className="card mb-3 shadow-sm pad-3-pc">
-                <center><img class="card-img-top" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="Card image cap"/></center>
-                <div class="card-body center-content">
-                <p><b>Software Engineer</b></p>
-                <p>Snowflake Computing</p>
-                <p>San Mateo, CA, USA</p> 
-                  <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">9 mins</small>
-                  </div>
-                </div>
-              </div>
-            </div> */}
+            )
+        });
+      
 
-          </div>
+        return(
+            <div className="saved-jobs-main-container">
+                <Header />
+                {redirectVar}
+                <div>
+                <div className="row mt-5">
+                    <div className="col-2"></div>
+                    <div className="col-8 border content-container mt-3">
+                        <div><h3>Posted Jobs</h3></div>
+                        <hr/>
+                        <div>
+                            {savedJobsContent}
+                        </div>                    
+                    </div>
+                </div>
+
+                </div>
+                
             </div>
         );
     }

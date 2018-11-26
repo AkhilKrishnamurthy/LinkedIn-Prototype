@@ -13,9 +13,11 @@ exports.jobPostingHistory = function(req, res) {
         console.log(res.value);
         res.sendStatus(400).end();
       } else if (results.code == 200) {
-          results.code = 200;
         console.log("resres", results);
-        res.send(results);
+        res.writeHead(200,{
+            'Content-type' : 'application/json'
+        });
+        res.end(JSON.stringify(results));
       } else {
         res.value =
           "job post history fetch failed";

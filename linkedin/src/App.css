@@ -386,7 +386,9 @@ background-color: blue;
 .pad-left-5-pc {
   padding-left: 5%; 
 }
-
+.flt-right{
+  float:right;
+}
 
 
 

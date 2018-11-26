@@ -55,7 +55,7 @@ class JobHeader extends Component {
               <a className="nav-link" href="#"><center><i className="fas fa-th"></i></center>Work</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#"><center><i className="fas fa-suitcase"></i></center>Post a Job</a>
+              <a className="nav-link" href="#"><center><i className="fas fa-suitcase"></i></center><Link to= "/jobs/add-job">Post a Job</Link></a>
             </li>
           </ul>
         </div>

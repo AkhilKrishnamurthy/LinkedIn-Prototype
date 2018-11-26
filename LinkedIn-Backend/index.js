@@ -103,6 +103,7 @@ client.get("my test key", function(error, result) {
   }
   console.log("GET result ->" + result);
 });
+var getAppliedJobs = require('./controllers/getAppliedJobs');
 
 app.post("/applicant/signup", (req, res) => {
   applicantsignup.applicantsignup(req, res);
@@ -111,6 +112,7 @@ app.post("/applicant/signup", (req, res) => {
 app.post("/submitJobDetails", (req, res) => {
   console.log(req.body);
   req.body.user = req.session.user;
+  console.log(req.session.user);
   postJobRecruiter.postJobRecruiter(req,res);
 });
 
@@ -132,6 +134,8 @@ app.post("/login", function(req, res) {
     if (result) {
       console.log("result redis", JSON.stringify(result));
       const resultJSON = result;
+      req.session.user = req.body.username;
+      console.log(req.session.user);
       return res.status(200).send(resultJSON);
     } else {
       kafka.make_request("user_login_topic", req.body, function(err, results) {
@@ -152,6 +156,7 @@ app.post("/login", function(req, res) {
           console.log("Inside else");
           console.log("success login");
           // res.value = user;
+          console.log(results);
           req.session.user = results.value.user.email;
           console.log("session to be set", results.value.user.email);
           console.log("resres", results);
@@ -221,8 +226,8 @@ app.post("/analytics/userclicks",
    analytics.userclicks(req, res);
  });
 
- app.use('/apply-job', applyJob);
-
+app.use('/apply-job', applyJob);
+app.use('/getAppliedJobs',getAppliedJobs);
 
 
 

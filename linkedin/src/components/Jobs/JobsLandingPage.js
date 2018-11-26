@@ -7,16 +7,58 @@ import {saveSearchFieldToStore} from '../../actions/jobSearchAction';
 import JobHeader from "../Header/JobHeader";
 import "./JobsLanding.css";
 
+import {saveSavedJobsToStore, saveAppliedobsToStore} from '../../actions/jobsLandingPageAction';
+
 class JobsLandingPage extends Component {
   constructor(props) {
     super(props);
     console.log(props);
+    
+    this.state = {
+        redirectToJobResultsPage: false,
+        savedJobsCount:0,
+        appliedJobsCount: 0
+    }
+
+    //bind
     this.searchResultsHandler = this.searchResultsHandler.bind(this);
     this.handleJobTitle = this.handleJobTitle.bind(this);
     this.handleLocation = this.handleLocation.bind(this);
-    this.state = {
-        redirectToJobResultsPage: false
-    }
+    this.getSavedJobs = this.getSavedJobs.bind(this);
+  }
+
+  componentDidMount(){
+    this.getSavedJobs();
+    this.getAppliedJobs();
+  }
+
+  getSavedJobs = ()=>{
+    axios.defaults.withCredentials=true;
+    axios.get('http://localhost:3001/saved-jobs')
+            .then((response)=>{
+                if(response.status === 200){
+                    console.log('saved jobs: ', response.data);
+                    console.log('saved jobs count', response.data.length);
+                    this.setState({
+                        savedJobs: response.data,
+                        savedJobsCount: response.data.length
+                    });
+                }
+    });
+  }
+
+  getAppliedJobs = ()=>{
+    axios.defaults.withCredentials=true;
+    axios.get('http://localhost:3001/getAppliedJobs')
+      .then((response)=>{
+        if(response.status === 200){
+          console.log('Response applied jobs', response.data);
+          this.setState({
+            appliedJobs: response.data,
+            appliedJobsCount : response.data.length
+          });
+        }
+      })
   }
 
   searchResultsHandler = (e) => {
@@ -51,28 +93,22 @@ class JobsLandingPage extends Component {
         if(this.state.redirectToJobResultsPage == true){
           redirectVar = <Redirect to="/jobs/results"/>
         }
+
+        if(this.state.savedJobs != null){
+          this.props.saveSavedJobsToStore(this.state.savedJobs);
+        }
+
+        if(this.state.appliedJobs != null){
+          this.props.saveAppliedobsToStore(this.state.appliedJobs);
+        }
+
+
+
         return(
             <div>
                 {redirectVar}
                 <JobHeader />
-
-                    {/* <div className="row"> */}
                       <div className="jobs-landing-header-container pad-top-1-pc">
-                          {/* <div className="jobs-landing-search-container pull-center-1 col-lg-5 col-md-5 col-sm-5">
-                            <input
-                              type="text"
-                              className="form-control form-control-lg"
-                              placeholder="Search Jobs"
-                            />
-                          </div>
-
-                        <div className="jobs-landing-search-container pull-center-2 col-lg-5 col-md-5 col-sm-5">
-                          <input
-                            type="text"
-                            className="form-control form-control-lg"
-                            placeholder="Search Location"
-                          />
-                        </div> */}
                         <form>
                             <input type = "text" onChange = {this.handleJobTitle} className = "jobs" placeholder = "Search Jobs"></input>
                             &nbsp;&nbsp;
@@ -83,14 +119,6 @@ class JobsLandingPage extends Component {
                             Search
                             </button>
                       </form>
-                        {/* <div className="jobs-landing-search-container pull-center-2 col-lg-2 col-md-2 col-sm-2">
-                          <input
-                            type="button"
-                            className="button btn btn-outline-default"
-                            value = "Search"
-                          />
-                        </div> */}
-                      {/* </div> */}
                    </div>
 
                   <div className="row">
@@ -124,8 +152,8 @@ class JobsLandingPage extends Component {
                         <div className="row mt-3 pull-center-1 pull-center-2">
                                     
                             <div className="jobs-landing-bar-container ">
-                                    <span className="pad-1-pc">5 Saved Jobs</span>
-                                    <span className="pad-1-pc">10 Applied Jobs</span>
+                                    <span className="pad-1-pc"><Link to="/jobs/saved-jobs">{this.state.savedJobsCount}  Saved Jobs</Link></span>
+                                    <span className="pad-1-pc"><Link to="/jobs/applied-jobs">{this.state.appliedJobsCount} Applied Jobs</Link></span>
                                     <span className="pad-3-pc">Career Interests</span>
                                     <span className="pad-6-pc">LinkedIn Salary</span>
                                     <span className="pad-3-pc">Looking for talent?</span>
@@ -134,83 +162,6 @@ class JobsLandingPage extends Component {
 
                             </div>                
                         </div>
-                    
-                    {/* <div className = "container jobs-landing-wrapper-div  ">
-                            <div className="container content-left-align view-jobs-blocks-container col-lg-10 col-md-10 col-sm-10 mt-5">
-                                    <div>
-                                    <p><b>Jobs you may be interested in</b></p>
-                                    </div>
-                                    
-                                    <div className="row">
-                                    
-                                        <div className="col-3 pad-1-pc border">
-                                            <div className="pad-1-pc center-content jobs-adjust-spacing t-09">
-                                                <img className="jobs-landing-img" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="logo" />
-                                                <p><b>Software Engineer</b></p>
-                                                <p>Snowflake Computing</p>
-                                                <p>San Mateo, CA, USA</p>
-                                            </div>
-                                        </div>
-                                        <div className="col-3 pad-1-pc border">
-                                            <div className="pad-1-pc center-content t-09">
-                                                <img className="jobs-landing-img" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="logo" />
-                                                <p><b>Software Engineer</b></p>
-                                                <p>Snowflake Computing</p>
-                                                <p>San Mateo, CA, USA</p>                              
-                                            </div>
-                                        </div>
-                                        <div className="col-3 pad-1-pc border">
-                                            <div className="pad-1-pc center-content t-09">
-                                                <img className="jobs-landing-img" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="logo" />
-                                                <p><b>Software Engineer</b></p>
-                                                <p>Snowflake Computing</p>
-                                                <p>San Mateo, CA, USA</p>                              
-                                            </div>
-                                        </div>
-                                        <div className="col-3 pad-1-pc border">
-                                            <div className="pad-1-pc center-content t-09">
-                                                <img className="jobs-landing-img" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="logo" />
-                                                <p><b>Software Engineer</b></p>
-                                                <p>Snowflake Computing</p>
-                                                <p>San Mateo, CA, USA</p>                     
-                                            </div>
-                                        </div>
-                                        <div className="col-3 pad-1-pc border">
-                                            <div className="pad-1-pc center-content t-09">
-                                                <img className="jobs-landing-img" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="logo" />
-                                                <p><b>Software Engineer</b></p>
-                                                <p>Snowflake Computing</p>
-                                                <p>San Mateo, CA, USA</p>                     
-                                            </div>
-                                        </div>
-                                        <div className="col-3 pad-1-pc border">
-                                            <div className="pad-1-pc center-content t-09">
-                                                <img className="jobs-landing-img" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="logo" />
-                                                <p><b>Software Engineer</b></p>
-                                                <p>Snowflake Computing</p>
-                                                <p>San Mateo, CA, USA</p>                     
-                                            </div>
-                                        </div>
-                                        <div className="col-3 pad-1-pc border">
-                                            <div className="pad-1-pc center-content t-09">
-                                                <img className="jobs-landing-img" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="logo" />
-                                                <p><b>Software Engineer</b></p>
-                                                <p>Snowflake Computing</p>
-                                                <p>San Mateo, CA, USA</p>                     
-                                            </div>
-                                        </div>
-                                        <div className="col-3 pad-1-pc border">
-                                            <div className="pad-1-pc center-content t-09">
-                                                <img className="jobs-landing-img" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="logo" />
-                                                <p><b>Software Engineer</b></p>
-                                                <p>Snowflake Computing</p>
-                                                <p>San Mateo, CA, USA</p>                     
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
-
         <div class="album py-5 bg-light">
         <div class="container">
 
@@ -349,4 +300,4 @@ const mapStateToProps  = state =>({
   
   
 //export default JobsLandingPage;
-export default connect(mapStateToProps, {saveSearchFieldToStore})(JobsLandingPage);
+export default connect(mapStateToProps, {saveSearchFieldToStore, saveSavedJobsToStore, saveAppliedobsToStore})(JobsLandingPage);
