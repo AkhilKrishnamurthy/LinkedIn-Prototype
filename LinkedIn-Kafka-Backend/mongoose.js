@@ -7,8 +7,7 @@ mongoose.Promise = global.Promise;
 // "mongodb://sojanmathew:sojanm28@ds133920.mlab.com:33920/homeaway",
 mongoose
   .connect(
-    "mongodb://linkedin:linkedinteam1@ds159263.mlab.com:59263/linkedin",
-
+    "mongodb://54.162.95.104:27019/local",
     options
   )
   .then(console.log("mlabs connected"));

@@ -24,7 +24,7 @@ function handle_request(message, callback){
     
 
     model.find({
-        "email" : "khannay0@narod.ru"
+        "email" : "mtournayj@zdnet.com"
     }, (err, result)=>{
         if(err){
             console.log('Error in Retrieving profile data', err);

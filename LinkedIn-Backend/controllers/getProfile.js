@@ -5,7 +5,7 @@ var router = express.Router();
 var client = redis.createClient();
 
 router.get('/', function(req, res){
-        const query = "khannay0@narod.ru";
+        const query = "mtournayj@zdnet.com";
         return client.get(`getProfile:${query}`, (err, result) => {
           console.log("result redis", JSON.stringify(result));
           // If that key exist in Redis store
