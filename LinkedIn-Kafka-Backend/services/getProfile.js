@@ -2,7 +2,7 @@ var model = require('../model/linkedin_mockup');
 
 function handle_request(message, callback){
 
-    var res = {};
+    //var res = {};
     // var promise = profileModel.find({
     //     "email" : "khannay0@narod.ru"
     // })
@@ -24,7 +24,7 @@ function handle_request(message, callback){
     
 
     model.find({
-        "email" : "khannay0@narod.ru"
+        "email" : message
     }, (err, result)=>{
         if(err){
             console.log('Error in Retrieving profile data', err);
@@ -32,9 +32,7 @@ function handle_request(message, callback){
         }
         else{
             console.log('Profile data', result);
-            res.code = 200;
-            res.value = result;
-            callback(null, res);
+            callback(null, result);
         }
     });
 
