@@ -36,7 +36,7 @@ class JobsResultsPage extends Component {
 
   console.log("values" + values.jobTitle + values.location)
   
-    axios.post("http://localhost:3001/jobs/search",values).then(response => {
+    axios.post("http://localhost:3001/jobsearch",values).then(response => {
       if (response.status === 200) {
         var jobResult = response.data;
         console.log("job data", jobResult);

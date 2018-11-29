@@ -1,26 +1,27 @@
 var kafka = require("../kafka/client");
+var express = require('express');
+var router = express.Router();
 
-exports.jobsearch = function(req, res) {
-  console.log("Inside search job Kafka");
-  console.log(req.body);
-  kafka.make_request("jobsearch_topic", req.body, function(err, results) {
-    if (err) {
-        res.json({
-          status: "error",
-          msg: "System Error, Try Again."
+router.post('/', function(req, res){
+       kafka.make_request("jobsearch_topic", req, function(err, result){
+            if(err){
+                console.log('Unable to get searched jobs.', err);
+                res.writeHead(400, {
+                    'Content-type': 'text/plain'
+                });
+                res.end('Error in getting applied jobs');
+            }
+            else{
+                console.log('Getting searched jobs successful', result);
+                res.writeHead(200,{
+                    'Content-type' : 'application/json'
+                });
+                res.end(JSON.stringify(result));
+            }
         });
-        console.log("Unable to reach kafka search job");
-        res.value = "Unable to reach kafka search job";
-        console.log(res.value);
-        res.sendStatus(400).end();
-      } else if (results.code == 200) {
-        console.log("results", results);
-        res.sendStatus(200).end();
-      } else {
-        res.value =
-          "Searching job failed";
-           res.sendStatus(400).end();
-      }
+});
 
-  });
-};
+
+module.exports = router;
+
+
