@@ -16,8 +16,9 @@ class JobsLandingPage extends Component {
     
     this.state = {
         redirectToJobResultsPage: false,
-        savedJobsCount:0,
-        appliedJobsCount: 0
+        savedJobsCount:0, 
+        appliedJobsCount: 0,
+        interestedJobs:{}
     }
 
     //bind
@@ -25,11 +26,26 @@ class JobsLandingPage extends Component {
     this.handleJobTitle = this.handleJobTitle.bind(this);
     this.handleLocation = this.handleLocation.bind(this);
     this.getSavedJobs = this.getSavedJobs.bind(this);
+    this.getInterestedJobs = this.getInterestedJobs.bind(this);
   }
 
   componentDidMount(){
     this.getSavedJobs();
     this.getAppliedJobs();
+    this.getInterestedJobs();
+  }
+
+  getInterestedJobs = ()=>{
+    axios.defaults.withCredentials=true;
+    axios.get('http://localhost:3001/get-interested-jobs')
+      .then((response)=>{
+          if(response.status === 200){
+            console.log('Interested Jobs', response.data);
+            this.setState({
+              interestedJobs: response.data
+            })
+          }
+      });
   }
 
   getSavedJobs = ()=>{
@@ -102,13 +118,33 @@ class JobsLandingPage extends Component {
           this.props.saveAppliedobsToStore(this.state.appliedJobs);
         }
 
+        if(this.state.interestedJobs.length > 0){
+          var interestedJobs = this.state.interestedJobs.map(function(job, index){
+            return(
+              <div className="col-md-3" key={index}>
+              <div className="card mb-3 shadow-sm pad-3-pc">
+                <center><img className="card-img-top" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="Card image cap"/></center>
+                <div className="card-body center-content">
+                <p><b>{job.jobTitle}</b></p>
+                <p>{job.companyName}</p>
+                <p>{job.location}</p> 
+                  {/* <div className="d-flex justify-content-between align-items-center">
+                    <small className="text-muted">9 mins</small>
+                  </div> */}
+                </div>
+              </div>
+            </div>
+            )
+          });
+        }
+
 
 
         return(
             <div>
                 {redirectVar}
                 <JobHeader />
-                      <div className="jobs-landing-header-container pad-top-1-pc">
+                      <div className="jobs-landing-header-container pad-top-1-pc pb-3">
                         <form>
                             <input type = "text" onChange = {this.handleJobTitle} className = "jobs" placeholder = "Search Jobs"></input>
                             &nbsp;&nbsp;
@@ -121,8 +157,8 @@ class JobsLandingPage extends Component {
                       </form>
                    </div>
 
-                  <div className="row">
-                      <div className="jobs-search-alerts-container pull-center-1 col t-09 t-normal t-white nav-links">
+                  {/* <div className="row"> */}
+                      {/* <div className="jobs-search-alerts-container pull-center-1 col t-09 t-normal t-white nav-links">
                         Job search alerts:
                       </div>
 
@@ -144,20 +180,20 @@ class JobsLandingPage extends Component {
                         <b>
                           <Link to="#">Manage alerts</Link>
                         </b>
-                      </div>
-                   </div>
+                      </div> */}
+                   {/* </div> */}
 
                    <div className = "jobs-landing-main-bg">
 
                         <div className="row mt-3 pull-center-1 pull-center-2">
                                     
-                            <div className="jobs-landing-bar-container ">
-                                    <span className="pad-1-pc"><Link to="/jobs/saved-jobs">{this.state.savedJobsCount}  Saved Jobs</Link></span>
-                                    <span className="pad-1-pc"><Link to="/jobs/applied-jobs">{this.state.appliedJobsCount} Applied Jobs</Link></span>
+                            <div className="jobs-landing-bar-container mb-3">
+                                    <span className="p-3"><Link to="/jobs/saved-jobs">{this.state.savedJobsCount}  Saved Jobs</Link></span>
+                                    <span className="pad-3-pc"><Link to="/jobs/applied-jobs">{this.state.appliedJobsCount} Applied Jobs</Link></span>
                                     <span className="pad-3-pc">Career Interests</span>
-                                    <span className="pad-6-pc">LinkedIn Salary</span>
+                                    <span className="pad-3-pc">LinkedIn Salary</span>
                                     <span className="pad-3-pc">Looking for talent?</span>
-                                    <span className="pad-3-pc"><button class="btn linkedin-post-job" type="submit">Post a Job</button></span>
+                                    <span className="pad-3-pc"><button className="btn linkedin-post-job" type="submit">Post a Job</button></span>
                                     
 
                             </div>                
@@ -170,114 +206,8 @@ class JobsLandingPage extends Component {
             <p><b>Jobs you may be interested in</b></p>
         </div>
 
-          <div class="row">
-          <div class="col-md-3">
-              <div className="card mb-3 shadow-sm pad-3-pc">
-                <center><img class="card-img-top" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="Card image cap"/></center>
-                <div class="card-body center-content">
-                <p><b>Software Engineer</b></p>
-                <p>Snowflake Computing</p>
-                <p>San Mateo, CA, USA</p> 
-                  <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">9 mins</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div className="card mb-3 shadow-sm pad-3-pc">
-                <center><img class="card-img-top" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="Card image cap"/></center>
-                <div class="card-body center-content">
-                <p><b>Software Engineer</b></p>
-                <p>Snowflake Computing</p>
-                <p>San Mateo, CA, USA</p> 
-                  <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">9 mins</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div className="card mb-3 shadow-sm pad-3-pc">
-                <center><img class="card-img-top" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="Card image cap"/></center>
-                <div class="card-body center-content">
-                <p><b>Software Engineer</b></p>
-                <p>Snowflake Computing</p>
-                <p>San Mateo, CA, USA</p> 
-                  <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">9 mins</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div className="card mb-3 shadow-sm pad-3-pc">
-                <center><img class="card-img-top" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="Card image cap"/></center>
-                <div class="card-body center-content">
-                <p><b>Software Engineer</b></p>
-                <p>Snowflake Computing</p>
-                <p>San Mateo, CA, USA</p> 
-                  <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">9 mins</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div className="card mb-3 shadow-sm pad-3-pc">
-                <center><img class="card-img-top" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="Card image cap"/></center>
-                <div class="card-body center-content">
-                <p><b>Software Engineer</b></p>
-                <p>Snowflake Computing</p>
-                <p>San Mateo, CA, USA</p> 
-                  <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">9 mins</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div className="card mb-3 shadow-sm pad-3-pc">
-                <center><img class="card-img-top" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="Card image cap"/></center>
-                <div class="card-body center-content">
-                <p><b>Software Engineer</b></p>
-                <p>Snowflake Computing</p>
-                <p>San Mateo, CA, USA</p> 
-                  <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">9 mins</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-3">
-              <div className="card mb-3 shadow-sm pad-3-pc">
-                <center><img class="card-img-top" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="Card image cap"/></center>
-                <div class="card-body center-content">
-                <p><b>Software Engineer</b></p>
-                <p>Snowflake Computing</p>
-                <p>San Mateo, CA, USA</p> 
-                  <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">9 mins</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-3">
-              <div className="card mb-3 shadow-sm pad-3-pc">
-                <center><img class="card-img-top" src="https://media.licdn.com/dms/image/C560BAQEVpdy_-U0fSQ/company-logo_100_100/0?e=1550102400&v=beta&t=SvuPc-kCSrsuSLjz6Lb8NvXqT9YghI8I4RV5uG7jT0U" alt="Card image cap"/></center>
-                <div class="card-body center-content">
-                <p><b>Software Engineer</b></p>
-                <p>Snowflake Computing</p>
-                <p>San Mateo, CA, USA</p> 
-                  <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">9 mins</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+          <div className="row">
+            {interestedJobs}
           </div>
         </div>
       </div>
