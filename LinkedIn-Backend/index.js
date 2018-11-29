@@ -188,8 +188,10 @@ app.post('/jobs/search', function(req,res){
  
     jobPosts.find(
          {$and: [
-               {jobTitle : req.body.jobTitle} , 
-               {location : req.body.location } 
+              //  {jobTitle : req.body.jobTitle} , 
+              { jobTitle : { $regex : new RegExp(req.body.jobTitle, "i") } },
+              //  {location : req.body.location } 
+              { location : { $regex : new RegExp(req.body.location, "i") } },
            ]
          }, function(err,jobs){
              console.log("Inside jobs search again")

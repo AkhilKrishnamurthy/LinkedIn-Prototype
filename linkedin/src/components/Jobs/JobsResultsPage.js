@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import Header from "../Header/Header";
+import JobHeader from "../Header/JobHeader";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import {Redirect} from 'react-router';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
+import swal from 'sweetalert'
 import {saveJobDetailsToStore} from '../../actions/jobResultsAction';
 import {saveSearchFieldToStore} from '../../actions/jobSearchAction';
 import '../../static/css/JobResultsPage.css'
@@ -26,7 +27,7 @@ class JobsResultsPage extends Component {
     this.handleSaveClick = this.handleSaveClick.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     axios.defaults.withCredentials = true;
     var values = {
       jobTitle :  this.props.searchFieldToStore.searchfieldresult.jobTitle,
@@ -39,11 +40,18 @@ class JobsResultsPage extends Component {
       if (response.status === 200) {
         var jobResult = response.data;
         console.log("job data", jobResult);
+        if(jobResult.length === 0)
+        {
+          swal("No data found","Please recheck your search criteria","warning")
+        }
+        else{
         this.setState({
           jobData: jobResult,
           jobDetails: jobResult[0]
         });
       }
+        console.log("jobData length" + this.state.jobData.length)
+      }     
     });
   }
 
@@ -188,7 +196,7 @@ class JobsResultsPage extends Component {
     return (
       <div>
         {redirectVar}
-        <Header />
+        <JobHeader />
 
         <div>
           <div className="container jobs-result-filter-container">
