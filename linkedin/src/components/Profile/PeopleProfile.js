@@ -3,6 +3,7 @@ import '../../static/css/PeopleProfile.css';
 import Header from '../Header/Header';
 import{Link} from 'react-router-dom';
 
+
 class PeopleProfile extends Component{
     
     constructor(props){
