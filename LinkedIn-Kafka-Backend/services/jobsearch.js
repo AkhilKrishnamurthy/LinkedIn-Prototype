@@ -7,7 +7,7 @@ function handle_request(message, callback){
     Model.find(
          {$and: [
               //  {jobTitle : req.body.jobTitle} , 
-              { $or : [ { jobTitle : { $regex : new RegExp(message.body.jobTitle, "i") } }, { companyName : { $regex : new RegExp(message.body.companyName, "i") } } ]},
+              { $or : [ { jobTitle : { $regex : new RegExp(message.body.jobTitle, "i") } }, { companyName : { $regex : new RegExp(message.body.jobTitle, "i") } } ]},
               { location : { $regex : new RegExp(message.body.location, "i") } },
            ]
          }, (err, doc)=>{
