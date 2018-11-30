@@ -79,6 +79,7 @@ require("./config/passport")(passport);
 //Kafka
 var kafka = require("./kafka/client");
 var applicantsignup = require("./controllers/applicantsignup");
+var recruitersignup = require("./controllers/recruitersignup");
 var postJobRecruiter = require("./controllers/postJobRecruiter");
 var jobs = require("./controllers/jobs");
 var saveJob = require('./controllers/saveJob');
@@ -110,6 +111,11 @@ app.post("/applicant/signup", (req, res) => {
   applicantsignup.applicantsignup(req, res);
 });
 
+app.post("/recruiter/signup", (req, res) => {
+  console.log("inside recruiter");
+  recruitersignup.recruitersignup(req, res);
+});
+
 app.post("/submitJobDetails", (req, res) => {
   console.log(req.body);
   req.body.user = req.session.user;
@@ -124,7 +130,6 @@ app.get("/JobPostingHistory", (req, res) => {
 });
 
 app.post("/login", function(req, res) {
-  console.log("req.url", req.query);
   console.log("Inside Login Post Request", req.body);
 
   // return client.get("/login", (err, result) => {
@@ -169,10 +174,10 @@ app.post("/login", function(req, res) {
             `login:${query}`,
             3600,
             //source: "Redis Cache",
-            JSON.stringify({ source: "Redis cache", value: req.session.user })
+            JSON.stringify({ source: "Redis cache", value: results.value[0] })
           );
           console.log("respnose json", responseJSON);
-          res.status(200).send({ value: req.session.user });
+          res.status(200).send({ value: results.value[0] });
         } else {
           res.value =
             "The email and password you entered did not match our records. Please double-check and try again.";

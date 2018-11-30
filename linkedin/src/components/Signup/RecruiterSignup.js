@@ -4,7 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import { Redirect } from "react-router";
 import { connect } from "react-redux";
 
-import { userActions } from "../../actions/applicantSignupAction";
+import { userActions } from "../../actions/recruitersignup";
 import '../../static/css/RecruiterSignup.css'
 
 
@@ -170,7 +170,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    signup: data => dispatch(userActions.applicantsignup(data))
+    signup: data => dispatch(userActions.recruitersignup(data))
   };
 };
 

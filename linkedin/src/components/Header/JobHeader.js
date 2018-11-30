@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
-import '../../static/css/Navbar.css'
+import '../../static/css/Navbar.css';
+import {connect} from 'react-redux';
+import {login} from '../../actions/LoginAction';
+import {Redirect} from 'react-router';
+import Header from '../Header/JobHeader';
 
 class JobHeader extends Component {
     constructor(props) {
@@ -9,6 +13,16 @@ class JobHeader extends Component {
     }
 
     render() {
+      let recruiterHeader = null;
+      if(this.props && this.props.loginStateStore && this.props.loginStateStore.responseFlag) {
+        if(this.props.loginStateStore.accountType=="2") {
+          recruiterHeader = (
+            <li className="nav-item">
+              <a className="nav-link" href="#"><center><i className="fas fa-suitcase"></i></center><Link to= "/jobs/add-job">Post a Job</Link></a>
+            </li>
+          );
+        }
+    }
         return (
           <div className = "job-header-main-div">
           <nav className="navbar navbar-expand-md jobheader">
@@ -54,9 +68,10 @@ class JobHeader extends Component {
             <li className="nav-item">
               <a className="nav-link" href="#"><center><i className="fas fa-th"></i></center>Work</a>
             </li>
-            <li className="nav-item">
+            {recruiterHeader}
+            {/* <li className="nav-item">
               <a className="nav-link" href="#"><center><i className="fas fa-suitcase"></i></center><Link to= "/jobs/add-job">Post a Job</Link></a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </nav>
@@ -64,4 +79,9 @@ class JobHeader extends Component {
         );
     }
 }
-export default JobHeader;
+function mapStateToProps(state) {
+  console.log("Login state update",state.Login.result);
+  return { loginStateStore : state.Login.result };
+}
+export default connect(mapStateToProps, {})(JobHeader);
+// export default JobHeader;

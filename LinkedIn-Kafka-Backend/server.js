@@ -1,6 +1,7 @@
 var connection =  new require('./kafka/connections');
 var mongoose = require("mongoose");
 var applicantsignup = require("./services/applicantsignup");
+var recruitersignup = require("./services/recruitersignup");
 var user_login = require("./services/userLoginKafka");
 var postJob_recruiter = require("./services/postJobRecruiterKafka");
 var getJobs = require("./services/getJobs");
@@ -43,6 +44,7 @@ function handleTopicRequest(topic_name, fname) {
 
 handleTopicRequest("user_login_topic", user_login);
 handleTopicRequest("applicant_signup_topic", applicantsignup);
+handleTopicRequest("recruiter_signup_topic", recruitersignup);
 handleTopicRequest("postJob_recruiter_topic", postJob_recruiter);
 handleTopicRequest("get_jobs_topic", getJobs);
 handleTopicRequest("save_job_topic", saveJob);
