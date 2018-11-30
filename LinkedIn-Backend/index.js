@@ -79,6 +79,7 @@ require("./config/passport")(passport);
 //Kafka
 var kafka = require("./kafka/client");
 var applicantsignup = require("./controllers/applicantsignup");
+var recruitersignup = require("./controllers/recruitersignup");
 var postJobRecruiter = require("./controllers/postJobRecruiter");
 var jobs = require("./controllers/jobs");
 var saveJob = require('./controllers/saveJob');
@@ -87,7 +88,9 @@ var jobsearch = require("./controllers/jobsearch")
 var applyJob = require("./controllers/applyJob");
 var jobPostingHistory = require("./controllers/jobPostingHistory");
 var getProfile = require('./controllers/getProfile');
-
+var getInterestedJobs = require('./controllers/getInterestedJobs');
+var jobsearch = require('./controllers/jobsearch');
+var sendConnectionRequest = require('./controllers/sendConnectionRequest');
 
 client.on("connect", function() {
   console.log("Redis client connected");
@@ -110,6 +113,11 @@ app.post("/applicant/signup", (req, res) => {
   applicantsignup.applicantsignup(req, res);
 });
 
+app.post("/recruiter/signup", (req, res) => {
+  console.log("inside recruiter");
+  recruitersignup.recruitersignup(req, res);
+});
+
 app.post("/submitJobDetails", (req, res) => {
   console.log(req.body);
   req.body.user = req.session.user;
@@ -124,7 +132,6 @@ app.get("/JobPostingHistory", (req, res) => {
 });
 
 app.post("/login", function(req, res) {
-  console.log("req.url", req.query);
   console.log("Inside Login Post Request", req.body);
 
   // return client.get("/login", (err, result) => {
@@ -169,10 +176,10 @@ app.post("/login", function(req, res) {
             `login:${query}`,
             3600,
             //source: "Redis Cache",
-            JSON.stringify({ source: "Redis cache", value: req.session.user })
+            JSON.stringify({ source: "Redis cache", value: results.value[0] })
           );
           console.log("respnose json", responseJSON);
-          res.status(200).send({ value: req.session.user });
+          res.status(200).send({ value: results.value[0] });
         } else {
           res.value =
             "The email and password you entered did not match our records. Please double-check and try again.";
@@ -183,32 +190,33 @@ app.post("/login", function(req, res) {
   });
 });
 
-app.post('/jobs/search', function(req,res){
-  // console.log("Inside search jobs" + req.body.jobTitle + " " + req.body.location);
+// app.post('/jobs/search', function(req,res){
+//   // console.log("Inside search jobs" + req.body.jobTitle + " " + req.body.location);
  
-    jobPosts.find(
-         {$and: [
-               {jobTitle : req.body.jobTitle} , 
-               {location : req.body.location } 
-           ]
-         }, function(err,jobs){
-             console.log("Inside jobs search again")
-             if (err) {
-                 console.log("err");
-                 res.code = "400";
-                 res.value = "Fetching jobs failed";
-                 console.log(res.value);
-                 res.sendStatus(400).end(); 
-             } else{
-                 console.log("success")
-                 res.code = "200";
-                 res.value = jobs;
-                 console.log("Jobs list fetched" + JSON.stringify(jobs));
-                 res.send(JSON.stringify(jobs));
-             }
-         })
+//     jobPosts.find(
+//          {$and: [
+//               //  {jobTitle : req.body.jobTitle} , 
+//               { $or : [ { jobTitle : { $regex : new RegExp(req.body.jobTitle, "i") } }, { companyName : { $regex : new RegExp(req.body.companyName, "i") } } ]},
+//               { location : { $regex : new RegExp(req.body.location, "i") } },
+//            ]
+//          }, function(err,jobs){
+//              console.log("Inside jobs search again")
+//              if (err) {
+//                  console.log("err");
+//                  res.code = "400";
+//                  res.value = "Fetching jobs failed";
+//                  console.log(res.value);
+//                  res.sendStatus(400).end(); 
+//              } else{
+//                  console.log("success")
+//                  res.code = "200";
+//                  res.value = jobs;
+//                  console.log("Jobs list fetched" + JSON.stringify(jobs));
+//                  res.send(JSON.stringify(jobs));
+//              }
+//          })
    
- })
+//  })
 
 
 app.post('/upload_file', upload.any(), (req, res) => {
@@ -218,6 +226,7 @@ res.send();
 
 
 app.use('/jobs', jobs);
+app.use('/jobsearch', jobsearch)
 
 app.use('/save-job', saveJob);
 app.use('/saved-jobs', savedJobs);
@@ -226,10 +235,19 @@ app.post("/analytics/userclicks",
  function(req, res) {
    analytics.userclicks(req, res);
  });
+app.use('/get-interested-jobs', getInterestedJobs);
+
+
+//  app.post("/jobsearch",
+//  function(req, res) {
+//    jobsearch.(req, res);
+//  });
+
 
 app.use('/apply-job', applyJob);
 app.use('/getAppliedJobs',getAppliedJobs);
 app.use('/get-profile', getProfile);
+app.use('/send-connection-request', sendConnectionRequest);
 console.log("Linked Backend!");
 app.listen(3001);
 console.log("Server Listening on port 3001");

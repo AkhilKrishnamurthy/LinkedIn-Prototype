@@ -1,7 +1,8 @@
 var Model = require('../model/linkedin');
+var SavedJobsModel = require('../model/savedJobs');
 
 function handle_request(message, callback){
-    console.log('message:', message);
+    console.log('message:', message.body);
     //console.log('session', message.session.user)
 
     Model.findOneAndUpdate({
@@ -11,14 +12,25 @@ function handle_request(message, callback){
         $push:{
             savedjobs: message.body.jobDetails
         }
-    }, (err, doc)=>{
+    }, (err, result)=>{
         if(err){
             console.log('Error in Save job');
             callback(err, null);
         }
         else{
-            console.log('Save Job success!');
-            callback(null, doc);
+            var newSavedJob = new SavedJobsModel({
+                jobId : message.body.jobDetails.jobId,
+                jobTitle : message.body.jobDetails.jobTitle,
+            });
+            console.log('Saving Job', newSavedJob);
+            newSavedJob.save().then((doc)=>{
+                console.log('Save Job success!');
+                callback(null, doc);
+            },(err)=>{
+                console.log('Error in Save job');
+                callback(err, null);
+            }); 
+            
         }
     });
 }

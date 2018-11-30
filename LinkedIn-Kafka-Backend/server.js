@@ -1,6 +1,7 @@
 var connection =  new require('./kafka/connections');
 var mongoose = require("mongoose");
 var applicantsignup = require("./services/applicantsignup");
+var recruitersignup = require("./services/recruitersignup");
 var user_login = require("./services/userLoginKafka");
 var postJob_recruiter = require("./services/postJobRecruiterKafka");
 var getJobs = require("./services/getJobs");
@@ -11,6 +12,9 @@ var userclicktrack = require("./services/userclick");
 var getAppliedJobs = require('./services/getAppliedJobs');
 var jobPostingHistory = require("./services/jobPostingHistory");
 var getProfile = require('./services/getProfile');
+var getInterestedJobs = require('./services/getInterestedJobs');
+var jobsearch = require('./services/jobsearch')
+var sendConnectionRequest = require('./services/sendConnectionRequest');
 
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
@@ -43,6 +47,7 @@ function handleTopicRequest(topic_name, fname) {
 
 handleTopicRequest("user_login_topic", user_login);
 handleTopicRequest("applicant_signup_topic", applicantsignup);
+handleTopicRequest("recruiter_signup_topic", recruitersignup);
 handleTopicRequest("postJob_recruiter_topic", postJob_recruiter);
 handleTopicRequest("get_jobs_topic", getJobs);
 handleTopicRequest("save_job_topic", saveJob);
@@ -52,3 +57,6 @@ handleTopicRequest("user_click_topic", userclicktrack);
 handleTopicRequest("get_applied_jobs_topic", getAppliedJobs);
 handleTopicRequest("job_posting_history_topic", jobPostingHistory);
 handleTopicRequest("get_profile_topic", getProfile);
+handleTopicRequest('get_interested_jobs', getInterestedJobs);
+handleTopicRequest("jobsearch_topic", jobsearch);
+handleTopicRequest('send_connection_request', sendConnectionRequest);

@@ -11,7 +11,7 @@ function recruitersignup(data) {
   return dispatch => {
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3001/applicant/signup", data)
+      .post("http://localhost:3001/recruiter/signup", data)
       .then(response => {
         console.log("xresponse is ", response.data);
         var decoded = jwtDecode(response.data);

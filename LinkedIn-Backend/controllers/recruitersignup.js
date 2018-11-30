@@ -1,6 +1,6 @@
 var kafka = require("../kafka/client");
 const jwt = require("jsonwebtoken");
-exports.applicantsignup = function(req, res) {
+exports.recruitersignup = function(req, res) {
   console.log("Inside applicant signup Request Handler");
   console.log(req.body);
   kafka.make_request(

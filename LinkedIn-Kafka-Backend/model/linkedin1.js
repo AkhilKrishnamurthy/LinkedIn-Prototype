@@ -1,10 +1,9 @@
 const mongoose = require("../mongoose");
 const Schema = mongoose.Schema;
-
 var UserSchema = new Schema({
   // username: { type: String, trim: true, index: { unique: true } },
   adminid: { type: Number, trim: true, default: "" },
-  email: { type: String, trim: true, default: "" },
+  email: { type: String, trim: true, index: { unique: true } },
   password: { type: String, required: true },
   Fname: { type: String, trim: true, default: "" },
   Lname: { type: String, trim: true, default: "" },
@@ -50,17 +49,28 @@ var JobPostings = new Schema({
 */
 var JobDetails = new Schema({
   job: { type: Job },
+  jobId: {type: "String", trim:true, default: ""},
+  user:{ type: String, trim: true },
+  companyName: { type: String, trim: true },
+  jobTitle: { type: String, trim: true, default: "" },
+  industry: { type: String, trim: true, default: "" },
+  employmentType: { type: String, trim: true, default: "" },
+  location: { type: String, trim: true, default: "" },
+  seniorityLevel: { type: String, trim: true, default: "" },
+  jobDescription: { type: String, trim: true, default: "" },
+  postedDate: { type: Date, trim: true, default: "" },
+  companyLogo: { type: String, trim: true, default: "" },
   views: [{ type: UserSchema }],
   applicants: [{ type: UserSchema }]
 });
 
 var LinkedInSchema = new Schema({
-  user: { type: UserSchema },
-  JobPostings: [{ type: JobDetails }],
-  appliedJobs: [{ type: JobDetails }],
-  connections: [{ type: UserSchema }],
-  savedjobs: [{ type: Job }],
-  profileviews: [{ type: UserSchema }]
+  user: { type: UserSchema }
+//   JobPostings: [{ type: JobDetails }],
+//   appliedJobs: Array,
+//   connections: [{ type: UserSchema }],
+//   savedjobs: Array,
+//   profileviews: [{ type: UserSchema }]
   //  jobDetails: [{ type: JobDetails }]
 });
 
