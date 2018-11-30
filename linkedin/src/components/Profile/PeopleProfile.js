@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import '../../static/css/PeopleProfile.css';
 import Header from '../Header/Header';
 import{Link} from 'react-router-dom';
+import axios from 'axios';
 
 
 class PeopleProfile extends Component{
@@ -9,6 +10,32 @@ class PeopleProfile extends Component{
     constructor(props){
         super(props);
         console.log(props);
+
+        //bind
+        this.addConnection = this.addConnection.bind(this);
+    }
+
+    addConnection = ()=>{
+        var data = {
+            email: "aehari2010@gmail.com"
+        }
+        var profileData = {};
+        axios.defaults.withCredentials=true;
+        axios.post('http://localhost:3001/get-profile', data)
+            .then((response)=>{
+                if(response.status === 200){
+                    console.log('response profile', response.data);
+                    profileData = response.data.value;
+                    axios.post('http://localhost:3001/send-connection-request', profileData)
+                    .then((response)=>{
+                        console.log('Send Connection res', response.data);
+                    });
+                }
+            });
+
+       
+        
+        
     }
 
     render(){
@@ -30,7 +57,7 @@ class PeopleProfile extends Component{
                                     <div className="profile-name">Arivoli AE</div>
                                     <div className="profile-summary">Actively seeking Summer Internship | Studies at San Jose State University</div>
                                     <div>San Jose, California</div>
-                                    <div className="mt-2"><button className="btn btn-md profile-btn">Connect</button></div>
+                                    <div className="mt-2"><button className="btn btn-md profile-btn" onClick={this.addConnection}>Connect</button></div>
                                 </div>
                                 <div className="col-5 flt-right">
                                     <div className="p-1">San Jose State University</div>

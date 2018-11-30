@@ -4,11 +4,14 @@ var redis = require("redis");
 var router = express.Router();
 var client = redis.createClient();
 
-router.get('/', function (req, res) {
+router.post('/', function (req, res) {
 
   var arr = ["khannay0@narod.ru","mbrabender1@hao123.com","pkaszper2@go.com","dvillar3@about.me","wguy4@cbsnews.com","aletts5@printfriendly.com","srubrow6@vinaora.com","mharken7@typepad.com","dflukes8@wikia.com","esighard9@nsw.gov.au"];
   var index = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
-  const query = arr[index];
+  //const query = arr[index];
+  console.log('Request bdy', req.body);
+  console.log('Email', req.body.email);
+  const query = req.body.email;
   return client.get(`getProfile:${query}`, (err, result) => {
     console.log("result redis", JSON.stringify(result));
     // If that key exist in Redis store
