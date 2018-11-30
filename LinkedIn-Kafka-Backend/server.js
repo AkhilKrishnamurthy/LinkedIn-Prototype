@@ -15,7 +15,7 @@ var getProfile = require('./services/getProfile');
 var getInterestedJobs = require('./services/getInterestedJobs');
 var jobsearch = require('./services/jobsearch')
 var sendConnectionRequest = require('./services/sendConnectionRequest');
-
+var getPendingRequests = require('./services/getPendingRequests');
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
   var producer = connection.getProducer();
@@ -60,3 +60,4 @@ handleTopicRequest("get_profile_topic", getProfile);
 handleTopicRequest('get_interested_jobs', getInterestedJobs);
 handleTopicRequest("jobsearch_topic", jobsearch);
 handleTopicRequest('send_connection_request', sendConnectionRequest);
+handleTopicRequest('get_pending_requests', getPendingRequests);

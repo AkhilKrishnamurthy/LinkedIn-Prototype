@@ -91,6 +91,7 @@ var getProfile = require('./controllers/getProfile');
 var getInterestedJobs = require('./controllers/getInterestedJobs');
 var jobsearch = require('./controllers/jobsearch');
 var sendConnectionRequest = require('./controllers/sendConnectionRequest');
+var getPendingRequests = require('./controllers/getPendingRequests');
 
 client.on("connect", function() {
   console.log("Redis client connected");
@@ -248,6 +249,7 @@ app.use('/apply-job', applyJob);
 app.use('/getAppliedJobs',getAppliedJobs);
 app.use('/get-profile', getProfile);
 app.use('/send-connection-request', sendConnectionRequest);
+app.use('/get-pending-requests', getPendingRequests);
 console.log("Linked Backend!");
 app.listen(3001);
 console.log("Server Listening on port 3001");
