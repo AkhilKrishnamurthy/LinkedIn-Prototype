@@ -18,8 +18,8 @@ class JobHeader extends Component {
         if(this.props.loginStateStore.accountType=="2") {
           recruiterHeader = (
             <li className="nav-item">
-              <a className="nav-link" href="#"><center><i className="fas fa-suitcase"></i></center><Link to= "/jobs/add-job">Post a Job</Link></a>
-            </li>
+            <Link className="nav-link" to= "/jobs/add-job"><center><i className="fas fa-suitcase"></i></center>Post a Job</Link>
+          </li>
           );
         }
     }
@@ -33,45 +33,45 @@ class JobHeader extends Component {
         <div className="collapse navbar-collapse navbar-right nav-links" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto"> 
             <li className="nav-item">
-              <a className="nav-link" href="#"><center><i className="fas fa-home"></i></center><Link to="/home">Home</Link></a>
+              <Link className="nav-link" to="/home"><center><i className="fas fa-home"></i></center>Home</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#"><center><i className="fas fa-user-friends"></i></center><Link to="/my-network">My Network</Link></a>
+              <Link className="nav-link" to="/my-network"><center><i className="fas fa-user-friends"></i></center>My Network</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#"><center><i className="fas fa-briefcase"></i></center><Link to="/jobs">Jobs</Link></a>
+              <Link className="nav-link" to="/jobs"><center><i className="fas fa-briefcase"></i></center>Jobs</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#"><center><i className="fas fa-envelope object-align-top"></i></center>Messaging</a>
+              <Link className="nav-link" to="#"><center><i className="fas fa-envelope object-align-top"></i></center>Messaging</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#"><center><i className="fas fa-bell"></i></center>Notifications</a>
+              <Link className="nav-link" to="#"><center><i className="fas fa-bell"></i></center>Notifications</Link>
             </li>
             <li className="nav-item">
-                         <ul class="nav navbar-nav">
-                             <li class="dropdown">
-           <a href="#" class="dropdown-toggle dropdownFontColor" data-toggle="dropdown">
+                         <ul className="nav navbar-nav">
+                             <li className="dropdown">
+           <Link to="#" className="dropdown-toggle dropdownFontColor" data-toggle="dropdown">
            {/* <img src=""/> */}
            <img src = "" height="50" className="profileimage"/>
                          <br/>
-           Me<span class="glyphicon glyphicon-user pull-right"></span></a>
-           <ul class="dropdown-menu">
-           <li><Link to= "/jobs/posting-details">Posted Jobs</Link><span class="glyphicon glyphicon-log-out pull-right"></span></li>
-           <li><a>Profile<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
-             <li class="divider"></li>
-             <li><a onClick = {this.handleLogout}>Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+           Me<span className="glyphicon glyphicon-user pull-right"></span></Link>
+           <ul className="dropdown-menu">
+           <li><Link to= "/jobs/posting-details">Posted Jobs</Link><span className="glyphicon glyphicon-log-out pull-right"></span></li>
+           <li><a>Profile<span className="glyphicon glyphicon-log-out pull-right"></span></a></li>
+             <li className="divider"></li>
+             <li><Link onClick = {this.handleLogout} to="#">Sign Out<span className="glyphicon glyphicon-log-out pull-right"></span></Link></li>
            </ul>
          </li>
        </ul>
-              {/* <a className="nav-link" href="#"><center><i className="fas fa-user"></i></center>Me</a> */}
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#"><center><i className="fas fa-th"></i></center>Work</a>
+              <Link className="nav-link" to="#"><center><i className="fas fa-th"></i></center>Work</Link>
             </li>
             {recruiterHeader}
             {/* <li className="nav-item">
               <a className="nav-link" href="#"><center><i className="fas fa-suitcase"></i></center><Link to= "/jobs/add-job">Post a Job</Link></a>
             </li> */}
+            
           </ul>
         </div>
       </nav>
