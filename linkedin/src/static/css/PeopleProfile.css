@@ -29,6 +29,18 @@
     font-weight: bold; 
 }
 
-.people-profile-container{
+.people-profile-container, .content-container{
     background-color: #f8f9fa;
+}
+
+.intro-container, .exp-container, .edu-container, .profile-skills-container{
+    background-color: white;
+}
+
+.profile-company-img-container, .profile-edu-img-container{
+    width: 56px;
+    height: 56px;
+}
+.skill-name{
+    font-weight: 600;
 }

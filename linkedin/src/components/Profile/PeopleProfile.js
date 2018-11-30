@@ -56,9 +56,69 @@ class PeopleProfile extends Component{
                                 TOOLS: JMeter, JIRA, Confluence, Git, IIS
                             </div>
                         </div>
-                        <div className="exp-container mt-5">
-                            <div className="ml-4">Experience</div>
+                        <div className="exp-container mt-5 border pb-3">
+                            <h4 className="ml-4 mt-4">Experience</h4>
+                            <hr/>
+                            <div className="exp-content-container ml-4 row">
+                                <div className="col-1">
+                                    <img className="profile-company-img-container" src="https://media.licdn.com/dms/image/C4D0BAQEl0ggQ_q2eow/company-logo_400_400/0?e=1551916800&v=beta&t=bRRW076zg7OTMag2B9OrXHSfIXdP9GRXVd5YVUNr3bw" alt="profile-company-img"/>
+                                </div>
+                                <div className="col-6 ml-4">
+                                    <div>Software Analyst</div>
+                                    <div>Aspire Systems</div>
+                                    <div>Jun 2016-Jun 2018</div>
+                                    <div>Chennai Area, India</div>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div className="exp-content-container ml-4 row">
+                                <div className="col-1">
+                                    <img className="profile-company-img-container" src="https://media.licdn.com/dms/image/C4D0BAQEl0ggQ_q2eow/company-logo_400_400/0?e=1551916800&v=beta&t=bRRW076zg7OTMag2B9OrXHSfIXdP9GRXVd5YVUNr3bw" alt="profile-company-img"/>
+                                </div>
+                                <div className="col-6 ml-4">
+                                    <div>Software Analyst</div>
+                                    <div>Aspire Systems</div>
+                                    <div>Jun 2016-Jun 2018</div>
+                                    <div>Chennai Area, India</div>
+                                </div>
+                            </div>
 
+                        </div>
+                        <div className="edu-container mt-5 border pb-4">
+                            <h4 className="ml-4 mt-4">Education</h4>
+                            <hr/>
+                            <div className="edu-content-container ml-4 row">
+                                <div className="col-1">
+                                    <img className="profile-edu-img-container" src="https://media.licdn.com/dms/image/C4E0BAQHaOICdw5hkVQ/company-logo_400_400/0?e=1551916800&v=beta&t=pQk2VKX5m9Ge2n_aBrYY-zNjQbIFLE2DFcvrHCOlGLc" alt="profile-company-img"/>
+                                </div>
+                                <div className="col-6 ml-4">
+                                    <div>San Jose State University</div>
+                                    <div>Master's degree, Computer Software Engineering</div>
+                                    <div>2018-2020</div>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div className="edu-content-container ml-4 row">
+                                <div className="col-1">
+                                    <img className="profile-edu-img-container" src="https://media.licdn.com/dms/image/C4E0BAQHaOICdw5hkVQ/company-logo_400_400/0?e=1551916800&v=beta&t=pQk2VKX5m9Ge2n_aBrYY-zNjQbIFLE2DFcvrHCOlGLc" alt="profile-company-img"/>
+                                </div>
+                                <div className="col-6 ml-4">
+                                    <div>San Jose State University</div>
+                                    <div>Master's degree, Computer Software Engineering</div>
+                                    <div>2018-2020</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="profile-skills-container mt-5 border pb-4">
+                            <h4 className="ml-4 mt-4">Skills</h4>
+                            <hr/>
+                            <div className="skills-content-container ml-4">
+                                <div className="skill-name">Node JS</div>
+                            </div>
+                            <hr/>
+                            <div className="skills-content-container ml-4">
+                                <div className="skill-name">Node JS</div>
+                            </div>
                         </div>
                     </div>
                     
