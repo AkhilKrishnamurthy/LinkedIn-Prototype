@@ -10,9 +10,26 @@ class JobHeader extends Component {
     constructor(props) {
         super(props);
         console.log(props);
+        this.state = {
+          redirectToHome : false
+        }
+
+        //bind
+        this.handleLogoClick = this.handleLogoClick.bind(this);
+    }
+
+    handleLogoClick= ()=>{
+      this.setState({
+        redirectToHome:true
+      });
     }
 
     render() {
+
+      var redirectVar =null;
+      if(this.state.redirectToHome === true){
+        redirectVar = <Redirect to="/home" />
+      }
       let recruiterHeader = null;
       if(this.props && this.props.loginStateStore && this.props.loginStateStore.responseFlag) {
         if(this.props.loginStateStore.accountType=="2") {
@@ -24,7 +41,9 @@ class JobHeader extends Component {
         }
     }
         return (
+          
           <div className = "job-header-main-div">
+          {redirectVar}
           <nav className="navbar navbar-expand-md jobheader">
           <div className = "job-header-logo-holder">
            <img className="img-container linkedIn-logo" src="http://www.theredbrickroad.com/wp-content/uploads/2017/05/linkedin-logo-copy.png" alt="logo"></img>

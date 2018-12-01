@@ -10,12 +10,27 @@ class JobApplication extends Component{
         super(props);
         console.log(props);
         this.state={
-            applicationSubmitted : false
+            applicationSubmitted : false,
+            isApplicationHalfFilled : false,
+            isApplicationViewed: true
         };
 
         //bind
         this.handleChange = this.handleChange.bind(this);
         this.submitApplication = this.submitApplication.bind(this);
+    }
+
+    componentDidMount(){
+        this.applicationViewed();
+    }
+
+    appplicationViewed = () => {
+        axios.post()
+            .then((response)=>{
+                if(response.status === 200){
+                    console.log('application view log saved!');
+                }
+            })
     }
 
     handleChange = (event) =>{
@@ -35,14 +50,16 @@ class JobApplication extends Component{
                     if(response.status === 200){
                         console.log('Resume data', resume.name);
                         this.setState({
-                            resume : resume.name
+                            resume : resume.name,
+                            isApplicationHalfFilled: true
                         });
                     }
                 });
         }
         else{
             this.setState({
-                [name] : value
+                [name] : value,
+                isApplicationHalfFilled: true
             });
         }
 

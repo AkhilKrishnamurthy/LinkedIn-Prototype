@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Header from '../Header/Header';
 import '../../static/css/MyNetwork.css';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import axios from 'axios';
+import {connect} from 'react-redux';
+
 
 class MyNetwork extends Component {
 
@@ -88,6 +90,10 @@ class MyNetwork extends Component {
     }
 
     render() {
+        var redirectVar = null;
+        if(this.props.loginStateStore.isAuthenticated === false){
+            redirectVar  = <Redirect to="/login"/>
+        }
 
         var requestContent = null;
         if(this.state.connectionRequests.length > 0){
@@ -143,6 +149,7 @@ class MyNetwork extends Component {
         return (
             <div>
                 <Header />
+                {redirectVar}
                 <div className="mynetwork-container">
                     <div className="row">
                         <div className="col-3"></div>
@@ -157,86 +164,13 @@ class MyNetwork extends Component {
                             {connectionsContent}
                         </div>
                     </div>
-
-                </div>
-                {/* <div className="center-content my-network-container">
-                    <div className="pad-3-pc">
-                        <div className="people-search-container col-lg-6 col-md-6 col-sm-6">
-                            <input type="text" className="form-control form-control-lg" placeholder="People search"></input>
-                        </div>
-                        <div className="container invitation-container col-lg-6 col-md-6 col-sm-6">
-                            <div>
-                                <hr />
-                                <p>Name: new invitation</p>
-                                <button className="btn btn-sm btn-success">Accept</button>
-                                <button className="btn btn-sm btn-danger">Decline</button>
-                                <hr />
-                            </div>
-                            <div>
-                                <hr />
-                                <p>Name: new invitation</p>
-                                <button className="btn btn-sm btn-success">Accept</button>
-                                <button className="btn btn-sm btn-danger">Decline</button>
-                                <hr />
-                            </div>
-                            <div>
-                                <hr />
-                                <p>Name: new invitation</p>
-                                <button className="btn btn-sm btn-success">Accept</button>
-                                <button className="btn btn-sm btn-danger">Decline</button>
-                                <hr />
-                            </div>
-                        </div>
-
-                        <div className="container content-left-align connections-container col-lg-6 col-md-6 col-sm-6 mt-3">
-                            <div>
-                            <p><b>Connections</b></p>
-                            </div>
-                            
-                            <div className="row">
-                                <div className="col-4 pad-1-pc border">
-                                    <div className="pad-1-pc center-content">
-                                        <img className="connection-img" src="https://img.freepik.com/free-icon/user-filled-person-shape_318-74922.jpg?size=338c&ext=jpg" alt="logo" />
-                                        <p>Shubham</p>
-                                        <p>Former Software Engineer</p>
-                                        <button className="btn btn-sm btn-info">View Profile</button>
-
-                                    </div>
-                                </div>
-                                <div className="col-4 pad-1-pc border">
-                                    <div className="pad-1-pc center-content">
-                                        <img className="connection-img" src="https://img.freepik.com/free-icon/user-filled-person-shape_318-74922.jpg?size=338c&ext=jpg" alt="logo" />
-                                        <p>Shubham</p>
-                                        <p>Former Software Engineer</p>
-                                        <button className="btn btn-sm btn-info">View Profile</button>
-                                    </div>
-                                </div>
-                                <div className="col-4 pad-1-pc border">
-                                    <div className="pad-1-pc center-content">
-                                        <img className="connection-img" src="https://img.freepik.com/free-icon/user-filled-person-shape_318-74922.jpg?size=338c&ext=jpg" alt="logo" />
-                                        <p>Shubham</p>
-                                        <p>Former Software Engineer</p>
-                                        <button className="btn btn-sm btn-info">View Profile</button>
-
-                                    </div>
-                                </div>
-                                <div className="col-4 pad-1-pc border">
-                                    <div className="pad-1-pc center-content">
-                                        <img className="connection-img" src="https://img.freepik.com/free-icon/user-filled-person-shape_318-74922.jpg?size=338c&ext=jpg" alt="logo" />
-                                        <p>Shubham</p>
-                                        <p>Former Software Engineer</p>
-                                        <button className="btn btn-sm btn-info">View Profile</button>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div> */}
+                </div>                
             </div>
         );
     }
 }
+const mapStateToProps = state =>({
+    loginStateStore : state.Login
+});
 
-export default MyNetwork;
+export default connect(mapStateToProps, {})(MyNetwork);
