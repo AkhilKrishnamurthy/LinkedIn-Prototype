@@ -95,6 +95,8 @@ var getPendingRequests = require('./controllers/getPendingRequests');
 var ignoreRequest = require('./controllers/ignoreRequest');
 var acceptRequest = require('./controllers/acceptRequest');
 var getConnections = require('./controllers/getConnections');
+var logJobViewed = require('./controllers/logJobViewed');
+var logAppHalffilled = require('./controllers/logAppHalffilled');
 
 client.on("connect", function() {
   console.log("Redis client connected");
@@ -218,6 +220,9 @@ app.use('/get-pending-requests', getPendingRequests);
 app.use('/ignore-request', ignoreRequest);
 app.use('/accept-request', acceptRequest);
 app.use('/get-connections', getConnections);
+app.use('/log-job-viewed', logJobViewed);
+app.use('/log-app-halffilled', logAppHalffilled);
+
 console.log("Linked Backend!");
 app.listen(3001);
 console.log("Server Listening on port 3001");

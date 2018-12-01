@@ -21,16 +21,38 @@ class JobApplication extends Component{
     }
 
     componentDidMount(){
-        this.applicationViewed();
+        this.jobViewed();
     }
 
-    applicationViewed = () => {
-        axios.post()
+    componentWillUnmount(){
+        console.log('Compononent will unmount');
+        if(this.state.isApplicationHalfFilled === true){
+            axios.defaults.withCredentials=true;
+            var data = {
+                jobId: this.props.jobResultsStateStore.result.jobId,
+                jobTitle: this.props.jobResultsStateStore.result.jobTitle
+            }
+            axios.post('http://localhost:3001/log-app-halffilled', data)
+                .then((response)=>{
+                    if(response.status === 200){
+                        console.log('Log Half Filled response', response.data);
+                    }
+                });
+        }
+    }
+
+    jobViewed = () => {
+        var data = {
+            jobId: this.props.jobResultsStateStore.result.jobId,
+            jobTitle: this.props.jobResultsStateStore.result.jobTitle
+        }
+        axios.defaults.withCredentials=true;
+        axios.post('http://localhost:3001/log-job-viewed', data)
             .then((response)=>{
                 if(response.status === 200){
-                    console.log('application view log saved!');
+                    console.log('job view log saved!');
                 }
-            })
+            });
     }
 
     handleChange = (event) =>{
@@ -90,7 +112,8 @@ class JobApplication extends Component{
             .then((response)=>{
                 if(response.status === 200){
                     this.setState({
-                        applicationSubmitted: true
+                        applicationSubmitted: true,
+                        isApplicationHalfFilled : false
                     });
                 }
             });
