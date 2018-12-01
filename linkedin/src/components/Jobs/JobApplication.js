@@ -24,7 +24,7 @@ class JobApplication extends Component{
         this.applicationViewed();
     }
 
-    appplicationViewed = () => {
+    applicationViewed = () => {
         axios.post()
             .then((response)=>{
                 if(response.status === 200){
