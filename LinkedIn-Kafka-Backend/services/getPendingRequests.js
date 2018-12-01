@@ -6,7 +6,7 @@ function handle_request(message, callback){
         "user.email": message.session.user 
     }, (err, result)=>{
         if(err){
-            onsole.log('Error in getting pedning requests');
+            console.log('Error in getting pedning requests');
             callback(err, null);
         }
         else{
