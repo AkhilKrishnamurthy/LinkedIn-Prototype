@@ -18,6 +18,10 @@ class Home extends Component{
         if(this.props.loginStateStore==undefined) {
             redirectVar = <Redirect to= "/login"/>
         }
+        var profileName = null;
+        if(this.props && this.props.loginStateStore && this.props.loginStateStore.responseFlag) {
+            profileName = <p className="profileDescriptionHome">{this.props.loginStateStore.FName}</p>
+        }
         // else {
         //     redirectVar = <Redirect to= "/login"/>
         // }
@@ -31,7 +35,7 @@ class Home extends Component{
                     <img src = "https://coverfiles.alphacoders.com/498/49849.jpg"  width="100%" height="50"/>
                     <img src = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" height="10" className="homeProfileImage"/>
                         <div>
-                            <p className="profileDescriptionHome">Akhil Krishnamoorthy</p>
+                            {profileName}
                             <p>Grad Student at San Jose State University</p>
                             <div className="homeConnectionDetails"> 
                             <p className="">Who's viewed your profile:42</p>

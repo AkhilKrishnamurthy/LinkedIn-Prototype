@@ -1,0 +1,284 @@
+import React, {Component} from 'react';
+import Header from '../Header/Header';
+import axios from 'axios';
+import {Link} from 'react-router-dom';
+import { connect } from "react-redux";
+
+class EditJobPost extends Component{
+    constructor(props){
+        super(props);
+        this.state = {  
+            companyName: "",
+            jobTitle: "",
+            industry: "",
+            employmentType: "Full-time",
+            location: "",
+            seniorityLevel: "Full-time",
+            jobDescription: "",
+            companyPic: '',
+            selectedFile: '',
+            images: '',
+            postedDate: new Date()
+        }
+        this.companyNameChangeHandler = this.companyNameChangeHandler.bind(this);
+        this.jobTitleChangeHandler = this.jobTitleChangeHandler.bind(this);
+        this.industryChangeHandler = this.industryChangeHandler.bind(this);
+        this.employmentTypeChangeHandler = this.employmentTypeChangeHandler.bind(this);
+        this.locationChangeHandler = this.locationChangeHandler.bind(this);
+        this.seniorityLevelChangeHandler = this.seniorityLevelChangeHandler.bind(this);
+        this.jobDescriptionChangeHandler = this.jobDescriptionChangeHandler.bind(this);
+        this.submitJobDetails = this.submitJobDetails.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+    }
+//     componentWillReceiveProps(){
+//             console.log("jobhistoryprops", this.props.JobHistory);
+//         this.setState({
+//             companyName: this.props.JobHistory.jobId,
+//             jobTitle: this.props.JobHistory.jobTitle,
+//             industry: this.props.JobHistory.industry,
+//             employmentType: this.props.JobHistory.employmentType,
+//             location: this.props.JobHistory.location,
+//             seniorityLevel: this.props.JobHistory.seniorityLevel,
+//             jobDescription: this.props.JobHistory.jobTitle.jobDescription,
+//             companyPic: this.props.JobHistory.companyPic
+//         })
+// }
+
+    companyNameChangeHandler = (e) => { this.setState({ companyName : e.target.value }) }
+    jobTitleChangeHandler = (e) => { this.setState({ jobTitle : e.target.value }) }
+    industryChangeHandler = (e) => { this.setState({ industry : e.target.value }) }
+    employmentTypeChangeHandler = (e) => { this.setState({ employmentType : e.target.value })}
+    locationChangeHandler = (e) => { this.setState({ location : e.target.value }) }
+    seniorityLevelChangeHandler = (e) => { this.setState({ seniorityLevel : e.target.value }) }
+    jobDescriptionChangeHandler = (e) => { this.setState({ jobDescription : e.target.value }) }
+
+    onChange = (e) => {
+        if(e.target.name == 'selectedFile'){
+            console.log(e.target.files);
+              this.setState({
+            selectedFile: e.target.files[0]
+          })
+        }else{
+          this.setState({ [e.target.name]: e.target.value });
+        }
+    }
+
+    componentDidMount() {
+        if(this.props.JobHistory.jobId.length>0) {
+            console.log("jobhistoryprops", this.props.JobHistory);
+            this.setState({
+            companyName: this.props.JobHistory.companyName,
+            jobTitle: this.props.JobHistory.jobTitle,
+            industry: this.props.JobHistory.industry,
+            employmentType: this.props.JobHistory.employmentType,
+            location: this.props.JobHistory.location,
+            seniorityLevel: this.props.JobHistory.seniorityLevel,
+            jobDescription: this.props.JobHistory.jobDescription,
+            companyPic: this.props.JobHistory.companyPic
+        })
+        }
+    }
+
+    async submitJobDetails(event) {
+        event.preventDefault();
+        const { selectedFile } = this.state;
+        let formData = new FormData();
+        formData.append('selectedFile', selectedFile);
+        console.log("selectedFile file",this.state.selectedFile);
+       
+        console.log("image file",formData);
+        await axios.post('http://localhost:3001/upload_file', formData)
+        .then(async (result) => {
+          // access results...
+        });
+        var img =  this.state.selectedFile.name
+       console.log("jobid",this.props.JobHistory.jobId);
+        const data = {
+            jobId: this.props.JobHistory.jobId,
+            companyName: this.state.companyName,
+            jobTitle: this.state.jobTitle,
+            industry: this.state.industry,
+            employmentType: this.state.employmentType,
+            location: this.state.location,
+            seniorityLevel: this.state.seniorityLevel,
+            jobDescription: this.state.jobDescription,
+            postedDate: this.state.postedDate,
+            images: img
+        }
+        axios.defaults.withCredentials = true;   
+        axios.
+        post("http://localhost:3001/submitEditedJobDetails", data)
+            .then(async (response) => {
+                if(response.status === 200){
+               
+                }else{
+                }
+            });
+    }
+
+    handleClick = (e) =>{
+        const target = e.target;
+        const id = target.id;
+        console.log("true");
+        console.log(this.props.JobHistory.applicantData[id]);
+        // this.props.postedJobs(this.state.postedJobs[id]);
+        // this.setState({
+        //     redirectToJobEditPage : true
+        // });
+    }
+
+    render(){
+        console.log("jobid",this.props.JobHistory.jobId);
+
+        var applicantArray = null;
+        var applicantArray = this.props.JobHistory.applicantData.map((applicantDetail, index)=>{
+            console.log("applicant state state state",applicantDetail.state);
+            return(
+                <div key={index}>
+                    <div className="flt-right"><b><Link to="#" id={index} onClick={this.handleClick}>View Resume</Link></b></div>
+                    {/* <div className="job-title"><b><Link to="#" id={index} onClick={this.handleClick}>{job.jobTitle}</Link></b></div> */}
+                    {/* <button className="btn btn-lg save-btn flt-right" id={index} onClick={this.handleApplyClick}>Edit</button> */}
+                    <div className="">{applicantDetail.firstname}</div>
+                    <div className="">{applicantDetail.email}</div>
+                    <div className="">{applicantDetail.country}</div>
+                    <hr/>
+                </div>
+            )
+        });
+
+        return(
+            <div>
+            <Header/>
+            <div className = "post-job-container">
+            <div class="post_job_columns col-lg-7 border post-job-border">
+            <p className="addJob_title"> What job do you want to post?</p>
+            <div className="form-group row">
+
+            <span className="jobPosting_boxes">
+            <p>Company</p>
+            <div>
+            <input onChange = {this.companyNameChangeHandler} value={this.state.companyName} type="text" className="form-control inputfield" name="companyName" placeholder="Company Name"/>
+            </div>
+            </span>
+            
+            <span className="jobPosting_boxes">
+            <p>Job Title</p>
+            <div>
+            <input onChange = {this.jobTitleChangeHandler} value={this.state.jobTitle} type="text" className="form-control inputfield" name="jobTitle" placeholder="Job Title"/>
+            </div>
+            </span>
+
+            <span className="jobPosting_boxes">
+            <p>Location</p>
+            <div>
+            <input onChange = {this.locationChangeHandler} value={this.state.location} type="text" className="form-control inputfield" name="location" placeholder="location"/>
+            </div>
+            </span>
+            </div>
+
+            <div className="form-group row">
+            <span className="jobPosting_boxes">
+            <p>Employment Type</p>
+            <div>
+            <select onChange = {this.employmentTypeChangeHandler} value={this.state.employmentType} className="selectBox_postJob" name="employmentType">
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Contract">Contract</option>
+                <option value="Temporary">Temporary</option>
+                <option value="Volunteering">Volunteering</option>
+                <option value="Internship">Internship</option>
+            </select>
+            {/* <input onChange = {this.employmentTypeChangeHandler} type="text" className="form-control inputfield" name="employmentType" placeholder="Employment Type"/> */}
+            </div>
+            </span>
+            </div>
+
+            <div className="form-group row">
+
+            <span className="jobPosting_boxes">
+            <p>Company Industry</p>
+            <div>
+            <input onChange = {this.industryChangeHandler} value={this.state.industry} type="text" className="form-control inputfield form_control_home_location" name="industry" placeholder="Industry"/>
+            </div>
+            </span>
+            
+            <span className="jobPosting_boxes">
+            <p>Seniority Level</p>
+            <div>
+            <select onChange = {this.seniorityLevelChangeHandler} value={this.state.seniorityLevel} className="selectBox_postJob" name="seniorityLevel">
+                <option value="Internship">Internship</option>
+                <option value="Entry-level">Entry-level</option>
+                <option value="Mid-Senior level">Mid-Senior level</option>
+                <option value="Director">Director</option>
+                <option value="Associate">Associate</option>
+                <option value="Not Applicable">Not Applicable</option>
+            </select>
+            {/* <input onChange = {this.seniorityLevelChangeHandler} type="text" className="form-control inputfield" name="seniorityLevel" placeholder="Seniority Level"/> */}
+            </div>
+            </span>
+            </div>
+
+            <div className="">
+           <span className="jobPosting_boxes">
+            <p>Job Description</p>
+            <div>
+            <input onChange = {this.jobDescriptionChangeHandler} value={this.state.jobDescription} type="text" className="form-control inputfield jobPostingDescriptionInbutBox" name="jobDescription" placeholder="Job Description"/>
+            </div>
+            </span>
+            </div>
+
+             <div className="form-group row">
+            <span className="jobPosting_boxes">
+            <p>Company Logo</p>
+            <div className="company_pic">
+            <input type="file" name="selectedFile" onChange={this.onChange} multiple/>
+            </div>
+            </span>
+            </div>
+
+            <button className="btn btn-primary" onClick = {this.submitJobDetails}><Link to={'/home'}>Submit</Link></button>
+            </div>
+            <div className="post_job_columns col-lg-3 border post-job-border">
+            <p>Show your job to the right candidates</p>
+            <p>Include more details such as relevant job functions, industries, and seniority level to help us advertise your job post to qualified candidates and recommend matches for you to reach out to.</p>
+            </div>
+            <br/>
+
+            
+            <div class="post_job_columns col-lg-7 border post-job-border">
+            {/* <p className="addJob_title"></p> */}
+            <div className="row mt-5">
+                    <div className="col-2"></div>
+                    <div className="col-8 border content-container mt-3">
+                        <div><h3> Applicant Details</h3></div>
+                        <hr/>
+                        <div>
+                            {applicantArray}
+                        </div>                    
+                    </div>
+                </div>
+                
+
+            </div>
+
+            </div>
+        </div>
+        );
+    }
+}
+
+// function mapStateToProps(state) {
+//     console.log(state.JobPostingHistory.result);
+//     JobHistory : state
+// };
+
+// //export default SavedJobs;
+// export default connect(mapStateToProps, {})(EditJobPost);
+// // export default EditJobPost;
+
+const mapStateToProps = state =>({
+    JobHistory : state.JobPostingHistory.result
+});
+
+//export default JobDisplayPage;
+export default connect(mapStateToProps, {})(EditJobPost);

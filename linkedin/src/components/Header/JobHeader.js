@@ -5,12 +5,17 @@ import {connect} from 'react-redux';
 import {login} from '../../actions/LoginAction';
 import {Redirect} from 'react-router';
 import Header from '../Header/JobHeader';
+import profilePic from '../pp.jpg';
 
 class JobHeader extends Component {
     constructor(props) {
         super(props);
         console.log(props);
+        this.handleLogout = this.handleLogout.bind(this);
     }
+    handleLogout = () => {
+      window.location.reload();
+  }
 
     render() {
       let recruiterHeader = null;
@@ -52,14 +57,15 @@ class JobHeader extends Component {
                              <li className="dropdown">
            <Link to="#" className="dropdown-toggle dropdownFontColor" data-toggle="dropdown">
            {/* <img src=""/> */}
-           <img src = "" height="50" className="profileimage"/>
+           <img src = {profilePic} className = "homeProfileImage" height="30" className="profileimage"/>
                          <br/>
            Me<span className="glyphicon glyphicon-user pull-right"></span></Link>
            <ul className="dropdown-menu">
-           <li><Link to= "/jobs/posting-details">Posted Jobs</Link><span className="glyphicon glyphicon-log-out pull-right"></span></li>
-           <li><a>Profile<span className="glyphicon glyphicon-log-out pull-right"></span></a></li>
+           {/* <li><Link to= "/jobs/posting-details">Posted Jobs</Link><span className="glyphicon glyphicon-log-out pull-right"></span></li> */}
+           <li><span className="glyphicon glyphicon-log-out"><Link to="/jobs/posting-details" className = "text-dark">Posted Jobs</Link></span></li>
+           <li className = "dropdownFontColor"><span className="glyphicon glyphicon-log-out pull-right"><Link to="/profile" className = "text-dark">Profile</Link></span></li>
              <li className="divider"></li>
-             <li><Link onClick = {this.handleLogout} to="#">Sign Out<span className="glyphicon glyphicon-log-out pull-right"></span></Link></li>
+             <li><span className="glyphicon glyphicon-log-out"><Link to="/login" onClick = {this.handleLogout} className = "text-dark">Sign Out</Link></span></li>
            </ul>
          </li>
        </ul>

@@ -81,6 +81,7 @@ var kafka = require("./kafka/client");
 var applicantsignup = require("./controllers/applicantsignup");
 var recruitersignup = require("./controllers/recruitersignup");
 var postJobRecruiter = require("./controllers/postJobRecruiter");
+var submitEditedJobDetails = require("./controllers/submitEditedJobDetails");
 var jobs = require("./controllers/jobs");
 var saveJob = require('./controllers/saveJob');
 var savedJobs = require('./controllers/savedJobs');
@@ -124,11 +125,22 @@ app.post("/submitJobDetails", (req, res) => {
   postJobRecruiter.postJobRecruiter(req,res);
 });
 
+app.post("/submitEditedJobDetails", (req, res) => {
+  console.log("inside edit job post");
+  console.log(req.body);
+  req.body.user = req.session.user;
+  console.log(req.session.user);
+  submitEditedJobDetails.submitEditedJobDetails(req,res);
+});
+
 app.get("/JobPostingHistory", (req, res) => {
   // req.body.user = req.session.user;
   console.log("inside job posting history");
   jobPostingHistory.jobPostingHistory(req,res);
 });
+
+
+
 
 app.post("/login", function(req, res) {
   console.log("Inside Login Post Request", req.body);

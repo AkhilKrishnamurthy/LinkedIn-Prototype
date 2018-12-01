@@ -4,13 +4,16 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import {Redirect} from 'react-router';
 import JobHeader from "../Header/JobHeader";
+import {postedJobs} from '../../actions/jobPostingDetailsAction';
+import { connect } from "react-redux";
 
 class JobPostingDetails extends Component{
     constructor(props){
         super(props);
         console.log(props);
         this.state = {  
-        postedJobs: []
+        postedJobs: [],
+        redirectToJobEditPage: false
         }
         this.handleApplyClick = this.handleApplyClick.bind(this);
     }
@@ -35,27 +38,31 @@ class JobPostingDetails extends Component{
                 this.setState({
                     postedJobs : this.state.postedJobs.concat(arr) 
                 });   
-            // var arr = response.data;
-    //         for(var i=0;i<arr.length;i++) {
-    //         var images = arr[i].imageFiles;
-    //         var match = images.split(',');
-    //         var joined = [];
-    //         joined.length = 0;
-    //     arr[i].imageFiles = images;
-    //     console.log(arr);
-        
-    // }
-    // this.setState({
-    //     property : this.state.property.concat(arr) 
-    // });     
+        });
+    }
+
+    handleApplyClick = (e) =>{
+        const target = e.target;
+        const id = target.id;
+        console.log("true");
+        console.log(this.state.postedJobs[id]);
+        this.props.postedJobs(this.state.postedJobs[id]);
+        this.setState({
+            redirectToJobEditPage : true
         });
     }
 
     render(){
+        var redirectVar = null;
+
+        if(this.state.redirectToJobEditPage === true){
+            console.log("true")
+            redirectVar  = <Redirect to="/jobs/edit-job-post"/>
+        }
+
         if(this.state.postedJobs.length>0) {
         console.log(this.state.postedJobs);
         }
-        var redirectVar = null;
         var savedJobsContent = this.state.postedJobs.map((job, index)=>{
             return(
                 <div key={index}>
@@ -92,4 +99,11 @@ class JobPostingDetails extends Component{
     }
 }
 
-export default JobPostingDetails;
+
+function mapStateToProps(state) {
+    
+};
+
+//export default SavedJobs;
+export default connect(mapStateToProps, {postedJobs})(JobPostingDetails);
+// export default JobPostingDetails;

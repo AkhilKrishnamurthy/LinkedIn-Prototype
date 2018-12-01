@@ -19,6 +19,7 @@ import SavedJobs from "./Jobs/SavedJobs";
 import JobApplication from './Jobs/JobApplication';
 import AppliedJobs from './Jobs/AppliedJobs';
 import PeopleProfile from './Profile/PeopleProfile';
+import EditJobPost from './Jobs/EditJobPost';
 
 class Main extends Component {
   constructor(props) {
@@ -52,6 +53,7 @@ class Main extends Component {
         <Route path="/jobs/apply-job" component={JobApplication} />
         <Route path="/jobs/applied-jobs" component={AppliedJobs} />
         <Route path="/profile/:id" component={PeopleProfile} />
+        <Route path="/jobs/edit-job-post" component={EditJobPost} />
       </div>
     );
   }

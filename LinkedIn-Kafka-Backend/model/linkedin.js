@@ -34,19 +34,21 @@ var Job = new Schema({
  jobfunction: { type: String, trim: true, default: "" },
  posteddate: { type: String, trim: true, default: "" }
 });
-/*
-var JobPostings = new Schema({
- job_id: { type: Number, trim: true },
- title: { type: String, trim: true, default: "" },
- description: { type: String, trim: true, default: "" },
- industry: { type: String, trim: true, default: "" },
- emptype: { type: String, trim: true, default: "" },
- location: { type: String, trim: true, default: "" },
 
- jobfunction: { type: String, trim: true, default: "" },
- posteddate: { type: String, trim: true, default: "" }
+var JobPostings = new Schema({
+    jobId: {type: "String", trim:true, default: ""},
+    user:{ type: String, trim: true },
+    companyName: { type: String, trim: true },
+    jobTitle: { type: String, trim: true, default: "" },
+    industry: { type: String, trim: true, default: "" },
+    employmentType: { type: String, trim: true, default: "" },
+    location: { type: String, trim: true, default: "" },
+    seniorityLevel: { type: String, trim: true, default: "" },
+    jobDescription: { type: String, trim: true, default: "" },
+    postedDate: { type: Date, trim: true, default: "" },
+    companyLogo: { type: String, trim: true, default: "" }
 });
-*/
+
 var JobDetails = new Schema({
  job: { type: Job },
  views: [{ type: UserSchema }],
@@ -55,7 +57,7 @@ var JobDetails = new Schema({
 
 var LinkedInSchema = new Schema({
  user: { type: UserSchema },
- JobPostings: [{ type: JobDetails }],
+ JobPostings: [{ type: JobPostings }],
  appliedJobs: [{ type: JobDetails }],
  connections: [{ type: UserSchema }],
  savedjobs: [{ type: Job }],

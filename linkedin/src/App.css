@@ -30,7 +30,9 @@
     transform: rotate(360deg);
   }
 }
-
+.loginAdjustment {
+  float: left;
+}
 
 /*Custom styling*/
 .linkedIn-logo{
@@ -41,6 +43,9 @@
 .linkedIn-logo-login{
   height: 40px;
   width: 120px;
+}
+.loginForm {
+  display: inline-block;
 }
 
 .header-container{

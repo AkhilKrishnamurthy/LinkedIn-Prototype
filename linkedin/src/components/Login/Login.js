@@ -56,7 +56,7 @@ class Login extends Component {
       }
       if (this.props.loginStateStore.result.responseFlag == "") {
         console.log("error");
-        error = <div className="alert alert-danger">Invalid login</div>;
+        error = <div class="alert alert-danger">Invalid login</div>;
       }
 
       if (this.props.loginStateStore.result) {
@@ -65,17 +65,17 @@ class Login extends Component {
         }
         if (this.props.loginStateStore.result.responseFlag == "") {
           console.log("error");
-          error = <div className="alert alert-danger">Invalid login</div>;
+          error = <div class="alert alert-danger">Invalid login</div>;
         }
       }
       const { handleSubmit } = this.props;
       return (
-        <div className="container">
+        <div class="container">
           {redirectVar}
-          <div className="login-form">
+          <div class="login-form">
             <form>
-              <div className="main-div">
-                <div className="panel">
+              <div class="main-div">
+                <div class="panel">
                   <h2>Welcome Back</h2>
                   <p>
                     Don't miss your next opportunity. Sign in to stay updated on
@@ -83,7 +83,7 @@ class Login extends Component {
                   </p>
                 </div>
                 {error}
-                <div className="form-group">
+                <div class="form-group">
                   <Field
                     label=""
                     className="form-control"
@@ -94,7 +94,7 @@ class Login extends Component {
                   />
                   {/* <input type="text" class="form-control" name="email" placeholder="Email"/> */}
                 </div>
-                <div className="form-group">
+                <div class="form-group">
                   <Field
                     label=""
                     className="form-control"
@@ -106,7 +106,7 @@ class Login extends Component {
                   {/* <input type="password" class="form-control" name="password" placeholder="Password"/> */}
                 </div>
                 <button
-                  className="btn btn-primary"
+                  class="btn btn-primary"
                   type="submit"
                   onClick={handleSubmit(this.submitLogin.bind(this))}
                 >
@@ -124,12 +124,12 @@ class Login extends Component {
     }
     const { handleSubmit } = this.props;
     return (
-      <div className="container">
+      <div class="container">
         {redirectVar}
-        <div className="login-form">
+        <div class="login-form">
           <form>
-            <div className="main-div">
-              <div className="panel">
+            <div class="main-div">
+              <div class="panel">
                 <h2>Welcome Back</h2>
                 <p>
                   Don't miss your next opportunity. Sign in to stay updated on
@@ -137,7 +137,7 @@ class Login extends Component {
                 </p>
               </div>
               {error}
-              <div className="form-group">
+              <div class="form-group">
                 <Field
                   label=""
                   className="form-control"
@@ -148,7 +148,7 @@ class Login extends Component {
                 />
                 {/* <input type="text" class="form-control" name="email" placeholder="Email"/> */}
               </div>
-              <div className="form-group">
+              <div class="form-group">
                 <Field
                   label=""
                   className="form-control"
@@ -160,7 +160,7 @@ class Login extends Component {
                 {/* <input type="password" class="form-control" name="password" placeholder="Password"/> */}
               </div>
               <button
-                className="btn btn-primary"
+                class="btn btn-primary"
                 type="submit"
                 onClick={handleSubmit(this.submitLogin.bind(this))}
               >

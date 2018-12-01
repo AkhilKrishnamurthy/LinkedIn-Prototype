@@ -13,8 +13,8 @@ var getAppliedJobs = require('./services/getAppliedJobs');
 var jobPostingHistory = require("./services/jobPostingHistory");
 var getProfile = require('./services/getProfile');
 var getInterestedJobs = require('./services/getInterestedJobs');
-var jobsearch = require('./services/jobsearch')
-
+var jobsearch = require('./services/jobsearch');
+var editJobRecruiter = require('./services/editJobRecruiter');
 
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
@@ -59,3 +59,4 @@ handleTopicRequest("job_posting_history_topic", jobPostingHistory);
 handleTopicRequest("get_profile_topic", getProfile);
 handleTopicRequest('get_interested_jobs', getInterestedJobs);
 handleTopicRequest("jobsearch_topic", jobsearch);
+handleTopicRequest("editJob_recruiter_topic", editJobRecruiter);
