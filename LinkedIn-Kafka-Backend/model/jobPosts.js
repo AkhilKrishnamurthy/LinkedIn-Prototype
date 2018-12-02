@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 id = mongoose.Types.ObjectId();
 
 var JobPosts = new Schema({
+  jobId: {type: "String", trim:true, default: ""},
   user:{ type: String, trim: true },
   companyName: { type: String, trim: true },
   jobTitle: { type: String, trim: true, default: "" },
@@ -12,8 +13,9 @@ var JobPosts = new Schema({
   seniorityLevel: { type: String, trim: true, default: "" },
   jobDescription: { type: String, trim: true, default: "" },
   postedDate: { type: Date, trim: true, default: "" },
-  companyLogo: { type: String, trim: true, default: "" }
-  //   jobfunction: { type: String, trim: true, default: "" },
+  companyLogo: { type: String, trim: true, default: "" },
+  applicantData: Array
+   //   jobfunction: { type: String, trim: true, default: "" },
 //   companyid: { type: Number, trim: true },
 // emptype: { type: String, trim: true, default: "" },
 });
@@ -21,3 +23,4 @@ var JobPosts = new Schema({
 
 let JobPost = mongoose.model("jobPosts", JobPosts, "jobPosts");
 module.exports = JobPost;
+

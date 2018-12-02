@@ -13,6 +13,10 @@ export function login(data){
             console.log("response",response.data);
             var data = {responseFlag: ""}
             if(response.status==200) {
+                data.FName = response.data.value.FName,
+                data.LName = response.data.value.LName,
+                data.email = response.data.value.email,
+                data.accountType = response.data.value.accountType,
                 data.responseFlag = "true";
                 dispatch({
                     type: AUTH_LOGIN,

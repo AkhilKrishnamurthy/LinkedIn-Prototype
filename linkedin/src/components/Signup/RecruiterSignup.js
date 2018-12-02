@@ -4,7 +4,10 @@ import { Field, reduxForm } from "redux-form";
 import { Redirect } from "react-router";
 import { connect } from "react-redux";
 
-import { userActions } from "../../actions/applicantSignupAction";
+import { userActions } from "../../actions/recruitersignup";
+import '../../static/css/RecruiterSignup.css'
+
+
 class Signup extends React.Component {
   constructor(props) {
     super(props);
@@ -57,10 +60,16 @@ class Signup extends React.Component {
     const { handleSubmit } = this.props;
     return (
       <div>
+        
         {redirectVar}
         <LoginHeader />
-        <div className="login-form">
+        
+        {/* <div className = "bg-signup"> */}
+        <div className="login-form pad-3-pc">
+        {/* <br></br><br></br><br></br> */}
           <div className="main-div">
+          {/* <br></br><br></br> */}
+          <div class="container login-container">
             <div className="panel">
               <h2>Be great at what you do</h2>
               <p>Get started - it's free.</p>
@@ -122,9 +131,11 @@ class Signup extends React.Component {
                   </button>
                 </div>
               </form>
+              </div>
             </div>
           </div>
         </div>
+        {/* </div> */}
       </div>
     );
   }
@@ -159,7 +170,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    signup: data => dispatch(userActions.applicantsignup(data))
+    signup: data => dispatch(userActions.recruitersignup(data))
   };
 };
 

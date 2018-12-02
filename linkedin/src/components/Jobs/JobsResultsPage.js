@@ -1,173 +1,266 @@
-import React, { Component } from 'react';
-import Header from '../Header/Header';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import JobHeader from "../Header/JobHeader";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import {Redirect} from 'react-router';
+import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import swal from 'sweetalert'
+import {saveJobDetailsToStore} from '../../actions/jobResultsAction';
+import {saveSearchFieldToStore} from '../../actions/jobSearchAction';
+import '../../static/css/JobResultsPage.css'
 
 class JobsResultsPage extends Component {
-    constructor(props) {
-        super(props);
-        console.log(props);
+  constructor(props) {
+    super(props);
+    console.log(props);
+    const MAX_LENGTH = 250;
+    this.state = {
+      jobData: [],
+      jobDetails: "",
+      redirectToJobDisplayPage: false,
+      saveClicked: false,
+      redirectToJobApplication:false
+    };
+
+    //bind
+    this.handleSaveClick = this.handleSaveClick.bind(this);
+  }
+
+  componentDidMount() {
+    axios.defaults.withCredentials = true;
+    var values = {
+      jobTitle :  this.props.searchFieldToStore.searchfieldresult.jobTitle,
+      location : this.props.searchFieldToStore.searchfieldresult.location
+  }
+
+  console.log("values" + values.jobTitle + values.location)
+  
+    axios.post("http://localhost:3001/jobsearch",values).then(response => {
+      if (response.status === 200) {
+        var jobResult = response.data;
+        console.log("job data", jobResult);
+        if(jobResult.length === 0)
+        {
+          swal("No data found","Please recheck your search criteria","warning")
+        }
+        else{
+        this.setState({
+          jobData: jobResult,
+          jobDetails: jobResult[0]
+        });
+      }
+        console.log("jobData length" + this.state.jobData.length)
+      }     
+    });
+  }
+
+  toggleDetailsPane = (Parameter, event) =>{
+      //const target = event.target;
+        const index = Parameter;
+        var jobDetail = this.state.jobData[index];
+        
+        console.log('job details', jobDetail);
+        this.setState({
+            jobDetails: jobDetail
+        });
+  }
+
+  saveJobDetailsToStore = () =>{
+    console.log('Inside saveJobDetailstoStore');
+    this.props.saveJobDetailsToStore(this.state.jobDetails);
+    this.setState({
+      redirectToJobDisplayPage : true
+    });
+  }
+
+  handleSaveClick = () =>{
+    console.log('Job details',this.state.jobDetails);
+    if(this.state.saveClicked === false){
+      var data = {
+        jobDetails : this.state.jobDetails
+      };
+
+      axios.post('http://localhost:3001/save-job', data)
+      .then((response) =>{
+        if(response.status === 200){
+          this.setState({
+            saveClicked: true
+          });
+        }
+      });
+    }
+    
+  }
+
+  handleApplyJob = ()=>{
+    this.saveJobDetailsToStore();
+    this.setState({
+      redirectToJobApplication: true
+    });
+  }
+
+  handleEasyApply = ()=>{
+    this.saveJobDetailsToStore();
+    this.setState({
+      redirectToJobApplication: true
+    });
+  }
+
+
+
+  render() {
+    //left-pane content
+    var redirectVar = null;
+    if(this.state.redirectToJobDisplayPage === true){
+      redirectVar = <Redirect to="/jobs/display"/>
     }
 
-    render() {
-        return (
-            <div>
-                <Header />
+    if(this.state.redirectToJobApplication === true){
+      redirectVar = <Redirect to="/jobs/apply-job"/>
+    }
 
-                <div>
-                    <div className="container jobs-result-filter-container">
-                        <span><b>Jobs</b></span>
-                        <span>
-                            <select className="custom-select">
-                                <option defaultValue>Date Posted</option>
-                                <option value="1">Past 24 hours</option>
-                                <option value="2">Past Week</option>
-                                <option value="3">Past Month</option>
-                                <option value="4">Any Time</option>
-                            </select>
-                        </span>
-                        <span>
-                            <select className="custom-select">
-                                <option defaultValue>LinkedIn Features</option>
-                                <option value="1">In your Network</option>
-                                <option value="2">Easy Apply</option>
-                                <option value="3">Under 10 Applicants</option>
-                            </select>
-                        </span>
-                        <span>
-                            <select className="custom-select">
-                                <option defaultValue>Company</option>
-                                <option value="1">Adobe</option>
-                                <option value="2">Google</option>
-                                <option value="3">Facebook</option>
-                            </select>
-                        </span>
-                        <span>
-                            <select className="custom-select">
-                                <option defaultValue>Experience Level</option>
-                                <option value="1">Internship</option>
-                                <option value="2">Entry Level</option>
-                                <option value="3">Associate</option>
-                            </select>
-                        </span>
-                    </div>
-                    <div className="row center-content">
-                        <div className="col-lg-1 col-md-1 col-sm-1"></div>
-                        <div className="ml-4 mt-5 jobs-result-container content-left-align col-lg-5 col-md-5 col-sm-5">
-                            <div>
-                                <div className="job-result-data p-3 mt-2 mb-2 row border">
-                                    <span className="job-logo-container col-lg-2">
-                                        <img className="job-logo" src="https://media.licdn.com/dms/image/C4D0BAQHcZzoBjmYdvA/company-logo_200_200/0?e=1550102400&v=beta&t=oXB0dGr7pUu2H-c8gPeoMDbl2cVIMSMXInCOZ74fjJc" alt="company-logo" />
-                                    </span>
-                                    <span className="col-lg-10">
-                                        <div className=""><b><Link to="#">Computer Scientist - Adobe Cloud Platform</Link></b><br /></div>
-                                        <div className=""><b>Adobe</b></div>
-                                        <div>San Jose, CA</div>
-                                        <div>Building on top of the data layer, the team is responsible for delivering a rationalized set of core services. Discover what our </div>
-                                    </span>
-                                </div>
-                                <div className="job-result-data p-3 mt-2 mb-2 row border">
-                                    <span className="job-logo-container col-lg-2">
-                                        <img className="job-logo" src="https://media.licdn.com/dms/image/C4D0BAQHcZzoBjmYdvA/company-logo_200_200/0?e=1550102400&v=beta&t=oXB0dGr7pUu2H-c8gPeoMDbl2cVIMSMXInCOZ74fjJc" alt="company-logo" />
-                                    </span>
-                                    <span className="col-lg-10">
-                                        <div className=""><b><Link to="#">Computer Scientist - Adobe Cloud Platform</Link></b><br /></div>
-                                        <div className=""><b>Adobe</b></div>
-                                        <div>San Jose, CA</div>
-                                        <div>Building on top of the data layer, the team is responsible for delivering a rationalized set of core services. Discover what our </div>
-                                    </span>
-                                </div>
-                                <div className="job-result-data p-3 mt-2 mb-2 row border">
-                                    <span className="job-logo-container col-lg-2">
-                                        <img className="job-logo" src="https://media.licdn.com/dms/image/C4D0BAQHcZzoBjmYdvA/company-logo_200_200/0?e=1550102400&v=beta&t=oXB0dGr7pUu2H-c8gPeoMDbl2cVIMSMXInCOZ74fjJc" alt="company-logo" />
-                                    </span>
-                                    <span className="col-lg-10">
-                                        <div className=""><b><Link to="#">Computer Scientist - Adobe Cloud Platform</Link></b><br /></div>
-                                        <div className=""><b>Adobe</b></div>
-                                        <div>San Jose, CA</div>
-                                        <div>Building on top of the data layer, the team is responsible for delivering a rationalized set of core services. Discover what our </div>
-                                    </span>
-                                </div>
-                                <div className="job-result-data p-3 mt-2 mb-2 row border">
-                                    <span className="job-logo-container col-lg-2">
-                                        <img className="job-logo" src="https://media.licdn.com/dms/image/C4D0BAQHcZzoBjmYdvA/company-logo_200_200/0?e=1550102400&v=beta&t=oXB0dGr7pUu2H-c8gPeoMDbl2cVIMSMXInCOZ74fjJc" alt="company-logo" />
-                                    </span>
-                                    <span className="col-lg-10">
-                                        <div className=""><b><Link to="#">Computer Scientist - Adobe Cloud Platform</Link></b><br /></div>
-                                        <div className=""><b>Adobe</b></div>
-                                        <div>San Jose, CA</div>
-                                        <div>Building on top of the data layer, the team is responsible for delivering a rationalized set of core services. Discover what our </div>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="mt-5 jobs-result-details-container content-left-align col-lg-5 col-md-5 col-sm-5">
-                        <div className="">
-                        
-                            <div className="mt-2 border">
-                                <div className="job-title-container pad-2-pc row">
-                                    <div className="col-lg-3">
-                                        <img className="job-details-logo" src="https://media.licdn.com/dms/image/C4D0BAQHcZzoBjmYdvA/company-logo_200_200/0?e=1550102400&v=beta&t=oXB0dGr7pUu2H-c8gPeoMDbl2cVIMSMXInCOZ74fjJc" alt="company-logo" />
-                                    </div>
-                                    <div className="col-lg-9">
-                                        <div className="">
-                                            <b><Link to="#">Computer Scientist - Adobe Cloud Platform</Link></b><br />
-                                        </div>
-                                        <div className="">
-                                            <b>Adobe</b>
-                                        </div>                                        
-                                        <div>345 Park Avenue, San Jose, CA 95110-2704, US</div>
-                                        <div className="mt-2">
-                                            <button className="btn btn-lg save-btn">Save</button>
-                                            <button className="btn btn-lg ml-3 easy-apply-btn">
-                                            <span className="apply-logo-container"><img className="apply-logo mr-2" src="http://www.theredbrickroad.com/wp-content/uploads/2017/05/linkedin-logo-copy.png" alt="logo"></img></span><span>Easy apply</span></button>
-                                            <button className="btn btn-lg ml-3 apply-btn">Apply</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr/>
-                                
-                                <div className="pad-2-pc job-desc-cotainer">
-                                Job description
-                                The Challenge
-                                
-                                Building on top of the data layer, the team is responsible for delivering a rationalized set of core services. We are starting with foundational elements such as Identity, Profile, Segmentation, and edge components for real-time data capture and decisioning, and lay the foundation for higher-level services required for our Experience Business vision. We will run and maintain high traffic, high visibility applications with immense amounts of data and solve challenging scaling problems. For this role we require the ability to
-                                Selecting and integrating any Big Data tools and frameworks required to provide requested capabilities
-                                Build and develop critical parts of the services and deliver to production
-                                Track record for proven ability to be a self-starter
-                                Ability to articulate the choice towards a correct tool, technology.
-                                Proven ability to work well in a high performing team
-                                Translate high level requirements to actionable tasks/deliverables
-                                
-                                What You Need To Succeed
-                                Open source technologies – Spark, Hadoop Stack, Kafka
-                                Experience with Cloudera/MapR/Hortonworks
-                                Well versed with distributed computing principles
-                                Proven record of delivering highly optimized code
-                                Proven experience with NoSQL databases, such as HBase, Cassandra, MongoDB
-                                Proficiency in data structures and algorithms
-                                Cost consciousness around public cloud infrastructure
-                                DevOps knowledge a plus
-                                
-                                2+ years of experience required
-                                
-                                Needs: Masters in Computer Science
-                                
-                                At Adobe, you will be immersed in an exceptional work environment that is recognized throughout the world on Best Companies lists. You will also be surrounded by colleagues who are committed to helping each other grow through our unique Check-In approach where ongoing feedback flows freely.
-                                
-                                If you’re looking to make an impact, Adobe's the place for you. Discover what our employees are saying about their career experiences on the Adobe Life blog and explore the meaningful benefits we offer.
-                                
-                                Adobe is an equal opportunity employer. We welcome and encourage diversity in the workplace regardless of race, gender, religion, age, sexual orientation, gender identity, disability or veteran status.
-                                </div>
-                            </div>
-
-                            </div>
-                            </div>
-                    </div>
-                    <hr />
-                </div>
+    var briefPaneContent = this.state.jobData.map((job, index)=> {
+      return (
+        <div className="job-result-data p-3 mt-2 mb-2 row border" key={index}>
+          <span className="job-logo-container col-lg-2">
+            <img
+              className="job-logo"
+              src="https://media.licdn.com/dms/image/C4D0BAQHcZzoBjmYdvA/company-logo_200_200/0?e=1550102400&v=beta&t=oXB0dGr7pUu2H-c8gPeoMDbl2cVIMSMXInCOZ74fjJc"
+              alt="company-logo"
+            />
+          </span>
+          <span className="col-lg-10">
+            <div className="">
+              <b>
+                <Link to="#" onClick={this.toggleDetailsPane.bind(this, index)}>{job.jobTitle}</Link>
+              </b>
+              <br />
             </div>
-        )
-    }
+            <div className="">
+              <b>{job.companyName}</b>
+            </div>
+            <div>{job.location}</div>
+            <small className="text-muted"><p className = "overflow-ellipsis">{job.jobDescription}</p></small>
+            <small className="text-muted">{job.postedDate}</small>
+          </span>
+        </div>
+      );
+    });
+
+    var detailsPaneContent = (
+      <div className="mt-2 border">
+        <div className="job-title-container pad-2-pc row">
+          <div className="col-lg-3">
+            <img
+              className="job-details-logo"
+              src="https://media.licdn.com/dms/image/C4D0BAQHcZzoBjmYdvA/company-logo_200_200/0?e=1550102400&v=beta&t=oXB0dGr7pUu2H-c8gPeoMDbl2cVIMSMXInCOZ74fjJc"
+              alt="company-logo"
+            />
+          </div>
+          <div className="col-lg-9">
+            <div className="">
+              <b> 
+                <Link to="#" onClick={this.saveJobDetailsToStore}>{this.state.jobDetails.jobTitle}</Link>
+              </b>
+              <br />
+            </div>
+            <div className="">
+              <b>{this.state.jobDetails.companyName}</b>
+            </div>
+            <div>{this.state.jobDetails.location}</div>
+            <div className="mt-2">
+              <button className="btn btn-lg save-btn" onClick={this.handleSaveClick}>Save</button>
+              <button className="btn btn-lg ml-3 easy-apply-btn" onClick={this.handleEasyApply}>
+                <span className="apply-logo-container">
+                  <img
+                    className="apply-logo mr-2"
+                    src="http://www.theredbrickroad.com/wp-content/uploads/2017/05/linkedin-logo-copy.png"
+                    alt="logo"
+                  />
+                </span>
+                <span>Easy apply</span>
+              </button>
+              <button className="btn btn-lg ml-3 apply-btn" onClick={this.handleApplyJob}>Apply</button>
+            </div>
+          </div>
+        </div>
+        <hr />
+
+        <div className="pad-2-pc job-desc-cotainer">
+          {this.state.jobDetails.jobDescription}
+        </div>
+      </div>
+    );
+
+    return (
+      <div>
+        {redirectVar}
+        <JobHeader />
+
+        <div>
+          <div className="container jobs-result-filter-container">
+            <span>
+              <b>Jobs</b>
+            </span>
+            <span>
+              <select className="custom-select">
+                <option defaultValue>Date Posted</option>
+                <option value="1">Past 24 hours</option>
+                <option value="2">Past Week</option>
+                <option value="3">Past Month</option>
+                <option value="4">Any Time</option>
+              </select>
+            </span>
+            <span>
+              <select className="custom-select">
+                <option defaultValue>LinkedIn Features</option>
+                <option value="1">In your Network</option>
+                <option value="2">Easy Apply</option>
+                <option value="3">Under 10 Applicants</option>
+              </select>
+            </span>
+            <span>
+              <select className="custom-select">
+                <option defaultValue>Company</option>
+                <option value="1">Adobe</option>
+                <option value="2">Google</option>
+                <option value="3">Facebook</option>
+              </select>
+            </span>
+            <span>
+              <select className="custom-select">
+                <option defaultValue>Experience Level</option>
+                <option value="1">Internship</option>
+                <option value="2">Entry Level</option>
+                <option value="3">Associate</option>
+              </select>
+            </span>
+          </div>
+          <div className="row center-content">
+            <div className="col-lg-1 col-md-1 col-sm-1" />
+            <div className="ml-4 mt-5 jobs-result-container content-left-align col-lg-5 col-md-5 col-sm-5">
+              <div>{briefPaneContent}</div>
+            </div>
+            <div className="mt-5 jobs-result-details-container content-left-align col-lg-5 col-md-5 col-sm-5">
+              <div className="">{detailsPaneContent}</div>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+    );
+  }
+}
+//mapStateToProps
+
+const mapStateToProps  = state =>({
+  jobResultsStateStore : state.jobResultsStateStore,
+  searchFieldToStore : state.jobSearchFieldsStateStore
+});
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ saveSearchFieldToStore, saveJobDetailsToStore }, dispatch);
 }
 
-export default JobsResultsPage;
+export default connect(mapStateToProps, mapDispatchToProps)(JobsResultsPage);

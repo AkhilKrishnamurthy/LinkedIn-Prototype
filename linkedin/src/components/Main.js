@@ -15,6 +15,12 @@ import JobPostings from "./Jobs/JobPostings";
 import JobsLandingPage from "./Jobs/JobsLandingPage";
 import JobsResultsPage from "./Jobs/JobsResultsPage";
 import RecruiterDashboard from "./AnalyticsDashboard/RecruiterDashboard";
+import SavedJobs from "./Jobs/SavedJobs";
+import JobApplication from './Jobs/JobApplication';
+import AppliedJobs from './Jobs/AppliedJobs';
+import PeopleProfile from './Profile/PeopleProfile';
+import MyMessages from './MyMessages/Inbox'
+import MyApp from './ReactPDF/MyApp'
 
 class Main extends Component {
   constructor(props) {
@@ -30,7 +36,7 @@ class Main extends Component {
         <Route path="/recruiter-signup" component={RecruiterSignup} />
         <Route exact path="/" component={Home} />
         <Route exact path="/home" component={Home} />
-        <Route path="/profile" component={Profile} />
+        <Route exact path="/profile" component={Profile} />
         <Route path="/my-network" component={MyNetwork} />
         <Route
           path="/analytics-dashboard"
@@ -44,6 +50,12 @@ class Main extends Component {
         <Route path="/jobs/postings" component={JobPostings} />
         <Route exact path="/jobs" component={JobsLandingPage} />
         <Route path="/jobs/results" component={JobsResultsPage} />
+        <Route path="/jobs/saved-jobs" component={SavedJobs} />
+        <Route path="/jobs/apply-job" component={JobApplication} />
+        <Route path="/jobs/applied-jobs" component={AppliedJobs} />
+        <Route path="/profile/:id" component={PeopleProfile} />
+        <Route path="/mymessages" component={MyMessages} />
+        <Route path="/reactpdf" component={MyApp} />
       </div>
     );
   }

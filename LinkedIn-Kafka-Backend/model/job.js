@@ -1,3 +1,4 @@
+
 const mongoose = require("../mongoose");
 const Schema = mongoose.Schema;
 
@@ -7,7 +8,7 @@ var UserSchema = new Schema({
   password: { type: String, required: true },
   Fname: { type: String, trim: true, default: "" },
   Lname: { type: String, trim: true, default: "" },
-  education: [{ type: EducationSchema }],             //changed it from type:string to education schema profile
+  education: { type: String, trim: true, default: "" },
   phone: { type: String, trim: true, default: "" },
   aboutMe: { type: String, trim: true, default: "" },
   company: { type: String, trim: true, default: "" },
@@ -15,12 +16,13 @@ var UserSchema = new Schema({
   state: { type: String, trim: true, default: "" },
   zip: { type: String, trim: true, default: "" },
   gender: { type: String, trim: true, default: "" },
-  experience: [{type: ExperienceSchema}],             //changed it from type:string to experience schema profile
+  experience: { type: String, trim: true, default: "" },
   skills: { type: String, trim: true, default: "" },
   isRecruiter: { type: Boolean, trim: true, default: `0` },
   isApplicant: { type: Boolean, trim: true, default: `0` },
   adminid: { type: Number, trim: true, default: "" }
 });
+
 var Job = new Schema({
   job_id: { type: Number, trim: true },
   title: { type: String, trim: true, default: "" },
@@ -41,22 +43,6 @@ var JobSchema = new Schema({
   views: { type: Number, trim: true }
 });
 
-//experience schema for profile
-var ExperienceSchema = new Schema({
-  designation: { type: String },
-  companyname: { type: String },
-  location: { type: String},
-  responsibility : {type: String}
-});
-
-//education schema for profile
-var EducationSchema = new Schema({
-  school: { type: String },
-  degree: { type: String },
-  fromyear: { type: String},
-  toyear : {type: String}
-});
-
-
 let Job = mongoose.model("job", JobSchema, "job");
 module.exports = Job;
+

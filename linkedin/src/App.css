@@ -38,30 +38,53 @@
   width: 40px;
 }
 
-.header-container{
-  background: #283e4a;
-  padding: 0.25%;
+.linkedIn-logo-login{
+  height: 40px;
+  width: 120px;
 }
 
-.img-container{
-  background: white;
+.header-container{
+  background: #283e4a;
+  padding: 0.3%;
 }
+ 
+ .img-container{
+  background: white
+}  
 
 .header-content-container{
   padding: 10px;
   display: inline;
 }
-
+.iconDesc {
+  float: left;
+  margin-top:-15px;
+}
+.myNetworkimg {
+  margin-top: -30px;
+}
+.iconColor {
+  margin-left: 10px;
+  fill: white;
+}
+.homeiconDesc {
+  margin-top: -25px;
+}
+.myJobs {
+  margin-top: -24px;
+  margin-right: 25px;
+}
 .search-box{
-  margin-left: 20px;
+  margin-left: 10px;
   width: 250px;
-  height: 30px;
+  height: 40px;
   background: #e1e9ee;
   text-indent: 10px;
 }
 
 .nav-links{
   float: right;
+  margin-right: 200px;
 }
 .nav-links p{
   display:inline;
@@ -206,11 +229,11 @@
 }
 .main-div {
   background: #ffffff none repeat scroll 0 0;
-  border-radius: 2px;
-  margin: 10px auto 30px;
+  /* border-radius: 2px; */
+  margin: 0px auto 30px;
   max-width: 38%;
-  padding: 50px 70px 70px 71px;
-  border: 2px solid black;
+  /* padding: 50px 70px 70px 71px; */
+  /* border: 2px solid black; */
 }
 
 .login-form .form-group {
@@ -242,7 +265,7 @@
 }
 .back { text-align: left; margin-top:10px;}
 
-.navbar{
+/* .navbar{
  
   margin-top: -5px;
   padding-left: 5px;
@@ -257,7 +280,7 @@
   font-weight:bold;
   background-color: #F8F8F8;
     border-color: #E7E7E7;
-}
+} */
 
 .wrapper {
   width: 1500px;
@@ -313,13 +336,59 @@ background-color: blue;
 }
 .floatHome {
   float: left;
+  width: 100%;
 }
-.companyDescImage {
+.homeConnectionDetails {
+  font-size: 15px;
+}
+
+.post_job_columns {
+  margin-left: 10px;
   float: left;
+}
+.companyDescImage img{
+  float: left;
+  border-radius: 200%;
 }
 .jobPostingDescriptionInbutBox {
   padding-bottom: 90px;
 }
 .post-job-border {
   border-radius: 2px;
+  margin: 50px 0 0 50px;
 }
+.inputfield {
+  height:50px;
+}
+.jobPosting_boxes {
+  padding-left: 30px; 
+}
+.addJob_title {
+  margin: 20px 0 20px 20px;
+  font-size: 30px;
+  font-weight: bold;
+  color: rgba(0,0,0,.9);
+}
+.form_control_home_location {
+  width: 400px;
+  margin-right: 10px;
+} 
+.selectBox_postJob {
+  height: 50px;
+  width: 200px;
+}
+.apply-logo{
+  height: 25px;
+  width: 25px;
+  background-color: white;
+}
+
+.pad-left-5-pc {
+  padding-left: 5%; 
+}
+.flt-right{
+  float:right;
+}
+
+
+
