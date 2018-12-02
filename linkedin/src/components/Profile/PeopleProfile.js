@@ -13,6 +13,26 @@ class PeopleProfile extends Component{
 
         //bind
         this.addConnection = this.addConnection.bind(this);
+        this.logProfileView = this.logProfileView.bind(this);
+    }
+
+    componentDidMount(){
+        this.logProfileView();
+    }
+
+    logProfileView = ()=>{
+        axios.defaults.withCredentials=true;
+        var data = {
+            profileEmail : "aehari2010@gmail.com",
+            viewTime : new Date()
+        }
+
+        axios.post('http://localhost:3001/log-profile-view', data)
+            .then((response)=>{
+                if(response.status === 200){
+                    console.log('profile view response', response.data);
+                }
+            });
     }
 
     addConnection = ()=>{
