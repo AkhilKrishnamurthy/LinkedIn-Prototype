@@ -21,7 +21,10 @@ class JobApplication extends Component{
     }
 
     componentDidMount(){
-        this.jobViewed();
+        if(this.props.loginStateStore.isAuthenticated === true){
+            this.jobViewed();
+        }
+        
     }
 
     componentWillUnmount(){
@@ -78,6 +81,23 @@ class JobApplication extends Component{
                     }
                 });
         }
+        else if(name == "coverletter"){
+            var coverletter = target.files[0];
+            var data = new FormData();
+            data.append('coverletter', coverletter);
+            console.log('coverletter uploaded!');
+            axios.defaults.withCredentials=true;
+            axios.post('http://localhost:3001/upload_file', data)
+                .then((response)=>{
+                    if(response.status === 200){
+                        console.log('coverletter data', coverletter.name);
+                        this.setState({
+                            coverletter : coverletter.name,
+                            isApplicationHalfFilled: true
+                        });
+                    }
+                });
+        }
         else{
             this.setState({
                 [name] : value,
@@ -112,10 +132,16 @@ class JobApplication extends Component{
                 email : this.state.email,
                 country : this.state.country,
                 address : this.state.address,
+                postedDate : new Date(),
                 city : this.state.city,
                 state : this.state.state,
                 zipcode : this.state.zipcode,
-                resume : this.state.resume
+                source : this.state.source,
+                sponsorship : this.state.sponsorship,
+                diversity : this.state.diversity,
+                disabled: this.state.disabled,
+                resume : this.state.resume,
+                coverletter : this.state.coverletter
             }, 
             jobId : this.props.jobResultsStateStore.result.jobId,
             jobData : this.props.jobResultsStateStore.result
@@ -139,6 +165,9 @@ class JobApplication extends Component{
         var redirectVar = null;
         if(this.state.applicationSubmitted === true){
             redirectVar  = <Redirect to="/"/>
+        }
+        if(this.props.loginStateStore.isAuthenticated === false){
+            // redirectVar  = <Redirect to="/login"/>
         }
         return(
             <div>
@@ -174,23 +203,31 @@ class JobApplication extends Component{
                                 <div className="form-group">
                                     <input type="text" name="zipcode" className="form-control form-control-lg" placeholder="Zip Code" onChange={this.handleChange} required/>
                                 </div>
+                                <div className="form-group">
+                                    <div>How did you hear about us?</div>
+                                    <input type="text" name="source" className="mt-2 form-control form-control-lg" placeholder="Source" onChange={this.handleChange}/>
+                                </div>
+                               
+                                <div className="form-group">
                                 <div> Will you now, or in the future, require sponsorship for employment visa status (e.g. H-1B visa status)? </div>
-                                <div className="form-group form-check">
-                                    <label className="form-check-label">
-                                    <input type="radio" name="yes" className="form-check-input" />Yes</label>
+                                    <input type="text" name="sponsorship" className="mt-2 form-control form-control-lg" placeholder="" onChange={this.handleChange}/>
                                 </div>
-                                <div className="form-group form-check">
-                                    <label className="form-check-label">
-                                    <input type="radio" name="no" className="form-check-input form-control-lg" placeholder="Email"/>No</label>
+                                <div className="form-group">
+                                    <div>Provide your diversity information</div>
+                                    <input type="text" name="diversity" className="mt-2 form-control form-control-lg" placeholder="Diversity" onChange={this.handleChange}/>
                                 </div>
-                                <div className="input-group form-group mb-3 file-container">
-                                    <div className="input-group-prepend">
-                                        <span className="input-group-text">Upload</span>
-                                    </div>
-                                    <div className="custom-file form-group">
-                                        <input type="file" className="custom-file-input form-control form-control-lg" name="resume" id="inputGroupFile01" onChange={this.handleChange} required/>
-                                        <label className="custom-file-label" htmlFor="inputGroupFile01">Choose file</label>
-                                    </div>
+                                <div className="form-group">
+                                    <div>Are you physically challenged?</div>
+                                    <input type="text" name="disabled" className="mt-2 form-control form-control-lg" placeholder="" onChange={this.handleChange}/>
+                                </div>
+                                
+                              <div className="form-group">
+                                    <label htmlFor="resume">Resume</label><br />
+                                        <input type="file" name="resume" id="resume" className="btn btn-lg resume-upload-btn" onChange={this.handleChange} />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="coverletter">Cover Letter</label><br />
+                                        <input type="file" name="coverletter" id="coverletter" className="btn btn-lg resume-upload-btn" onChange={this.handleChange} />
                                 </div>
                                 <div className="form-group">
                                     <button name="apply" className="col-3 btn btn-lg form-control form-control-md apply-job-btn" onClick={this.submitApplication}>Submit</button>
@@ -205,7 +242,8 @@ class JobApplication extends Component{
 }
 //mapstatetoProps
 const mapStateToProps  = state =>({
-    jobResultsStateStore : state.jobResultsStateStore
+    jobResultsStateStore : state.jobResultsStateStore,
+    loginStateStore : state.Login
   });
 
 export default connect(mapStateToProps)(JobApplication);
