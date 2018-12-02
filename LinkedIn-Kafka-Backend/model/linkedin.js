@@ -1,6 +1,25 @@
 const mongoose = require("../mongoose");
 const Schema = mongoose.Schema;
 
+
+//experience schema for profile
+var ExperienceSchema = new Schema({
+  designation: { type: String },
+  companyname: { type: String },
+  location: { type: String},
+  responsibility : {type: String}
+});
+
+//education schema for profile
+var EducationSchema = new Schema({
+  school: { type: String },
+  degree: { type: String },
+  fromyear: { type: String},
+  toyear : {type: String}
+});
+
+
+
 var UserSchema = new Schema({
   // username: { type: String, trim: true, index: { unique: true } },
   adminid: { type: Number, trim: true, default: "" },
@@ -8,15 +27,15 @@ var UserSchema = new Schema({
   password: { type: String, required: true },
   Fname: { type: String, trim: true, default: "" },
   Lname: { type: String, trim: true, default: "" },
-  education: { type: String, trim: true, default: "" },
+  education: [{ type: EducationSchema }],             //changed it from type:string to education schema profile
   phone: { type: String, trim: true, default: "" },
   aboutMe: { type: String, trim: true, default: "" },
   company: { type: String, trim: true, default: "" },
-  city: { type: String, trim: true, default: "" },
+  city: { type: String, trim: true, default: "" },    
   state: { type: String, trim: true, default: "" },
   zip: { type: String, trim: true, default: "" },
   gender: { type: String, trim: true, default: "" },
-  experience: { type: String, trim: true, default: "" },
+  experience: {type:Array},             //changed it from type:string to experience schema profile
   skills: { type: String, trim: true, default: "" },
   //   isRecruiter: { type: Boolean, trim: true, default: `0` },
   //   isApplicant: { type: Boolean, trim: true, default: `0` }
@@ -63,6 +82,11 @@ var LinkedInSchema = new Schema({
   profileviews: [{ type: UserSchema }]
   //  jobDetails: [{ type: JobDetails }]
 });
+
+
+
+
+
 
 let LinkedIn = mongoose.model("LinkedIn", LinkedInSchema, "LinkedIn");
 module.exports = LinkedIn;
