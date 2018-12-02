@@ -1,8 +1,3 @@
-
-
-
-
-
 var connection =  new require('./kafka/connections');
 var mongoose = require("mongoose");
 var applicantsignup = require("./services/applicantsignup");
@@ -34,10 +29,17 @@ var fetchprofile = require("./services/fetchprofile");
 var updatepersonaldetails = require("./services/updatepersonaldetails");
 var updateskills = require("./services/updateskills");
 var updateexperience = require("./services/updateexperience");
-
 //pratik- code ends
 var logProfileView = require('./services/logProfileView');
 var searchPeople = require("./services/searchPeople");
+var getProfileData = require('./services/getProfileData');
+
+//Analytics
+var userclicktrack = require("./services/userclick");
+var getuserclicks = require("./services/getUserClicks");
+var getsavedjobs = require("./services/getsavedjobAnalytics");
+var jobPostingHistory = require("./services/jobPostingHistory");
+var jobformanalytics = require("./services/getjobformanalytics");
 
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
@@ -97,6 +99,13 @@ handleTopicRequest('updatepd_topic',updatepersonaldetails);
 handleTopicRequest('updateskills_topic',updateskills);
 handleTopicRequest('updateexp_topic',updateexperience);
 //pratiks topic ends 
-
 handleTopicRequest('log_profile_view_topic', logProfileView);
 handleTopicRequest("searchPeople_topic", searchPeople)
+handleTopicRequest('get_profile_data_topic', getProfileData);
+
+//Analytics
+handleTopicRequest("user_click_topic", userclicktrack);
+handleTopicRequest("get_userclicks_topic", getuserclicks);
+handleTopicRequest("get_savedjobs_topic", getsavedjobs);
+handleTopicRequest("job_posting_history_topic", jobPostingHistory);
+handleTopicRequest("get_job_form_analytics_topic", jobformanalytics);

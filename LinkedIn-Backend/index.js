@@ -103,6 +103,12 @@ var logApplicationSubmitted = require('./controllers/logApplicationSubmitted');
 var logProfileView = require('./controllers/logProfileView');
 var searchPeople = require("./controllers/searchPeople");
 var submitEditedJobDetails = require("./controllers/submitEditedJobDetails");
+var getProfileData = require('./controllers/getProfileData');
+
+//Analytics
+var analytics = require("./controllers/analytics");
+var jobPostingHistory = require("./controllers/jobPostingHistory");
+var jobFormAnalytics = require("./controllers/jobFormAnalytics");
 
 client.on("connect", function() {
   console.log("Redis client connected");
@@ -427,8 +433,30 @@ app.post("/submitEditedJobDetails", (req, res) => {
 //profile route ends -edit profile
 
 
+/**Analytics  Backend*/
+app.post("/analytics/userclicks", function(req, res) {
+  analytics.userclicks(req, res);
+});
 
 
+app.get("/getuserclicks", function(req, res) {
+  analytics.getuserclicks(req, res);
+});
+app.get("/getsavedjobs", function(req, res) {
+  analytics.getsavedjobs(req, res);
+});
+app.get("/JobPostingHistory", (req, res) => {
+  // req.body.user = req.session.user;
+  console.log("inside job posting history");
+  jobPostingHistory.jobPostingHistory(req, res);
+});
+app.get("/getjobformanalytics/:id", (req, res) => {
+  // req.body.user = req.session.user;
+  console.log("inside job posting history");
+  jobFormAnalytics.jobformanalytics(req, res);
+});
+
+/**Analytics */
 
 app.post('/upload_file', upload.any(), (req, res) => {
 res.send();
@@ -458,6 +486,7 @@ app.use('/log-job-viewed', logJobViewed);
 app.use('/log-app-halffilled', logAppHalffilled);
 app.use('/log-application-submitted', logApplicationSubmitted);
 app.use('/log-profile-view', logProfileView);
+app.use('/get-profile-data', getProfileData);
 
 console.log("Linked Backend!");
 app.listen(3001);

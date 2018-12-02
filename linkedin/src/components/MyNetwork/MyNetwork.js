@@ -50,6 +50,7 @@ class MyNetwork extends Component {
                     this.setState({
                         connectionRequests : response.data
                     });
+
                 }
             });
     }
@@ -65,9 +66,12 @@ class MyNetwork extends Component {
             .then((response)=>{
                 if(response.status === 200){
                     console.log('Response ignore ', response.data);
-                    this.setState({
-                        connectionRequestsUpdated : true
-                    });
+                    // this.setState({
+                    //     connectionRequestsUpdated : true
+                    // });
+                    this.getPendingRequests();
+                    this.getConnections();
+                   
                 }
             });
     }
@@ -82,9 +86,12 @@ class MyNetwork extends Component {
             .then((response)=>{
                 if(response.status === 200){
                     console.log('Response ignore ', response.data);
-                    this.setState({
-                        connectionRequestsUpdated : true
-                    });
+                    // this.setState({
+                    //     connectionRequestsUpdated : true
+                    // });
+                    this.getPendingRequests();
+                    this.getConnections();
+                    
                 }
             });
     }

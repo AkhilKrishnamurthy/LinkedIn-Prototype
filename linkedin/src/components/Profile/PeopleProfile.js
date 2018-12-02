@@ -18,8 +18,22 @@ class PeopleProfile extends Component{
     }
 
     componentDidMount(){
-        this.logProfileView();
+       // this.getProfileData();
+        this.logProfileView();        
     }
+
+    // getProfileData = () =>{
+    //     axios.defaults.withCredentials=true;
+    //     var data = {
+    //         profileId : this.props.match.params.id
+    //     }
+    //     axios.post('http://localhost:3001/get-profile-data', data)
+    //         .then((response)=>{
+    //             if(response.status === 200){
+    //                 console.log('profile data response: ', response.data);
+    //             }
+    //         });
+    // }
 
     logProfileView = ()=>{
         axios.defaults.withCredentials=true;

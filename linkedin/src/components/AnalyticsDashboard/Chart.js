@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { Bar, Line, Pie } from "react-chartjs-2";
+import { HorizontalBar, Bar, Line, Pie } from "react-chartjs-2";
 
 class Chart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      chartData: props.chartData
+      chartData: props.chartData,
+      savedJobData: props.savedJobData,
+      clickJobData: props.clickJobData
     };
   }
 
@@ -19,12 +21,12 @@ class Chart extends Component {
   render() {
     return (
       <div className="chart row">
-        <div className="col-md-4">
-          <Bar
-            data={this.state.chartData}
+        <div className="col-md-6">
+          <HorizontalBar
+            data={this.state.clickJobData}
             options={{
               title: {
-                display: this.props.displayTitle,
+                display: false,
                 text: "Clicks Per Job Posting", // + this.props.location,
                 fontSize: 25
               },
@@ -35,9 +37,9 @@ class Chart extends Component {
             }}
           />
         </div>
-        <div className="col-md-4">
-          <Line
-            data={this.state.chartData}
+        <div className="col-md-6">
+          {/* <Line
+            data={this.state.savedJobData}
             options={{
               title: {
                 display: this.props.displayTitle,
@@ -49,9 +51,23 @@ class Chart extends Component {
                 position: this.props.legendPosition
               }
             }}
+          /> */}
+          <Bar
+            data={this.state.savedJobData}
+            options={{
+              title: {
+                display: this.props.displayTitle,
+                text: "Saved Jobs", // + this.props.location,
+                fontSize: 25
+              },
+              legend: {
+                display: this.props.displayLegend,
+                position: this.props.legendPosition
+              }
+            }}
           />
         </div>
-        <div className="col-md-4">
+        {/* <div className="col-md-4">
           <Pie
             data={this.state.chartData}
             options={{
@@ -66,7 +82,7 @@ class Chart extends Component {
               }
             }}
           />
-        </div>
+        </div> */}
       </div>
     );
   }
