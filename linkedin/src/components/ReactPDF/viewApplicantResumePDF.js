@@ -6,6 +6,7 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import { connect } from "react-redux";
 import axios from "axios";
 import Header from '../Header/Header';
+import {Redirect} from 'react-router';
  
 class ViewApplicantResumePDF extends Component {
   constructor(props){
@@ -20,21 +21,16 @@ class ViewApplicantResumePDF extends Component {
 
 
   async componentDidMount(){
-    console.log(this.props.ViewApplicantResume);
     if(this.props.ViewApplicantResume) {
-    // console.log(this.props.ViewApplicantResume);
-    console.log(this.props.ViewApplicantResume.resume);
     var resume = null;
       var data = {
         "resumeName": this.props.ViewApplicantResume.resume
       }
                  await axios.post('http://localhost:3001/download/'+ this.props.ViewApplicantResume.resume)
             .then(async (response)  => {
-              console.log("response from download",response.data);
               resume = 'data:image/jpg;base64, ' + response.data;
             })
 
-            console.log("response from download",resume);
             this.setState({
               resumeDisplay: resume
             })
@@ -47,10 +43,16 @@ class ViewApplicantResumePDF extends Component {
   }
  
   render() {
+    var redirectVar = null;
+
+        if(!this.props.loginStateStore) {
+            redirectVar = <Redirect to= "/signup"/>
+        }
     const { pageNumber, numPages } = this.state;
  
     return (
       <div>
+        {redirectVar}
         <Header/>
         <Document
           file={this.state.resumeDisplay}
@@ -76,7 +78,8 @@ class ViewApplicantResumePDF extends Component {
 
 // export default MyApp;
 const mapStateToProps = state =>({
-  ViewApplicantResume : state.ViewApplicantResume.result
+  ViewApplicantResume : state.ViewApplicantResume.result,
+  loginStateStore : state.Login.result
 });
 
 //export default JobDisplayPage;

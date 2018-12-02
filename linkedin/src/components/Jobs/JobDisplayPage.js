@@ -3,6 +3,8 @@ import "../../static/css/JobDisplay.css";
 
 import {connect} from 'react-redux';
 import axios from 'axios';
+import {Redirect} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 class JobDisplayPage extends Component {
     constructor(props) {
@@ -27,8 +29,13 @@ class JobDisplayPage extends Component {
     }
 
     render() {
+        var redirectVar = null;
+        if(!this.props.loginStateStore) {
+            redirectVar = <Redirect to= "/signup"/>
+        }
         return (
             <div>
+                {redirectVar}
                 <div className="cover-image-container">
                     <img src="https://wallpapercave.com/wp/0557mer.jpg" alt="cover-img" />
                 </div>
@@ -80,7 +87,8 @@ class JobDisplayPage extends Component {
 
 //
 const mapStateToProps = state =>({
-    jobResultsStateStore : state.jobResultsStateStore
+    jobResultsStateStore : state.jobResultsStateStore,
+    loginStateStore : state.Login.result
 });
 
 //export default JobDisplayPage;

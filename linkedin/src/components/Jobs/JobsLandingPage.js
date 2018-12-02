@@ -106,6 +106,10 @@ class JobsLandingPage extends Component {
     render(){
         var redirectVar = null;
         console.log(this.state.redirectToJobResultsPage)
+
+        if(!this.props.loginStateStore) {
+            redirectVar = <Redirect to= "/signup"/>
+        }
         if(this.state.redirectToJobResultsPage == true){
           redirectVar = <Redirect to="/jobs/results"/>
         }
@@ -226,7 +230,8 @@ class JobsLandingPage extends Component {
 //mapStateToProps
 
 const mapStateToProps  = state =>({
-    saveSearchFieldToStore : state.jobSearchFieldsStateStore
+    saveSearchFieldToStore : state.jobSearchFieldsStateStore,
+    loginStateStore : state.Login.result
   });
   
   

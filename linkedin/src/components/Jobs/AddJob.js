@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import Header from '../Header/Header';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
+import {Redirect} from 'react-router';
+import { connect } from "react-redux";
 
 class AddJobs extends Component{
     constructor(){
@@ -86,8 +88,14 @@ class AddJobs extends Component{
     }
 
     render(){
+        var redirectVar = null;
+        console.log(this.props.loginStateStore);
+        if(!this.props.loginStateStore) {
+            redirectVar = <Redirect to= "/signup"/>
+        }
         return(
             <div>
+                {redirectVar}
             <Header/>
             <div className = "post-job-container">
             <div class="post_job_columns col-lg-7 border post-job-border">
@@ -190,4 +198,8 @@ class AddJobs extends Component{
     }
 }
 
-export default AddJobs;
+// export default AddJobs;
+function mapStateToProps(state) {
+    return { loginStateStore : state.Login.result };
+  }
+export default connect(mapStateToProps, {})(AddJobs);

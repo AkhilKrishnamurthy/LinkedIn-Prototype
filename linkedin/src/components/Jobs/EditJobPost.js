@@ -4,6 +4,7 @@ import axios from 'axios';
 import {Link} from 'react-router-dom';
 import { connect } from "react-redux";
 import {viewApplicantResume} from '../../actions/viewApplicantResumeAction';
+import {Redirect} from 'react-router';
 
 class EditJobPost extends Component{
     constructor(props){
@@ -66,7 +67,6 @@ class EditJobPost extends Component{
 
     componentDidMount() {
         if(this.props.JobHistory.jobId.length>0) {
-            console.log("jobhistoryprops", this.props.JobHistory);
             this.setState({
             companyName: this.props.JobHistory.companyName,
             jobTitle: this.props.JobHistory.jobTitle,
@@ -130,8 +130,13 @@ class EditJobPost extends Component{
     }
 
     render(){
-        console.log("jobid",this.props.JobHistory.jobId);
+        var redirectVar = null;
 
+        if(!this.props.loginStateStore) {
+            redirectVar = <Redirect to= "/signup"/>
+        }
+        else {
+        console.log("jobid",this.props.JobHistory.jobId);
         var applicantArray = null;
         var applicantArray = this.props.JobHistory.applicantData.map((applicantDetail, index)=>{
             console.log("applicant state state state",applicantDetail.state);
@@ -147,9 +152,11 @@ class EditJobPost extends Component{
                 </div>
             )
         });
+    }
 
         return(
             <div>
+                {redirectVar}
             <Header/>
             <div className = "post-job-container">
             <div class="post_job_columns col-lg-7 border post-job-border">
@@ -279,7 +286,8 @@ class EditJobPost extends Component{
 // // export default EditJobPost;
 
 const mapStateToProps = state =>({
-    JobHistory : state.JobPostingHistory.result
+    JobHistory : state.JobPostingHistory.result,
+    loginStateStore : state.Login.result
 });
 
 //export default JobDisplayPage;

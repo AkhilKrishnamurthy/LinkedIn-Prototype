@@ -59,6 +59,9 @@ class JobPostingDetails extends Component{
             console.log("true")
             redirectVar  = <Redirect to="/jobs/edit-job-post"/>
         }
+        if(!this.props.loginStateStore) {
+            redirectVar = <Redirect to= "/recruiter-signup"/>
+        }
 
         if(this.state.postedJobs.length>0) {
         console.log(this.state.postedJobs);
@@ -101,6 +104,7 @@ class JobPostingDetails extends Component{
 
 
 function mapStateToProps(state) {
+    return { loginStateStore : state.Login.result }
     
 };
 

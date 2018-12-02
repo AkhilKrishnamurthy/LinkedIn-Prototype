@@ -3,7 +3,8 @@ import '../../static/css/PeopleProfile.css';
 import Header from '../Header/Header';
 import{Link} from 'react-router-dom';
 import axios from 'axios';
-
+import { connect } from "react-redux";
+import {Redirect} from 'react-router';
 
 class PeopleProfile extends Component{
     
@@ -59,8 +60,14 @@ class PeopleProfile extends Component{
     }
 
     render(){
+        var redirectVar = null;
+
+        if(!this.props.loginStateStore) {
+            redirectVar = <Redirect to= "/signup"/>
+        }
         return(
             <div>
+                 {redirectVar}
                 <Header />
                 <div className="row people-profile-container">
                     <div className="col-lg-1"></div>

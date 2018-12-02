@@ -3,9 +3,15 @@ import {connect} from 'react-redux';
 import Header from '../Header/Header';
 import "../../static/css/SavedJobs.css";
 import {Link} from 'react-router-dom';
+import {Redirect} from 'react-router';
 
 class AppliedJobs extends Component{
     render(){
+        var redirectVar = null;
+        if(!this.props.loginStateStore) {
+            redirectVar = <Redirect to= "/signup"/>
+        }
+        else {
 
         var appliedJobsContent = this.props.jobsLandingPageStateStore.appliedJobs.map(function(job, index){
             return(
@@ -18,10 +24,12 @@ class AppliedJobs extends Component{
                 </div>
             )
         });
+    }
 
 
         return(
             <div className="saved-jobs-main-container">
+            {redirectVar}
                 <Header/>
                 <div>
                 <div className="row mt-5">
@@ -44,7 +52,8 @@ class AppliedJobs extends Component{
 
 //mapStateToProps
 const mapStateToProps = state =>({
-    jobsLandingPageStateStore : state.jobsLandingPageStateStore
+    jobsLandingPageStateStore : state.jobsLandingPageStateStore,
+    loginStateStore : state.Login.result
 });
 
 export default connect(mapStateToProps)(AppliedJobs);

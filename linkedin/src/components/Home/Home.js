@@ -9,22 +9,17 @@ class Home extends Component{
 
     constructor(props){
         super(props);
-        console.log(props);
     }
 
     render(){
         var redirectVar = null;
-        console.log(this.props.loginStateStore);
-        if(this.props.loginStateStore==undefined) {
-            redirectVar = <Redirect to= "/login"/>
+        if(!this.props.loginStateStore) {
+            redirectVar = <Redirect to= "/signup"/>
         }
         var profileName = null;
         if(this.props && this.props.loginStateStore && this.props.loginStateStore.responseFlag) {
             profileName = <p className="profileDescriptionHome">{this.props.loginStateStore.FName}</p>
         }
-        // else {
-        //     redirectVar = <Redirect to= "/login"/>
-        // }
         
         return(
             <div>
@@ -149,7 +144,6 @@ class Home extends Component{
 }
 
 function mapStateToProps(state) {
-    console.log("Login state update",state);
     return { loginStateStore : state.Login.result };
   }
 export default connect(mapStateToProps, {})(Home);

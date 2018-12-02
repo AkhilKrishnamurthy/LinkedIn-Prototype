@@ -46,7 +46,7 @@ class PeopleSearch extends Component {
 render() {
     var redirectVar = null;
     if(this.props.loginStateStore.isAuthenticated === false){
-        redirectVar  = <Redirect to="/login"/>
+        redirectVar  = <Redirect to="/signup"/>
     }
 
     var requestProfiles = null;

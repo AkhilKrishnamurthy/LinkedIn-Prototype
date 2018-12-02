@@ -4,6 +4,7 @@ import "../../static/css/JobApplication.css";
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 
 class JobApplication extends Component{
     constructor(props){
@@ -167,7 +168,7 @@ class JobApplication extends Component{
             redirectVar  = <Redirect to="/"/>
         }
         if(this.props.loginStateStore.isAuthenticated === false){
-            // redirectVar  = <Redirect to="/login"/>
+            redirectVar = <Redirect to= "/signup"/>
         }
         return(
             <div>
