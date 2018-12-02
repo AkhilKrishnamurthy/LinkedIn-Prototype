@@ -3,7 +3,7 @@ exports.jobPostingHistory = function(req, res) {
   console.log("Inside postJob as a recruiter Handler");
   console.log(req.session.user);
   var user = {
-      username : req.session.user
+      username : "abc@gmail.com"
   };
   kafka.make_request("job_posting_history_topic", user, function(err, results) {
       console.log(user);
