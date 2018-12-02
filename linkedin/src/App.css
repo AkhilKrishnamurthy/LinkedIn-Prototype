@@ -52,6 +52,12 @@
   background: #283e4a;
   padding: 0.3%;
 }
+.header_Nav {
+  margin-top: 10%;
+}
+.nav-link-width {
+  font-size: 12px;
+}
  
  .img-container{
   background: white
@@ -158,10 +164,6 @@
   border: 2px solid black;
 }
 
-.jobs-result-container{
-  /* text-align: initial; */
-  /* background-color: #61dafb; */
-}
 
 .jobs-result-details-container{
   /* background-color: yellow; */

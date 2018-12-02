@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {login} from '../../actions/LoginAction';
 import {Redirect} from 'react-router';
 import Header from '../Header/JobHeader';
+import {saveSearchPeopleFieldToStore} from '../../actions/peopleSearchAction';
 import profilePic from '../pp.jpg';
 
 class JobHeader extends Component {
@@ -13,9 +14,14 @@ class JobHeader extends Component {
         console.log(props);
         this.handleLogout = this.handleLogout.bind(this);
         this.state = {
-          redirectToHome : false
+          redirectToHome : false,
+          redirectToPeopleResultsPage: false,
         }
+
+        //bind
         this.handleLogoClick = this.handleLogoClick.bind(this);
+        this.searchResultsHandler = this.searchResultsHandler.bind(this);
+        this.queryChangeHandler = this.queryChangeHandler.bind(this);
     }
 
     handleLogoClick= ()=>{
@@ -27,9 +33,37 @@ class JobHeader extends Component {
       window.location.reload();
   }
 
-    render() {
+    
+ 
+    
+  searchResultsHandler = (e) => {
+    var data = {
+        query : this.state.query,
+    }
+    console.log("Inside search results")
 
-      var redirectVar =null;
+    this.props.saveSearchPeopleFieldToStore(data);
+    this.setState({
+        redirectToPeopleResultsPage : true
+      });
+       
+}
+
+queryChangeHandler = (e) => {
+    this.setState({
+        query: e.target.value
+    })
+}
+
+    render() {
+      {
+        var redirectVar = null;
+        console.log(this.state.redirectToPeopleResultsPage)
+        if(this.state.redirectToPeopleResultsPage == true){
+          redirectVar = <Redirect to="/people/results"/>
+        }
+
+     // var redirectVar =null;
       if(this.state.redirectToHome === true){
         redirectVar = <Redirect to="/home" />
       }
@@ -38,19 +72,25 @@ class JobHeader extends Component {
         if(this.props.loginStateStore.accountType=="2") {
           recruiterHeader = (
             <li className="nav-item">
-            <Link className="nav-link" to= "/jobs/add-job"><center><i className="fas fa-suitcase"></i></center>Post a Job</Link>
+            <Link className="nav-link" to= "/jobs/add-job"><center><i className="fas fa-suitcase"></i></center>Post Job</Link>
           </li>
           );
         }
     }
-        return (
-          
-          <div className = "job-header-main-div">
+        return (        
+          <div className = "header-container">
           {redirectVar}
           <nav className="navbar navbar-expand-md jobheader">
-          <div className = "job-header-logo-holder">
-           <img className="img-container linkedIn-logo" src="http://www.theredbrickroad.com/wp-content/uploads/2017/05/linkedin-logo-copy.png" alt="logo"></img>
-          </div>
+          
+          <div className="container">
+                         <img className="img-container linkedIn-logo" src="http://www.theredbrickroad.com/wp-content/uploads/2017/05/linkedin-logo-copy.png" alt="logo"></img>
+                         <input className="search-box rounded" value = {this.state.query} onChange={this.queryChangeHandler} type="text" placeholder="Search"/>
+                         <button
+                className="btn btn-outline-success btn-login my-2 my-sm-0"
+                type="submit" onClick={this.searchResultsHandler}
+              >Search</button>
+
+              </div>
 
         <div className="collapse navbar-collapse navbar-right nav-links" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto"> 
@@ -78,11 +118,13 @@ class JobHeader extends Component {
                          <br/>
            Me<span className="glyphicon glyphicon-user pull-right"></span></Link>
            <ul className="dropdown-menu">
-           {/* <li><Link to= "/jobs/posting-details">Posted Jobs</Link><span className="glyphicon glyphicon-log-out pull-right"></span></li> */}
            <li><span className="glyphicon glyphicon-log-out"><Link to="/jobs/posting-details" className = "text-dark">Posted Jobs</Link></span></li>
            <li className = "dropdownFontColor"><span className="glyphicon glyphicon-log-out pull-right"><Link to="/profile" className = "text-dark">Profile</Link></span></li>
+           {/* <li><Link to= "/jobs/posting-details">Posted Jobs</Link><span className="glyphicon glyphicon-log-out pull-right"></span></li> */}
+           {/* <li><a>Profile<span className="glyphicon glyphicon-log-out pull-right"></span></a></li> */}
              <li className="divider"></li>
              <li><span className="glyphicon glyphicon-log-out"><Link to="/login" onClick = {this.handleLogout} className = "text-dark">Sign Out</Link></span></li>
+             {/* <li><Link onClick = {this.handleLogout} to="#">Sign Out<span className="glyphicon glyphicon-log-out pull-right"></span></Link></li> */}
            </ul>
          </li>
        </ul>
@@ -102,9 +144,16 @@ class JobHeader extends Component {
         );
     }
 }
-function mapStateToProps(state) {
+}
+
+const mapStateToProps  = state =>({
+  saveSearchPeopleFieldToStore : state.peopleSearchFieldsStateStore,
+  loginStateStore : state.Login.result
+});
+
+/* function mapStateToProps (state) {
   console.log("Login state update",state.Login.result);
   return { loginStateStore : state.Login.result };
-}
-export default connect(mapStateToProps, {})(JobHeader);
+} */
+export default connect(mapStateToProps, {saveSearchPeopleFieldToStore})(JobHeader);
 // export default JobHeader;
