@@ -90,7 +90,21 @@ class JobApplication extends Component{
     
     submitApplication = () =>{
 
+        axios.defaults.withCredentials=true;
 
+        var logData = {
+            jobId: this.props.jobResultsStateStore.result.jobId,
+            jobTitle: this.props.jobResultsStateStore.result.jobTitle
+        }
+
+        axios.post('http://localhost:3001/log-application-submitted', logData)
+            .then((response)=>{
+                if(response.status === 200){
+                    console.log('Log application submitted done!')
+                }
+            });
+
+    
         var data = {
             applicationData : {
                 firstname : this.state.firstname,
@@ -107,7 +121,7 @@ class JobApplication extends Component{
             jobData : this.props.jobResultsStateStore.result
             
         }
-        axios.defaults.withCredentials=true;
+        
         axios.post('http://localhost:3001/apply-job', data)
             .then((response)=>{
                 if(response.status === 200){

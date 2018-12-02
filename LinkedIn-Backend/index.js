@@ -97,6 +97,7 @@ var acceptRequest = require('./controllers/acceptRequest');
 var getConnections = require('./controllers/getConnections');
 var logJobViewed = require('./controllers/logJobViewed');
 var logAppHalffilled = require('./controllers/logAppHalffilled');
+var logApplicationSubmitted = require('./controllers/logApplicationSubmitted');
 
 client.on("connect", function() {
   console.log("Redis client connected");
@@ -222,6 +223,7 @@ app.use('/accept-request', acceptRequest);
 app.use('/get-connections', getConnections);
 app.use('/log-job-viewed', logJobViewed);
 app.use('/log-app-halffilled', logAppHalffilled);
+app.use('/log-application-submitted', logApplicationSubmitted);
 
 console.log("Linked Backend!");
 app.listen(3001);
