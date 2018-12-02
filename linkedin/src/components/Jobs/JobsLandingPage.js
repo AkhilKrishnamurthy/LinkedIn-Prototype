@@ -30,9 +30,9 @@ class JobsLandingPage extends Component {
   }
 
   componentDidMount(){
-    this.getSavedJobs();
-    this.getAppliedJobs();
     this.getInterestedJobs();
+    this.getSavedJobs();
+    this.getAppliedJobs();    
   }
 
   getInterestedJobs = ()=>{
