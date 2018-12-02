@@ -83,7 +83,6 @@ var kafka = require("./kafka/client");
 var applicantsignup = require("./controllers/applicantsignup");
 var recruitersignup = require("./controllers/recruitersignup");
 var postJobRecruiter = require("./controllers/postJobRecruiter");
-var submitEditedJobDetails = require("./controllers/submitEditedJobDetails");
 var jobs = require("./controllers/jobs");
 var saveJob = require('./controllers/saveJob');
 var savedJobs = require('./controllers/savedJobs');
@@ -98,6 +97,9 @@ var getPendingRequests = require('./controllers/getPendingRequests');
 var ignoreRequest = require('./controllers/ignoreRequest');
 var acceptRequest = require('./controllers/acceptRequest');
 var getConnections = require('./controllers/getConnections');
+var logJobViewed = require('./controllers/logJobViewed');
+var logAppHalffilled = require('./controllers/logAppHalffilled');
+var logApplicationSubmitted = require('./controllers/logApplicationSubmitted');
 
 client.on("connect", function() {
   console.log("Redis client connected");
@@ -114,7 +116,6 @@ client.get("my test key", function(error, result) {
   }
   console.log("GET result ->" + result);
 });
-var getAppliedJobs = require('./controllers/getAppliedJobs');
 
 app.post('/download/:file(*)',(req, res) => {
   console.log("Inside download file",req.params);
@@ -125,6 +126,9 @@ app.post('/download/:file(*)',(req, res) => {
   res.writeHead(200, {'Content-Type': 'image/jpg' });
   res.end(base64img);
 });
+
+
+var getAppliedJobs = require('./controllers/getAppliedJobs');
 
 app.post("/applicant/signup", (req, res) => {
   applicantsignup.applicantsignup(req, res);
@@ -142,22 +146,11 @@ app.post("/submitJobDetails", (req, res) => {
   postJobRecruiter.postJobRecruiter(req,res);
 });
 
-app.post("/submitEditedJobDetails", (req, res) => {
-  console.log("inside edit job post");
-  console.log(req.body);
-  req.body.user = req.session.user;
-  console.log(req.session.user);
-  submitEditedJobDetails.submitEditedJobDetails(req,res);
-});
-
 app.get("/JobPostingHistory", (req, res) => {
   // req.body.user = req.session.user;
   console.log("inside job posting history");
   jobPostingHistory.jobPostingHistory(req,res);
 });
-
-
-
 
 app.post("/login", function(req, res) {
   console.log("Inside Login Post Request", req.body);
@@ -218,6 +211,215 @@ app.post("/login", function(req, res) {
   });
 });
 
+
+
+
+
+//****************************** */
+
+// profile route starts -edit profile
+
+
+app.post('/FetchProfile',function(req,res){
+
+  console.log("inside fetch profie route",req.body);
+
+  kafka.make_request("fetchprofile1_topic", req.body, function(err, results) {
+
+      console.log("Inside Profile Fetch ");
+      console.log(typeof results);
+  
+      if (err) {
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: err
+        });
+      } else {
+        if (typeof results === "string") {
+          res.sendStatus(400).end();
+        } else {
+          res.code = "200";
+          res.send({
+            docs:results                                 //docs:results.docs
+          });
+          console.log("Profile is popluated by data");
+          res.end("Profile is populated");
+        }
+      }
+    });      
+  
+})
+
+
+
+//axios profile save changes - Personal Details start
+
+
+app.post('/updatepdprofile',function(req,res){
+    
+  console.log("Inside Update Profile Post Request mlab");
+  console.log("request body is",req.body);
+  kafka.make_request("updatepd_topic", req.body, function(err, results) {
+
+    console.log("Inside Personal detail Update Profile ");
+    console.log(typeof results);
+
+    if (err) {
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: err
+      });
+    }
+    else {
+      console.log("inside else1");
+      if (results.code === "400") {
+       // console.log(results.value);
+       console.log("inside 400");
+        res.sendStatus(400).end();
+      } else if(results.code === "200"){
+        res.code = "200";
+        console.log(" PD is updated");
+        res.sendStatus(200).end("PD of the profile is updated");
+        }
+    }
+    });      
+  
+});
+
+
+
+//axios profile save changes - Personal Details end
+
+
+//axios profile save changes - Experience start
+
+
+app.post('/updateexpprofile',function(req,res){
+    
+  console.log("Inside Update Profile Post Request mlab");
+  console.log("request body is",req.body);
+  kafka.make_request("updateexp_topic", req.body, function(err, results) {
+
+    console.log("Inside Experience Update Profile ");
+    console.log(typeof results);
+
+    if (err) {
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: err
+      });
+    } else {
+      console.log("inside else1");
+      if (results.code === "400") {
+       // console.log(results.value);
+       console.log("inside 400");
+        res.sendStatus(400).end();
+      } else if(results.code === "200"){
+        res.code = "200";
+        console.log(" Experience is updated1233");
+        res.sendStatus(200).end("Experience of the profile is updated");
+        }
+    }
+    });      
+  
+});
+
+
+
+//axios profile save changes _ Experience end
+
+
+//axios profile save changes _ Education start
+
+
+app.post('/updateeduprofile',function(req,res){
+    
+  console.log("Inside Update Profile Post Request mlab");
+  console.log("request body is",req.body);
+  kafka.make_request("updateedu_topic", req.body, function(err, results) {
+
+    console.log("Inside Update Education Profile ");
+    console.log(typeof results);
+
+    if (err) {
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: err
+      });
+    } else {
+      if (results.code === 400) {
+        console.log(results.value);
+        res.sendStatus(400).end();
+      } else if(results.code === 200){
+        res.code = "200";
+        console.log("Education  is updated");
+        res.sendStatus(200).end("Education of the profile is updated");
+        }
+      }
+    });      
+  
+});
+
+
+//axios profile save changes _ Education end
+
+//axios profile save changes _ Skills start
+
+app.post('/updateskillsprofile',function(req,res){
+    
+  console.log("Inside Update Profile Post Request mlab");
+  console.log("request body is",req.body);
+  kafka.make_request("updateskills_topic", req.body, function(err, results) {
+
+      console.log("Inside Update Profile ");
+      console.log(typeof results);
+  
+      if (err) {
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: err
+        });
+      } else {
+        console.log("inside else1");
+        if (results.code === "400") {
+         // console.log(results.value);
+         console.log("inside 400");
+          res.sendStatus(400).end();
+        } else if(results.code === "200"){
+          res.code = "200";
+          console.log(" Skills is updated");
+          res.sendStatus(200).end("Skills of the profile is updated");
+          }
+      }
+    });      
+  
+});
+
+app.post("/submitEditedJobDetails", (req, res) => {
+  console.log("inside edit job post");
+  console.log(req.body);
+  req.body.user = req.session.user;
+  console.log(req.session.user);
+  submitEditedJobDetails.submitEditedJobDetails(req,res);
+});
+
+
+
+
+//axios profile save changes _ Skills end
+
+
+//profile route ends -edit profile
+
+
+
+
+
 app.post('/upload_file', upload.any(), (req, res) => {
 res.send();
 });
@@ -242,6 +444,10 @@ app.use('/get-pending-requests', getPendingRequests);
 app.use('/ignore-request', ignoreRequest);
 app.use('/accept-request', acceptRequest);
 app.use('/get-connections', getConnections);
+app.use('/log-job-viewed', logJobViewed);
+app.use('/log-app-halffilled', logAppHalffilled);
+app.use('/log-application-submitted', logApplicationSubmitted);
+
 console.log("Linked Backend!");
 app.listen(3001);
 console.log("Server Listening on port 3001");

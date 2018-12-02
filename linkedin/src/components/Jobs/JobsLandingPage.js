@@ -30,9 +30,9 @@ class JobsLandingPage extends Component {
   }
 
   componentDidMount(){
-    this.getSavedJobs();
-    this.getAppliedJobs();
     this.getInterestedJobs();
+    this.getSavedJobs();
+    this.getAppliedJobs();    
   }
 
   getInterestedJobs = ()=>{
@@ -199,8 +199,8 @@ class JobsLandingPage extends Component {
                             </div>                
                         </div>
 
-        <div class="album py-5 bg-light">
-        <div class="container">
+        <div className="album py-5 bg-light">
+        <div className="container">
 
         <div>
             <p><b>Jobs you may be interested in</b></p>

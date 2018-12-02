@@ -1,3 +1,7 @@
+
+
+
+
 const mongoose = require("../mongoose");
 const Schema = mongoose.Schema;
 
@@ -7,7 +11,7 @@ var UserSchema = new Schema({
  password: { type: String, required: true },
  Fname: { type: String, trim: true, default: "" },
  Lname: { type: String, trim: true, default: "" },
- education: { type: String, trim: true, default: "" },
+ education: {type:Array},             //changed it from type:string to type array for editprofile
  phone: { type: String, trim: true, default: "" },
  aboutMe: { type: String, trim: true, default: "" },
  company: { type: String, trim: true, default: "" },
@@ -15,7 +19,7 @@ var UserSchema = new Schema({
  state: { type: String, trim: true, default: "" },
  zip: { type: String, trim: true, default: "" },
  gender: { type: String, trim: true, default: "" },
- experience: { type: String, trim: true, default: "" },
+ experience: {type:Array},            //changed it from type:string to type array for editprofile
  skills: { type: String, trim: true, default: "" },
 
 
@@ -34,7 +38,19 @@ var Job = new Schema({
  jobfunction: { type: String, trim: true, default: "" },
  posteddate: { type: String, trim: true, default: "" }
 });
+/*
+var JobPostings = new Schema({
+ job_id: { type: Number, trim: true },
+ title: { type: String, trim: true, default: "" },
+ description: { type: String, trim: true, default: "" },
+ industry: { type: String, trim: true, default: "" },
+ emptype: { type: String, trim: true, default: "" },
+ location: { type: String, trim: true, default: "" },
 
+ jobfunction: { type: String, trim: true, default: "" },
+ posteddate: { type: String, trim: true, default: "" }
+});
+*/
 var JobPostings = new Schema({
     jobId: {type: "String", trim:true, default: ""},
     user:{ type: String, trim: true },
@@ -58,9 +74,9 @@ var JobDetails = new Schema({
 var LinkedInSchema = new Schema({
  user: { type: UserSchema },
  JobPostings: [{ type: JobPostings }],
- appliedJobs: [{ type: JobDetails }],
- connections: [{ type: UserSchema }],
- savedjobs: [{ type: Job }],
+ appliedJobs: Array,
+ connections: Array,
+ savedjobs: Array,
  profileviews: [{ type: UserSchema }],
  connectionRequests: Array
  //  jobDetails: [{ type: JobDetails }]
@@ -68,3 +84,4 @@ var LinkedInSchema = new Schema({
 
 let LinkedIn = mongoose.model("LinkedIn", LinkedInSchema, "LinkedIn");
 module.exports = LinkedIn;
+

@@ -1,3 +1,8 @@
+
+
+
+
+
 var connection =  new require('./kafka/connections');
 var mongoose = require("mongoose");
 var applicantsignup = require("./services/applicantsignup");
@@ -19,7 +24,18 @@ var getPendingRequests = require('./services/getPendingRequests');
 var ignoreRequest = require('./services/ignoreRequest');
 var acceptRequest = require('./services/acceptRequest');
 var getConnections = require('./services/getConnections');
+var logJobViewed = require('./services/logJobViewed');
+var logAppHalffilled = require('./services/logAppHalffilled');
+var logApplicationSubmitted = require('./services/logApplicationSubmitted');
 var editJobRecruiter = require('./services/editJobRecruiter');
+//pratik -  code starts
+
+var fetchprofile = require("./services/fetchprofile");
+var updatepersonaldetails = require("./services/updatepersonaldetails");
+var updateskills = require("./services/updateskills");
+var updateexperience = require("./services/updateexperience");
+
+//pratik- code ends
 
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
@@ -69,4 +85,14 @@ handleTopicRequest('get_pending_requests', getPendingRequests);
 handleTopicRequest('ignore_request_topic', ignoreRequest);
 handleTopicRequest('accept_request_topic', acceptRequest);
 handleTopicRequest('get_connections_topic', getConnections);
+handleTopicRequest('log_job_viewed_topic', logJobViewed);
+handleTopicRequest('log_app_halffilled_topic', logAppHalffilled);
+handleTopicRequest('log_application_submitted_topic', logApplicationSubmitted);
 handleTopicRequest("editJob_recruiter_topic", editJobRecruiter);
+//pratiks topic starts - edit profile topics
+handleTopicRequest('fetchprofile1_topic',fetchprofile);
+handleTopicRequest('updatepd_topic',updatepersonaldetails);
+handleTopicRequest('updateskills_topic',updateskills);
+handleTopicRequest('updateexp_topic',updateexperience);
+//pratiks topic ends 
+
