@@ -159,21 +159,21 @@ class EditJobPost extends Component{
             <span className="jobPosting_boxes">
             <p>Company</p>
             <div>
-            <input onChange = {this.companyNameChangeHandler} value={this.state.companyName} type="text" className="form-control inputfield" name="companyName" placeholder="Company Name"/>
+            <input onChange = {this.companyNameChangeHandler} value={this.state.companyName} required type="text" className="form-control inputfield" name="companyName" placeholder="Company Name"/>
             </div>
             </span>
             
             <span className="jobPosting_boxes">
             <p>Job Title</p>
             <div>
-            <input onChange = {this.jobTitleChangeHandler} value={this.state.jobTitle} type="text" className="form-control inputfield" name="jobTitle" placeholder="Job Title"/>
+            <input onChange = {this.jobTitleChangeHandler} value={this.state.jobTitle} required type="text" className="form-control inputfield" name="jobTitle" placeholder="Job Title"/>
             </div>
             </span>
 
             <span className="jobPosting_boxes">
             <p>Location</p>
             <div>
-            <input onChange = {this.locationChangeHandler} value={this.state.location} type="text" className="form-control inputfield" name="location" placeholder="location"/>
+            <input onChange = {this.locationChangeHandler} value={this.state.location} required type="text" className="form-control inputfield" name="location" placeholder="location"/>
             </div>
             </span>
             </div>
@@ -182,7 +182,7 @@ class EditJobPost extends Component{
             <span className="jobPosting_boxes">
             <p>Employment Type</p>
             <div>
-            <select onChange = {this.employmentTypeChangeHandler} value={this.state.employmentType} className="selectBox_postJob" name="employmentType">
+            <select onChange = {this.employmentTypeChangeHandler} value={this.state.employmentType} required className="selectBox_postJob" name="employmentType">
                 <option value="Full-time">Full-time</option>
                 <option value="Part-time">Part-time</option>
                 <option value="Contract">Contract</option>
@@ -200,14 +200,14 @@ class EditJobPost extends Component{
             <span className="jobPosting_boxes">
             <p>Company Industry</p>
             <div>
-            <input onChange = {this.industryChangeHandler} value={this.state.industry} type="text" className="form-control inputfield form_control_home_location" name="industry" placeholder="Industry"/>
+            <input onChange = {this.industryChangeHandler} value={this.state.industry} type="text" required className="form-control inputfield form_control_home_location" name="industry" placeholder="Industry"/>
             </div>
             </span>
             
             <span className="jobPosting_boxes">
             <p>Seniority Level</p>
             <div>
-            <select onChange = {this.seniorityLevelChangeHandler} value={this.state.seniorityLevel} className="selectBox_postJob" name="seniorityLevel">
+            <select onChange = {this.seniorityLevelChangeHandler} value={this.state.seniorityLevel} required className="selectBox_postJob" name="seniorityLevel">
                 <option value="Internship">Internship</option>
                 <option value="Entry-level">Entry-level</option>
                 <option value="Mid-Senior level">Mid-Senior level</option>
@@ -224,7 +224,7 @@ class EditJobPost extends Component{
            <span className="jobPosting_boxes">
             <p>Job Description</p>
             <div>
-            <input onChange = {this.jobDescriptionChangeHandler} value={this.state.jobDescription} type="text" className="form-control inputfield jobPostingDescriptionInbutBox" name="jobDescription" placeholder="Job Description"/>
+            <input onChange = {this.jobDescriptionChangeHandler} value={this.state.jobDescription} required type="text" className="form-control inputfield jobPostingDescriptionInbutBox" name="jobDescription" placeholder="Job Description"/>
             </div>
             </span>
             </div>
@@ -233,7 +233,7 @@ class EditJobPost extends Component{
             <span className="jobPosting_boxes">
             <p>Company Logo</p>
             <div className="company_pic">
-            <input type="file" name="selectedFile" onChange={this.onChange} multiple/>
+            <input type="file" name="selectedFile" onChange={this.onChange} required multiple/>
             </div>
             </span>
             </div>

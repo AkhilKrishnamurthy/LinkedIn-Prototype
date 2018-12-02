@@ -101,6 +101,7 @@ var logJobViewed = require('./controllers/logJobViewed');
 var logAppHalffilled = require('./controllers/logAppHalffilled');
 var logApplicationSubmitted = require('./controllers/logApplicationSubmitted');
 var logProfileView = require('./controllers/logProfileView');
+var submitEditedJobDetails = require("./controllers/submitEditedJobDetails");
 
 client.on("connect", function() {
   console.log("Redis client connected");

@@ -5,6 +5,7 @@ import sample from './Redux.pdf'
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import { connect } from "react-redux";
 import axios from "axios";
+import Header from '../Header/Header';
  
 class ViewApplicantResumePDF extends Component {
   constructor(props){
@@ -50,6 +51,7 @@ class ViewApplicantResumePDF extends Component {
  
     return (
       <div>
+        <Header/>
         <Document
           file={this.state.resumeDisplay}
           onLoadSuccess={this.onDocumentLoadSuccess}
