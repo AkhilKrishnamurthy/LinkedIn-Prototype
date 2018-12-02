@@ -1,4 +1,4 @@
-var model = require('../model/linkedin_mockup');
+var model = require('../model/linkedin');
 
 function handle_request(message, callback){
 
@@ -24,15 +24,15 @@ function handle_request(message, callback){
     
 
     model.find({
-        "email" : message
+        "user.email" : message
     }, (err, result)=>{
         if(err){
             console.log('Error in Retrieving profile data', err);
             callback(err, null);
         }
         else{
-            console.log('Profile data', result);
-            callback(null, result);
+            console.log('Profile data', result[0].user);
+            callback(null, result[0].user);
         }
     });
 

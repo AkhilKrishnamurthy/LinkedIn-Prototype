@@ -11,6 +11,8 @@ var cookieParser = require("cookie-parser");
 const mongoClient = require("mongodb").MongoClient();
 var mysql = require("mysql");
 var {mongoose} = require('./mongoose');
+const path = require('path');
+const fs = require('fs');
 
 
 var cors = require("cors");
@@ -90,7 +92,12 @@ var applyJob = require("./controllers/applyJob");
 var jobPostingHistory = require("./controllers/jobPostingHistory");
 var getProfile = require('./controllers/getProfile');
 var getInterestedJobs = require('./controllers/getInterestedJobs');
-var jobsearch = require('./controllers/jobsearch')
+var jobsearch = require('./controllers/jobsearch');
+var sendConnectionRequest = require('./controllers/sendConnectionRequest');
+var getPendingRequests = require('./controllers/getPendingRequests');
+var ignoreRequest = require('./controllers/ignoreRequest');
+var acceptRequest = require('./controllers/acceptRequest');
+var getConnections = require('./controllers/getConnections');
 
 client.on("connect", function() {
   console.log("Redis client connected");
@@ -108,6 +115,16 @@ client.get("my test key", function(error, result) {
   console.log("GET result ->" + result);
 });
 var getAppliedJobs = require('./controllers/getAppliedJobs');
+
+app.post('/download/:file(*)',(req, res) => {
+  console.log("Inside download file",req.params);
+  var file = req.params.file;
+  var fileLocation = path.join(__dirname + '/uploads',file);
+  var img = fs.readFileSync(fileLocation);
+  var base64img = new Buffer(img).toString('base64');
+  res.writeHead(200, {'Content-Type': 'image/jpg' });
+  res.end(base64img);
+});
 
 app.post("/applicant/signup", (req, res) => {
   applicantsignup.applicantsignup(req, res);
@@ -201,40 +218,9 @@ app.post("/login", function(req, res) {
   });
 });
 
-// app.post('/jobs/search', function(req,res){
-//   // console.log("Inside search jobs" + req.body.jobTitle + " " + req.body.location);
- 
-//     jobPosts.find(
-//          {$and: [
-//               //  {jobTitle : req.body.jobTitle} , 
-//               { $or : [ { jobTitle : { $regex : new RegExp(req.body.jobTitle, "i") } }, { companyName : { $regex : new RegExp(req.body.companyName, "i") } } ]},
-//               { location : { $regex : new RegExp(req.body.location, "i") } },
-//            ]
-//          }, function(err,jobs){
-//              console.log("Inside jobs search again")
-//              if (err) {
-//                  console.log("err");
-//                  res.code = "400";
-//                  res.value = "Fetching jobs failed";
-//                  console.log(res.value);
-//                  res.sendStatus(400).end(); 
-//              } else{
-//                  console.log("success")
-//                  res.code = "200";
-//                  res.value = jobs;
-//                  console.log("Jobs list fetched" + JSON.stringify(jobs));
-//                  res.send(JSON.stringify(jobs));
-//              }
-//          })
-   
-//  })
-
-
 app.post('/upload_file', upload.any(), (req, res) => {
 res.send();
 });
-
-
 
 app.use('/jobs', jobs);
 app.use('/jobsearch', jobsearch)
@@ -248,16 +234,14 @@ app.post("/analytics/userclicks",
  });
 app.use('/get-interested-jobs', getInterestedJobs);
 
-
-//  app.post("/jobsearch",
-//  function(req, res) {
-//    jobsearch.(req, res);
-//  });
-
-
 app.use('/apply-job', applyJob);
 app.use('/getAppliedJobs',getAppliedJobs);
 app.use('/get-profile', getProfile);
+app.use('/send-connection-request', sendConnectionRequest);
+app.use('/get-pending-requests', getPendingRequests);
+app.use('/ignore-request', ignoreRequest);
+app.use('/accept-request', acceptRequest);
+app.use('/get-connections', getConnections);
 console.log("Linked Backend!");
 app.listen(3001);
 console.log("Server Listening on port 3001");

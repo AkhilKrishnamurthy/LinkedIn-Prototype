@@ -13,7 +13,12 @@ var getAppliedJobs = require('./services/getAppliedJobs');
 var jobPostingHistory = require("./services/jobPostingHistory");
 var getProfile = require('./services/getProfile');
 var getInterestedJobs = require('./services/getInterestedJobs');
-var jobsearch = require('./services/jobsearch');
+var jobsearch = require('./services/jobsearch')
+var sendConnectionRequest = require('./services/sendConnectionRequest');
+var getPendingRequests = require('./services/getPendingRequests');
+var ignoreRequest = require('./services/ignoreRequest');
+var acceptRequest = require('./services/acceptRequest');
+var getConnections = require('./services/getConnections');
 var editJobRecruiter = require('./services/editJobRecruiter');
 
 function handleTopicRequest(topic_name, fname) {
@@ -59,4 +64,9 @@ handleTopicRequest("job_posting_history_topic", jobPostingHistory);
 handleTopicRequest("get_profile_topic", getProfile);
 handleTopicRequest('get_interested_jobs', getInterestedJobs);
 handleTopicRequest("jobsearch_topic", jobsearch);
+handleTopicRequest('send_connection_request', sendConnectionRequest);
+handleTopicRequest('get_pending_requests', getPendingRequests);
+handleTopicRequest('ignore_request_topic', ignoreRequest);
+handleTopicRequest('accept_request_topic', acceptRequest);
+handleTopicRequest('get_connections_topic', getConnections);
 handleTopicRequest("editJob_recruiter_topic", editJobRecruiter);

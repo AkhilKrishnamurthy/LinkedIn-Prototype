@@ -3,6 +3,7 @@ import Header from '../Header/Header';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 import { connect } from "react-redux";
+import {viewApplicantResume} from '../../actions/viewApplicantResumeAction';
 
 class EditJobPost extends Component{
     constructor(props){
@@ -121,7 +122,8 @@ class EditJobPost extends Component{
         const id = target.id;
         console.log("true");
         console.log(this.props.JobHistory.applicantData[id]);
-        // this.props.postedJobs(this.state.postedJobs[id]);
+        this.props.viewApplicantResume(this.props.JobHistory.applicantData[id]);
+        // this.props.viewAppliedApplicantResume(this.props.JobHistory.applicantData[id]);
         // this.setState({
         //     redirectToJobEditPage : true
         // });
@@ -135,7 +137,7 @@ class EditJobPost extends Component{
             console.log("applicant state state state",applicantDetail.state);
             return(
                 <div key={index}>
-                    <div className="flt-right"><b><Link to="#" id={index} onClick={this.handleClick}>View Resume</Link></b></div>
+                    <div className="flt-right"><b><Link to="/reactpdf" id={index} onClick={this.handleClick}>View Resume</Link></b></div>
                     {/* <div className="job-title"><b><Link to="#" id={index} onClick={this.handleClick}>{job.jobTitle}</Link></b></div> */}
                     {/* <button className="btn btn-lg save-btn flt-right" id={index} onClick={this.handleApplyClick}>Edit</button> */}
                     <div className="">{applicantDetail.firstname}</div>
@@ -281,4 +283,4 @@ const mapStateToProps = state =>({
 });
 
 //export default JobDisplayPage;
-export default connect(mapStateToProps, {})(EditJobPost);
+export default connect(mapStateToProps, {viewApplicantResume})(EditJobPost);
