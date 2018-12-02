@@ -14,6 +14,7 @@ import JobPostingDetails from "./Jobs/JobPostingDetails";
 import JobPostings from "./Jobs/JobPostings";
 import JobsLandingPage from "./Jobs/JobsLandingPage";
 import JobsResultsPage from "./Jobs/JobsResultsPage";
+import PeopleSearch from "./PeopleSearch/PeopleSearch";
 import RecruiterDashboard from "./AnalyticsDashboard/RecruiterDashboard";
 import SavedJobs from "./Jobs/SavedJobs";
 import JobApplication from './Jobs/JobApplication';
@@ -52,6 +53,7 @@ class Main extends Component {
         <Route path="/jobs/postings" component={JobPostings} />
         <Route exact path="/jobs" component={JobsLandingPage} />
         <Route path="/jobs/results" component={JobsResultsPage} />
+        <Route path="/people/results" component={PeopleSearch} />
         <Route path="/jobs/saved-jobs" component={SavedJobs} />
         <Route path="/jobs/apply-job" component={JobApplication} />
         <Route path="/jobs/applied-jobs" component={AppliedJobs} />

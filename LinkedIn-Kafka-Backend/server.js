@@ -37,6 +37,7 @@ var updateexperience = require("./services/updateexperience");
 
 //pratik- code ends
 var logProfileView = require('./services/logProfileView');
+var searchPeople = require("./services/searchPeople");
 
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
@@ -98,3 +99,4 @@ handleTopicRequest('updateexp_topic',updateexperience);
 //pratiks topic ends 
 
 handleTopicRequest('log_profile_view_topic', logProfileView);
+handleTopicRequest("searchPeople_topic", searchPeople)

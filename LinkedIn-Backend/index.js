@@ -101,6 +101,7 @@ var logJobViewed = require('./controllers/logJobViewed');
 var logAppHalffilled = require('./controllers/logAppHalffilled');
 var logApplicationSubmitted = require('./controllers/logApplicationSubmitted');
 var logProfileView = require('./controllers/logProfileView');
+var searchPeople = require("./controllers/searchPeople");
 
 client.on("connect", function() {
   console.log("Redis client connected");
@@ -133,6 +134,13 @@ var getAppliedJobs = require('./controllers/getAppliedJobs');
 
 app.post("/applicant/signup", (req, res) => {
   applicantsignup.applicantsignup(req, res);
+});
+
+app.post("/peopleSearch", (req, res) => {
+  console.log("in search people");
+  console.log("search for:", req.body);
+  req.body.user = req.session.user;
+  searchPeople.searchPeople(req,res);
 });
 
 app.post("/recruiter/signup", (req, res) => {
