@@ -137,7 +137,7 @@ class EditJobPost extends Component{
             console.log("applicant state state state",applicantDetail.state);
             return(
                 <div key={index}>
-                    <div className="flt-right"><b><Link to="/reactpdf" id={index} onClick={this.handleClick}>View Resume</Link></b></div>
+                    <div className="flt-right"><b><Link to="/viewApplicantResumePDF" id={index} onClick={this.handleClick}>View Resume</Link></b></div>
                     {/* <div className="job-title"><b><Link to="#" id={index} onClick={this.handleClick}>{job.jobTitle}</Link></b></div> */}
                     {/* <button className="btn btn-lg save-btn flt-right" id={index} onClick={this.handleApplyClick}>Edit</button> */}
                     <div className="">{applicantDetail.firstname}</div>

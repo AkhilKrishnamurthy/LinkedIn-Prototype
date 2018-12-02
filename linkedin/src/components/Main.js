@@ -57,7 +57,7 @@ class Main extends Component {
         <Route path="/jobs/applied-jobs" component={AppliedJobs} />
         <Route path="/profile/:id" component={PeopleProfile} />
         <Route path="/mymessages" component={MyMessages} />
-        <Route path="/reactpdf" component={ViewApplicantResumePDF} />
+        <Route path="/viewApplicantResumePDF" component={ViewApplicantResumePDF} />
         <Route path="/jobs/edit-job-post" component={EditJobPost} />
       </div>
     );
