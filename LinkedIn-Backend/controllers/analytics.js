@@ -92,3 +92,63 @@ exports.getsavedjobs = function(req, res) {
     }
   });
 };
+
+exports.gettoptenjobposts = function(req, res) {
+  //console.log(req.body);
+  var user = {
+    username: "abc@gmail.com" //req.session.user
+  };
+  console.log("inside fetch saved job data req");
+  kafka.make_request("get_top10_job_topic", user, function(err, result) {
+    console.log("in get_top10_job_topic");
+    //  console.log(req.body);
+    if (err) {
+      console.log("err", err);
+      res.status(500).send({ message: "Server Error!" });
+    } else {
+      console.log("get_top10 job data!");
+      console.log("top 10 jobs results", result);
+      res.status(200).send({ result: result });
+    }
+  });
+};
+
+exports.getlasttenjobposts = function(req, res) {
+  //console.log(req.body);
+  var user = {
+    username: "abc@gmail.com" //req.session.user
+  };
+  console.log("inside get last ten job data req");
+  kafka.make_request("get_last10_job_topic", user, function(err, result) {
+    console.log("in get_last10_job_topic");
+    //  console.log(req.body);
+    if (err) {
+      console.log("err", err);
+      res.status(500).send({ message: "Server Error!" });
+    } else {
+      console.log("get_last10 job data!");
+      console.log("last  10 jobs results", result);
+      res.status(200).send({ result: result });
+    }
+  });
+};
+
+exports.getcitywisedata = function(req, res) {
+  //console.log(req.body);
+  var Job = {
+    jobId: req.params.id //"5bf31c53def01f0dd81e2449"
+  };
+  console.log("inside get last ten job data req");
+  kafka.make_request("get_city_wise_topic", Job, function(err, result) {
+    console.log("in get_city_wise_topic");
+    //  console.log(req.body);
+    if (err) {
+      console.log("err", err);
+      res.status(500).send({ message: "Server Error!" });
+    } else {
+      console.log("get_city_wise_ job data!");
+      console.log("city wise jobs results", result);
+      res.status(200).send({ result: result });
+    }
+  });
+};

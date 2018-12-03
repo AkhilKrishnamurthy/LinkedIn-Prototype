@@ -3,27 +3,25 @@ exports.jobPostingHistory = function(req, res) {
   console.log("Inside postJob as a recruiter Handler");
   console.log(req.session.user);
   var user = {
-      username : req.session.user
+    username: req.session.user //req.session.user
   };
   kafka.make_request("job_posting_history_topic", user, function(err, results) {
-      console.log(user);
-      console.log("resultresult", results);
+    console.log(user);
+    console.log("resultresult", req.session.user);
     if (err) {
-        console.log("unable to reach kafka job post history");
-        res.value = "unable to reach kafka job post history";
-        console.log(res.value);
-        res.sendStatus(400).end();
-      } else if (results.code == 200) {
-        console.log("resres", results);
-        res.writeHead(200,{
-            'Content-type' : 'application/json'
-        });
-        res.end(JSON.stringify(results));
-      } else {
-        res.value =
-          "job post history fetch failed";
-           res.sendStatus(400).end();
-      }
-
+      console.log("unable to reach kafka job post history");
+      res.value = "unable to reach kafka job post history";
+      console.log(res.value);
+      res.sendStatus(400).end();
+    } else if (results.code == 200) {
+      // console.log("resres", results);
+      res.writeHead(200, {
+        "Content-type": "application/json"
+      });
+      res.end(JSON.stringify(results));
+    } else {
+      res.value = "job post history fetch failed";
+      res.sendStatus(400).end();
+    }
   });
 };
