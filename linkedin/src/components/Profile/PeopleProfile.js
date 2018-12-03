@@ -28,22 +28,10 @@ class PeopleProfile extends Component{
         this.setState({
             profile :  this.props.profileResultsStateStore.result.user
         });
-          // var profileData = this.props.profileResultsStateStore.result.user
+          // var profileData = this.props.profileResultsStateStore.result.user      
     }
 
-    // getProfileData = () =>{
-    //     axios.defaults.withCredentials=true;
-    //     var data = {
-    //         profileId : this.props.match.params.id
-    //     }
-    //     axios.post('http://localhost:3001/get-profile-data', data)
-    //         .then((response)=>{
-    //             if(response.status === 200){
-    //                 console.log('profile data response: ', response.data);
-    //             }
-    //         });
-    // }
-
+    
     logProfileView = ()=>{
         axios.defaults.withCredentials=true;
         var data = {
@@ -179,18 +167,18 @@ class PeopleProfile extends Component{
                             <div className="mb-5 ml-4 mr-4">
                             I am pursuing Masters in Software Engineering specializing in Enterprise Software Technologies at San Jose State University. 
 
-                                I am looking for opportunities in the field of Software Development. 
+I am looking for opportunities in the field of Software Development. 
 
-                                I worked as a Software Analyst at Aspire Systems. Strong engineering professional with a Bachelor of Technology (B.Tech.) focused in Computer Science from SASTRA University. 
+I worked as a Software Analyst at Aspire Systems. Strong engineering professional with a Bachelor of Technology (B.Tech.) focused in Computer Science from SASTRA University. 
 
-                                I am very passionate about software engineering and eager to work with new technologies and in a challenging environment. I have over 18 months of experience as a Software Developer with a demonstrated history of working in the information technology and services industry. 
+I am very passionate about software engineering and eager to work with new technologies and in a challenging environment. I have over 18 months of experience as a Software Developer with a demonstrated history of working in the information technology and services industry. 
 
-                                Skills:
+Skills:
 
-                                PROGRAMMING: JAVA, C# .NET, Node JS (Express), React JS, Redux, HTML5, CSS, jQuery
-                                TECHNOLOGIES: Apache Kafka, Mocha, JUnit, Episerver CMS, Azure, AWS
-                                DATABASE: SQL Server, MySQL, MongoDB
-                                TOOLS: JMeter, JIRA, Confluence, Git, IIS
+PROGRAMMING: JAVA, C# .NET, Node JS (Express), React JS, Redux, HTML5, CSS, jQuery
+TECHNOLOGIES: Apache Kafka, Mocha, JUnit, Episerver CMS, Azure, AWS
+DATABASE: SQL Server, MySQL, MongoDB
+TOOLS: JMeter, JIRA, Confluence, Git, IIS                         
                             </div>
                         </div>
                         <div className="exp-container mt-5 border pb-3">
