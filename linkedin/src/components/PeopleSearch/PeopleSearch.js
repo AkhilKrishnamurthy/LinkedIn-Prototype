@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import swal from 'sweetalert'
 //import {saveJobDetailsToStore} from '../../actions/jobResultsAction';
 import {saveSearchFieldToStore} from '../../actions/peopleSearchAction';
+import {saveUserProfiletoStore} from '../../actions/profileResultsAction';
 import '../../static/css/MyNetwork.css';
 import Header from '../Header/Header';
 
@@ -17,7 +18,8 @@ class PeopleSearch extends Component {
     console.log(props);
     const MAX_LENGTH = 250;
     this.state = {
-      profiles: []
+      profiles: [],
+      redirectToProfileDisplayPage: false,
     };
 
     //bind
@@ -42,12 +44,32 @@ class PeopleSearch extends Component {
 
   }
 
+  saveUserProfiletoStore = (Parameter, event) =>{
+    
+    const index = Parameter;
+    var profileDetail = this.state.profiles[index];
+    
+    console.log('profile details', profileDetail);
+    console.log('Inside saveUserProfiletoStore');
+    this.props.saveUserProfiletoStore(profileDetail);
+    this.setState({
+      redirectToProfileDisplayPage : true
+    });
+  }
+
+
 
 render() {
     var redirectVar = null;
+
+    if(this.state.redirectToProfileDisplayPage === true){
+        redirectVar = <Redirect to="/profile/:id"/>
+      }  
     if(this.props.loginStateStore.isAuthenticated === false){
-        redirectVar  = <Redirect to="/signup"/>
-    }
+        redirectVar  = <Redirect to="/login"/>
+    } 
+
+   
 
     var requestProfiles = null;
     if(this.state.profiles.length > 0){
@@ -61,7 +83,8 @@ render() {
                             <img className="con-img" src="https://media.licdn.com/dms/image/C4E03AQF3EAyS7VQ-Aw/profile-displayphoto-shrink_200_200/0?e=1548892800&v=beta&t=1cM7ryuycgyEF24SBwIBDT9_SnTGf9yQLBdapk2jGR8" alt="con-img"/>
                         </div>
                         <div className="col-6 ml-4">
-                            <div><b>{profile.user.Fname} {profile.user.Lname}</b></div>
+                       
+                            <div><b> <Link to="#" onClick={this.saveUserProfiletoStore.bind(this, index)}>{profile.user.Fname} {profile.user.Lname}</Link></b></div>
                             <div>{profile.user.aboutMe}</div>
                         </div>
                         <div className="col-4">
@@ -94,11 +117,13 @@ render() {
 
 const mapStateToProps  = state =>({
     loginStateStore : state.Login,
-  searchFieldToStore : state.peopleSearchFieldsStateStore
+  searchFieldToStore : state.peopleSearchFieldsStateStore,
+  profileResultsStateStore : state.profileResultsStateStore,
+  saveUserProfiletoStore : state.profileResultsStateStore,
 });
 
 /* function mapDispatchToProps(dispatch) {
   return bindActionCreators({ saveSearchFieldToStore}, dispatch);
 }
  */
-export default connect(mapStateToProps, {})(PeopleSearch);
+export default connect(mapStateToProps, {saveUserProfiletoStore})(PeopleSearch);
