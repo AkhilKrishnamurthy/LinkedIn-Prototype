@@ -48,16 +48,24 @@ class PeopleProfile extends Component{
     }
 
     addConnection = ()=>{
-        var data = {
-            email: "aehari2010@gmail.com"
-        }
-        var profileData = {};
+        
+        var profileData = {
+            email : this.props.profileResultsStateStore.result.user.email,
+            connectProfileData : {}
+        };
         axios.defaults.withCredentials=true;
-        axios.post('http://localhost:3001/get-profile', data)
+        
+        var data = {
+            email: this.props.loginStateStore.result.email
+        }
+        console.log('data req', data);
+        axios.post('http://localhost:3001/get-profile-data', data)
             .then((response)=>{
                 if(response.status === 200){
                     console.log('response profile', response.data);
-                    profileData = response.data.value;
+                
+                    profileData.connectProfileData = response.data.user;
+                    console.log('profile data: ', profileData);
                     axios.post('http://localhost:3001/send-connection-request', profileData)
                     .then((response)=>{
                         console.log('Send Connection res', response.data);
@@ -206,7 +214,8 @@ TOOLS: JMeter, JIRA, Confluence, Git, IIS
 }
 
 const mapStateToProps = state =>({
-    profileResultsStateStore : state.profileResultsStateStore
+    profileResultsStateStore : state.profileResultsStateStore,
+    loginStateStore : state.Login
 });
 
 //export default JobDisplayPage;
