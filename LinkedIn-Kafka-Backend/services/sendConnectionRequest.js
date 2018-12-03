@@ -8,7 +8,7 @@ function handle_request(message, callback){
         "user.email": message.body.email
     }, {
         $push:{
-            connectionRequests : message.body
+            connectionRequests : message.body.connectProfileData
         }
     }, (err, result)=>{
         if(err){

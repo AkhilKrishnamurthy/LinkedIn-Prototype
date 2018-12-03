@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 var SavedJobsSchema = new Schema({
     jobId: String,
-    jobTitle: String
+    jobTitle: String,
+    recruiterEmail: String
 });
 
 let SavedJobs = mongoose.model("SavedJobs", SavedJobsSchema, "SavedJobs");

@@ -21,6 +21,7 @@ function handle_request(message, callback){
             var newSavedJob = new SavedJobsModel({
                 jobId : message.body.jobDetails.jobId,
                 jobTitle : message.body.jobDetails.jobTitle,
+                recruiterEmail : message.body.jobDetails.user
             });
             console.log('Saving Job', newSavedJob);
             newSavedJob.save().then((doc)=>{
