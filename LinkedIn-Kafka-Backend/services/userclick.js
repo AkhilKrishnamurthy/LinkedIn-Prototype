@@ -9,9 +9,6 @@ function handle_request(msg, callback) {
    jobData: msg.job
  });
 
-  var myobj = new ClickedJobs({
-    jobData: msg.body.jobData
-  });
 
   myobj.save().then(
     doc => {
