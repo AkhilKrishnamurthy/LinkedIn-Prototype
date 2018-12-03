@@ -158,7 +158,7 @@ class JobHeader extends Component {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="#">
+                  <Link className="nav-link" to="/inbox">
                     <center>
                       <i className="fas fa-envelope object-align-top" />
                     </center>

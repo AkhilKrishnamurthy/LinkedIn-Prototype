@@ -3,8 +3,10 @@ import '../../static/css/PeopleProfile.css';
 import Header from '../Header/Header';
 import{Link} from 'react-router-dom';
 import axios from 'axios';
-import { connect } from "react-redux";
-import {Redirect} from 'react-router';
+import {connect} from 'react-redux';
+import {saveJobDetailsToStore} from '../../actions/jobResultsAction';
+import {Redirect} from 'react-router-dom';
+
 
 class PeopleProfile extends Component{
     
@@ -13,10 +15,20 @@ class PeopleProfile extends Component{
         console.log(props);
         this.state = {
             profile: [],
-          };
+            message : [],
+            senderEmailId : '',
+            receiverEmailId : '',
+            FName : ''
+        };
         //bind
         this.addConnection = this.addConnection.bind(this);
         this.logProfileView = this.logProfileView.bind(this);
+        this.sendMessageHandler = this.sendMessageHandler.bind(this);
+        this.inputHandler = this.inputHandler.bind(this);
+    }
+
+    componentWillReceiveProps(nextprops){
+        console.log(nextprops)
     }
 
     componentDidMount(){
@@ -25,9 +37,16 @@ class PeopleProfile extends Component{
         console.log("profile",this.props.profileResultsStateStore.result.user.experience.length);
         var skillsresult = (this.props.profileResultsStateStore.result.user.skills).split(',');
         console.log("skills:",skillsresult );
+        console.log("sender" + this.props.loginStateStore.result.email)
         this.setState({
-            profile :  this.props.profileResultsStateStore.result.user
+            profile :  this.props.profileResultsStateStore.result.user,
+            senderEmailId : this.props.loginStateStore.result.email 
         });
+        // this.setState({
+        //     senderEmailId : this.props.loginStateStore.result.email,
+        //     receiverEmailId : "aehari2010@gmail.com",
+        //     FName : this.props.loginStateStore.result.FName
+        // }) 
           // var profileData = this.props.profileResultsStateStore.result.user      
     }
 
@@ -45,6 +64,7 @@ class PeopleProfile extends Component{
                     console.log('profile view response', response.data);
                 }
             });
+
     }
 
     addConnection = ()=>{
@@ -71,19 +91,38 @@ class PeopleProfile extends Component{
                         console.log('Send Connection res', response.data);
                     });
                 }
-            });
+            });    
+    }
 
-       
-        
+    inputHandler = (e) => {
+        this.setState({
+            message : e.target.value
+        })
+    }
+
+    sendMessageHandler = ()=>{
+        console.log("Sender Email ID " + this.state.senderEmailId)
+        var values = {
+            messageThread : "this.state.FName" + " : " + this.state.message,
+            senderEmailId :  "amruta@gmail.com", //this.state.senderEmailId,
+            receiverEmailId : "aehari2010@gmail.com" //this.state.receiverEmailId
+        }
+        console.log(JSON.stringify(values))
+        axios.post('http://localhost:3001/sendmessage', values)
+            .then((response)=>{
+                if(response.status === 200){
+                    console.log("Message sent")
+                }
+            });  
         
     }
 
     render(){
-        var redirectVar = null;
 
-        // if(!this.props.loginStateStore) {
-        //     redirectVar = <Redirect to= "/signup"/>
-        // }
+        var redirectVar = null;
+        if(this.props.loginStateStore.isAuthenticated === false){
+            redirectVar  = <Redirect to="/signup"/>
+        }
 
          var experience = null;
         if(this.props.profileResultsStateStore.result.user.experience.length > 0){
@@ -164,6 +203,39 @@ class PeopleProfile extends Component{
                                     <div className="profile-summary">{this.state.profile.aboutMe}</div>
                                     <div>{this.state.profile.city}, {this.state.profile.state}</div>
                                     <div className="mt-2"><button className="btn btn-md profile-btn" onClick={this.addConnection}>Connect</button></div>
+                                    {/* <div className="mt-2"><button className="btn btn-md profile-btn" onClick={this.sendMessage}>Message</button></div> */}
+                                <div className="mt-2">
+                                <button type="button" className="btn btn-md profile-btn" data-toggle="modal" data-target="#exampleModal">
+                                Message
+                                </button>
+
+                                <div className="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div className="modal-dialog" role="document">
+                                    <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title" id="exampleModalLabel">Send message to Arivoli</h5>
+                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div className="modal-body">
+                                    <form>
+                                        <div className="form-group">
+                                            <label htmlFor="message-text" className="col-form-label">Message:</label>
+                                            <textarea className="form-control" id="message-text" onChange = {this.inputHandler}></textarea>
+                                        </div>
+                                        </form>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" className="btn btn-primary" onClick = {this.sendMessageHandler}>Send</button>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                                </div>
+
+
                                 </div>
                                 <div className="col-5 flt-right">
                                     <div className="p-1">{this.state.profile.Company}</div>

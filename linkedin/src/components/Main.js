@@ -61,6 +61,7 @@ class Main extends Component {
         <Route path="/mymessages" component={MyMessages} />
         <Route path="/viewApplicantResumePDF" component={ViewApplicantResumePDF} />
         <Route path="/jobs/edit-job-post" component={EditJobPost} />
+        <Route path="/inbox" component={MyMessages} />
       </div>
     );
   }

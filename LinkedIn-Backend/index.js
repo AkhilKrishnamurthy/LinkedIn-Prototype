@@ -105,6 +105,8 @@ var getProfileData = require("./controllers/getProfileData");
 var analytics = require("./controllers/analytics");
 //var jobPostingHistory = require("./controllers/jobPostingHistory");
 var jobFormAnalytics = require("./controllers/jobFormAnalytics");
+var sendMessage = require('./controllers/sendMessages');
+var getMessages = require('./controllers/getMessages')
 
 client.on("connect", function() {
   console.log("Redis client connected");
@@ -460,6 +462,8 @@ app.use("/log-application-submitted", logApplicationSubmitted);
 app.use("/log-profile-view", logProfileView);
 app.use("/get-profile-data", getProfileData);
 
+app.use('/sendmessage', sendMessage);
+app.use('/getmessages', getMessages);
 console.log("Linked Backend!");
 app.listen(3001);
 console.log("Server Listening on port 3001");

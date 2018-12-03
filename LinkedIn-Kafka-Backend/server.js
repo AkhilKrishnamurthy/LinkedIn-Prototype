@@ -43,6 +43,9 @@ var jobformanalytics = require("./services/getjobformanalytics");
 var jobpostsanalytics = require("./services/gettoptenjobpostings");
 var jobpostslastten = require("./services/getlasttenjobpostings");
 var citywisejobdata = require("./services/getcitywisejobdata");
+var sendMessages = require('./services/sendMessages')
+var getMessages = require('./services/getMessages')
+
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
   var producer = connection.getProducer();
@@ -114,3 +117,5 @@ handleTopicRequest("get_job_form_analytics_topic", jobformanalytics);
 handleTopicRequest("get_top10_job_topic", jobpostsanalytics);
 handleTopicRequest("get_last10_job_topic", jobpostslastten);
 handleTopicRequest("get_city_wise_topic", citywisejobdata);
+handleTopicRequest('send_messages_topic', sendMessages)
+handleTopicRequest('get_messages_topic', getMessages)
