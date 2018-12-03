@@ -23,6 +23,7 @@ class ViewApplicantResumePDF extends Component {
   async componentDidMount(){
     if(this.props.ViewApplicantResume) {
     var resume = null;
+    console.log("resumeresumeresume",this.props.ViewApplicantResume.resume);
       var data = {
         "resumeName": this.props.ViewApplicantResume.resume
       }
