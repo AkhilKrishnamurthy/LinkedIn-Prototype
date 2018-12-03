@@ -7,7 +7,8 @@ function handle_request(msg, callback) {
   var str = msg.query;
   var fname ="";
   var lname= "";
-var words = str.split(" ");
+  if(str != null){
+    var words = str.split(" ");
 if(words.length==2){
  fname= words[0];
  lname = words[1];
@@ -17,9 +18,17 @@ else
   fname = msg.query;
   lname = msg.query;
 }
-
+  }
   var res = {};
-      linkedinUser.find({ "$or": [{"user.Fname": new RegExp(fname)},{"user.Lname": new RegExp(lname)},{"user.Fname": fname},{"user.Lname": lname}]},  function (err,result) {
+      linkedinUser.find(
+        { 
+          "$or": [{"user.Fname": {$regex:new RegExp(fname, "i")}
+        },
+        {
+          "user.Lname": { $regex : new RegExp(lname, "i")}},{"user.Fname": fname},{"user.Lname": lname}]
+        },{
+          user : 1
+        },  function (err,result) {
         if (err) {
             res.code = "400";
             console.log("No records exist");

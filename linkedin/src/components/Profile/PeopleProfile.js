@@ -73,9 +73,9 @@ class PeopleProfile extends Component{
     render(){
         var redirectVar = null;
 
-        if(!this.props.loginStateStore) {
-            redirectVar = <Redirect to= "/signup"/>
-        }
+        // if(!this.props.loginStateStore) {
+        //     redirectVar = <Redirect to= "/signup"/>
+        // }
 
          var experience = null;
         if(this.props.profileResultsStateStore.result.user.experience.length > 0){
@@ -154,7 +154,7 @@ class PeopleProfile extends Component{
                                 <div className="col-7">
                                     <div className="profile-name">{this.state.profile.Fname} {this.state.profile.Lname}</div>
                                     <div className="profile-summary">{this.state.profile.aboutMe}</div>
-                                    <div>{this.state.profile.city}, {this.state.profile.State}</div>
+                                    <div>{this.state.profile.city}, {this.state.profile.state}</div>
                                     <div className="mt-2"><button className="btn btn-md profile-btn" onClick={this.addConnection}>Connect</button></div>
                                 </div>
                                 <div className="col-5 flt-right">
