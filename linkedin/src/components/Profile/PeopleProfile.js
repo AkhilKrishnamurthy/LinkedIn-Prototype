@@ -35,7 +35,7 @@ class PeopleProfile extends Component{
     logProfileView = ()=>{
         axios.defaults.withCredentials=true;
         var data = {
-            profileEmail : "aehari2010@gmail.com",
+            profileEmail : this.props.loginStateStore.result.email,
             viewTime : new Date()
         }
 
