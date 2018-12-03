@@ -18,8 +18,10 @@ class PeopleProfile extends Component{
             message : [],
             senderEmailId : '',
             receiverEmailId : '',
-            FName : ''
+            FName : '',
+            isConnection : false
         };
+
         //bind
         this.addConnection = this.addConnection.bind(this);
         this.logProfileView = this.logProfileView.bind(this);
@@ -32,7 +34,10 @@ class PeopleProfile extends Component{
     }
 
     componentDidMount(){
+        
+        this.isConnection();
         this.logProfileView();
+        
         axios.defaults.withCredentials=true;
         console.log("profile",this.props.profileResultsStateStore.result.user.experience.length);
         var skillsresult = (this.props.profileResultsStateStore.result.user.skills).split(',');
@@ -48,6 +53,30 @@ class PeopleProfile extends Component{
         //     FName : this.props.loginStateStore.result.FName
         // }) 
           // var profileData = this.props.profileResultsStateStore.result.user      
+    }
+
+    isConnection = () => {
+        var connectionsArr = this.props.profileResultsStateStore.result.connections;
+        if(connectionsArr.length > 0){
+            for(var i=0;i<connectionsArr.length;i++){
+                console.log('IsConnection!');
+                if(connectionsArr[i].email == this.props.loginStateStore.result.email){
+                    console.log('Is a Connection');
+                    this.setState({
+                        isConnection: true
+                    });
+                    break;
+                }
+                
+            }
+        }
+        else{
+            this.setState({
+                isConnection: false
+            });
+        }
+        
+
     }
 
     
@@ -183,6 +212,16 @@ class PeopleProfile extends Component{
             });
         } 
 
+        var connectButton = null;
+        var messageButton = null;
+        if(this.state.isConnection === false){
+            connectButton = <div className="mt-2"><button className="btn btn-md profile-btn" onClick={this.addConnection}>Connect</button></div>
+        }
+        if(this.state.isConnection === true){
+            messageButton = <div>Message</div>
+        }
+        
+
         return(
             <div>
                  {redirectVar}
@@ -236,6 +275,8 @@ class PeopleProfile extends Component{
                                 </div>
 
 
+                                    {connectButton}
+                                    {messageButton}
                                 </div>
                                 <div className="col-5 flt-right">
                                     <div className="p-1">{this.state.profile.Company}</div>

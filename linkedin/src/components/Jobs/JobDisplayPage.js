@@ -24,11 +24,26 @@ class JobDisplayPage extends Component {
 
     componentDidMount(){
         axios.defaults.withCredentials=true;
-        var data = {
-            jobData : this.props.jobResultsStateStore.result
-        };
+        
+      
 
+        
+        
+        this.props.jobResultsStateStore.result.applyClassName = 'btn btn-lg ml-3 apply-btn';
+        this.props.jobResultsStateStore.result.easyApplyClassName = 'btn btn-lg ml-3 easy-apply-btn';
+
+        if(this.props.jobResultsStateStore.result.easyApply == "Yes"){
+            this.props.jobResultsStateStore.result.applyClassName = this.props.jobResultsStateStore.result.applyClassName + ' block-btn';
+        }
+        else{
+            this.props.jobResultsStateStore.result.easyApplyClassName = this.props.jobResultsStateStore.result.easyApplyClassName + ' block-btn';
+        }
+
+        console.log('data sent', data);
         if(this.props.jobResultsStateStore.result != null){
+            var data = {
+                jobData : this.props.jobResultsStateStore.result
+            };
             axios.post("http://localhost:3001/analytics/userclicks", data).then(
             response => {
               console.log("job click updated");
@@ -117,7 +132,7 @@ class JobDisplayPage extends Component {
                                 
                                 <div className="mt-2"> 
                                     <button className="btn btn-lg save-btn" onClick={this.handleSaveClick}>Save</button>
-                                    <button className="btn btn-lg ml-3 easy-apply-btn" onClick={this.handleEasyApply}>
+                                    <button className={this.props.jobResultsStateStore.result.easyApplyClassName} onClick={this.handleEasyApply}>
                                         <span className="">
                                         <img
                                             className="apply-logo mr-2"
@@ -127,7 +142,7 @@ class JobDisplayPage extends Component {
                                         </span>
                                         <span><b>Easy apply</b></span>
                                     </button>
-                                    <button className="btn btn-lg ml-3 apply-btn" onClick={this.handleApplyJob}>Apply</button>
+                                    <button className={this.props.jobResultsStateStore.result.applyClassName} onClick={this.handleApplyJob}>Apply</button>
                                 </div>
                                 </div>
                             </div>
