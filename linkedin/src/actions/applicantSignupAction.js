@@ -24,6 +24,9 @@ function applicantsignup(data) {
         dispatch(signupsuccess(response.data));
       })
       .catch(error => {
+        // alert("Invalid Signup");
+        console.log("error is", error);
+        dispatch(signupfailure());
         throw error;
       });
   };
@@ -32,5 +35,10 @@ function signupsuccess(message) {
   return {
     type: UserConstants.APPLICANT_SIGNUP_SUCCESS,
     message: message
+  };
+}
+function signupfailure() {
+  return {
+    type: UserConstants.SIGNUP_FAILURE
   };
 }

@@ -3,6 +3,7 @@ import * as UserConstants from "../Constants/UserConstants";
 const initialState = {
   isApplicantSignedUp: false,
   isRecruiterSignedUp: false,
+  isinvalid: false,
   username: ""
 };
 
@@ -36,6 +37,7 @@ export default function(state = initialState, action) {
         ...state,
         isApplicantSignedUp: true,
         isRecruiterSignedUp: false,
+        isinvalid: false,
         username: action.message
       };
     case UserConstants.RECRUITER_SIGNUP_SUCCESS:
@@ -43,7 +45,15 @@ export default function(state = initialState, action) {
         ...state,
         isRecruiterSignedUp: true,
         isApplicantSignedUp: false,
+        isinvalid: false,
         username: action.message
+      };
+    case UserConstants.SIGNUP_FAILURE:
+      return {
+        ...state,
+        isRecruiterSignedUp: false,
+        isApplicantSignedUp: false,
+        isinvalid: true
       };
   }
   return state;

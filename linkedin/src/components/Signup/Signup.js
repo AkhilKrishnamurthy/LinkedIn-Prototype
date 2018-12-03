@@ -47,23 +47,24 @@ class Signup extends React.Component {
 
     if (this.props.isSignedup) {
       console.log("issigned", this.props.isSignedup);
-      redirectVar = <Redirect to="/home" />;
+      redirectVar = <Redirect to="/login" />;
     }
-    // if (this.props.loginStateStore.result.responseFlag == "") {
-    //   console.log("error");
-    //   error = <div class="alert alert-danger">Invalid login</div>;
-    // }
+    if (this.props.isinvalid) {
+      console.log("this.props.isinvalid", this.props.isinvalid);
+      error = <div className="alert alert-danger">Invalid Signup</div>;
+    }
 
     const { handleSubmit } = this.props;
     return (
       <div>
         {redirectVar}
-        <LoginHeader />
+
         <div className="login-form">
           <div className="main-div">
             <div className="panel">
               <h2>Be great at what you do</h2>
               <p>Get started - it's free.</p>
+              {error}
             </div>
             <div className="container">
               <form>
@@ -153,7 +154,8 @@ function validate(values) {
 
 const mapStateToProps = state => {
   return {
-    isSignedup: state.signup.isApplicantSignedUp
+    isSignedup: state.signup.isApplicantSignedUp,
+    isinvalid: state.signup.isinvalid
   };
 };
 
