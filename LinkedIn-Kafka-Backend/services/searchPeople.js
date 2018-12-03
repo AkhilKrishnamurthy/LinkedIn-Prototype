@@ -27,7 +27,7 @@ else
         {
           "user.Lname": { $regex : new RegExp(lname, "i")}},{"user.Fname": fname},{"user.Lname": lname}]
         },{
-          user : 1
+          user : 1, connections : 1
         },  function (err,result) {
         if (err) {
             res.code = "400";

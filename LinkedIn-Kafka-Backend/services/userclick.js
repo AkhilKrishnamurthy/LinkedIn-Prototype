@@ -6,14 +6,18 @@ function handle_request(msg, callback) {
  console.log("Inside job click", msg);
  
  var myobj = new ClickedJobs({
-   jobData: msg.body.jobData
+   jobData: msg.job
  });
 
-myobj.save().then((doc)=>{
-    console.log('Result fromkakfka', doc);
-    callback(null, doc);
-}, (err) =>{
-    callback(err, null);
-});
+
+  myobj.save().then(
+    doc => {
+      console.log("Result fromkakfka", doc);
+      callback(null, doc);
+    },
+    err => {
+      callback(err, null);
+    }
+  );
 }
 exports.handle_request = handle_request;

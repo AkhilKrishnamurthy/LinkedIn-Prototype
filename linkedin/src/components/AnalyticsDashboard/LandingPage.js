@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import Chart from "../../components/AnalyticsDashboard/Chart";
 import { HorizontalBar, Bar, Line, Pie } from "react-chartjs-2";
+import Header from "../Header/Header";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
+import { Redirect } from "react-router";
+import { connect } from "react-redux";
 //var _ = require("underscore");
 class LandingPage extends Component {
   constructor(props) {
@@ -50,7 +53,7 @@ class LandingPage extends Component {
   getClickedData() {
     var labeldb = [];
     var labeldatadb = [];
-
+    axios.defaults.withCredentials = true;
     axios.get("http://localhost:3001/getuserclicks").then(
       response => {
         console.log("Clicke job data from db", response.data.result);
@@ -110,7 +113,7 @@ class LandingPage extends Component {
   getSavedJobData() {
     var labelsavedjob = [];
     var datasavedjob = [];
-
+    axios.defaults.withCredentials = true;
     axios.get("http://localhost:3001/getsavedjobs").then(
       response => {
         console.log("saved job data from the db", response.data.result);
@@ -169,7 +172,7 @@ class LandingPage extends Component {
   getJobList() {
     var labeldb = [];
     var joblistdata = [];
-
+    axios.defaults.withCredentials = true;
     axios.get("http://localhost:3001/JobPostingHistory").then(
       response => {
         // console.log("job list job data from db", response.data.value);
@@ -194,6 +197,7 @@ class LandingPage extends Component {
     var jobformAnalytics = [];
     var jobFormData = [];
     console.log("inside job selected data");
+    axios.defaults.withCredentials = true;
     axios.get("http://localhost:3001/getjobformanalytics/" + jobId).then(
       response => {
         // console.log("job list job data from db", response.data.value);
@@ -232,6 +236,11 @@ class LandingPage extends Component {
     );
   };
   render() {
+    var redirectVar = null;
+    console.log(this.props.loginStateStore);
+    if (!this.props.loginStateStore) {
+      redirectVar = <Redirect to="/signup" />;
+    }
     let redirecty_value = null;
     const { currentPage, todosPerPage } = this.state;
 
@@ -345,6 +354,8 @@ class LandingPage extends Component {
 
     return (
       <div>
+        {redirectVar}
+        <Header />
         <div>
           <br />
           {showGraph}
@@ -354,7 +365,14 @@ class LandingPage extends Component {
           <div className="col-md-5">{redirecty_value}</div>
           <div className="col-md-2" />
 
-          <div className="col-md-5"> {showbar}</div>
+          <div className="col-md-5">
+            <div>{showbar}</div>{" "}
+            <div>
+              <button className="btn btn-default">
+                <Link to={"/recruiter/dashboard"}>Next</Link>
+              </button>
+            </div>
+          </div>
         </div>
         <div>{renderPageNumbers}</div>
       </div>
@@ -362,4 +380,11 @@ class LandingPage extends Component {
   }
 }
 
-export default LandingPage;
+//export default LandingPage;
+function mapStateToProps(state) {
+  return { loginStateStore: state.Login.result };
+}
+export default connect(
+  mapStateToProps,
+  {}
+)(LandingPage);

@@ -57,6 +57,16 @@ class JobsResultsPage extends Component {
           swal("No data found","Please recheck your search criteria","warning")
         }
         else{
+          jobResult[0].applyClassName = 'btn btn-lg ml-3 apply-btn';
+          jobResult[0].easyApplyClassName = 'btn btn-lg ml-3 easy-apply-btn';
+
+        if(jobResult[0].easyApply == "Yes"){
+          jobResult[0].applyClassName = jobResult[0].applyClassName + ' block-btn';
+        }
+        else{
+          jobResult[0].easyApplyClassName = jobResult[0].easyApplyClassName + ' block-btn';
+        }
+
         this.setState({
           jobData: jobResult,
           jobDetails: jobResult[0]
@@ -72,6 +82,16 @@ class JobsResultsPage extends Component {
         // const index = Parameter;
         const index = ((this.state.currentPage-1)*this.state.pageSize)+parseInt(Parameter);;
         var jobDetail = this.state.jobData[index];
+        console.log('jobDetail', jobDetail);
+        jobDetail.applyClassName = 'btn btn-lg ml-3 apply-btn';
+        jobDetail.easyApplyClassName = 'btn btn-lg ml-3 easy-apply-btn';
+
+        if(jobDetail.easyApply == "Yes"){
+          jobDetail.applyClassName = jobDetail.applyClassName + ' block-btn';
+        }
+        else{
+          jobDetail.easyApplyClassName = jobDetail.easyApplyClassName + ' block-btn';
+        }
         
         console.log('job details', jobDetail);
         this.setState({
@@ -219,7 +239,7 @@ updateEasyApplySearch(event) {
             <div>{this.state.jobDetails.location}</div>
             <div className="mt-2">
               <button className="btn btn-lg save-btn" onClick={this.handleSaveClick}>Save</button>
-              <button className="btn btn-lg ml-3 easy-apply-btn" onClick={this.handleEasyApply}>
+              <button className={this.state.jobDetails.easyApplyClassName} onClick={this.handleEasyApply}>
                 <span className="apply-logo-container">
                   <img
                     className="apply-logo mr-2"
@@ -229,7 +249,7 @@ updateEasyApplySearch(event) {
                 </span>
                 <span>Easy apply</span>
               </button>
-              <button className="btn btn-lg ml-3 apply-btn" onClick={this.handleApplyJob}>Apply</button>
+              <button className={this.state.jobDetails.applyClassName} onClick={this.handleApplyJob}>Apply</button>
             </div>
           </div>
         </div>
