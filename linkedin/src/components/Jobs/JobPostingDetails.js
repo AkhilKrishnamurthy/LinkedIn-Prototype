@@ -13,7 +13,8 @@ class JobPostingDetails extends Component{
         console.log(props);
         this.state = {  
         postedJobs: [],
-        redirectToJobEditPage: false
+        redirectToJobEditPage: false,
+        search: ''
         }
         this.handleApplyClick = this.handleApplyClick.bind(this);
     }
@@ -52,6 +53,10 @@ class JobPostingDetails extends Component{
         });
     }
 
+    updateSearch(event) {
+        this.setState({search: event.target.value.substr(0,20)});
+    }
+    
     render(){
         var redirectVar = null;
 
@@ -62,11 +67,18 @@ class JobPostingDetails extends Component{
         if(!this.props.loginStateStore) {
             redirectVar = <Redirect to= "/recruiter-signup"/>
         }
+        let filteredProperties = this.state.postedJobs
+        .filter(
+            (job) => {
+                console.log(this.state.search);
+               return job.jobTitle.indexOf(this.state.search) !== -1;
+            //    && properties.availableStartingDate>=this.state.fromDate;
+            });
 
         if(this.state.postedJobs.length>0) {
         console.log(this.state.postedJobs);
         }
-        var savedJobsContent = this.state.postedJobs.map((job, index)=>{
+        var savedJobsContent = filteredProperties.map((job, index)=>{
             return(
                 <div key={index}>
                     <div className="job-title"><b><Link to="#" id={index} onClick={this.handleClick}>{job.jobTitle}</Link></b></div>
@@ -84,6 +96,9 @@ class JobPostingDetails extends Component{
                 <Header />
                 {redirectVar}
                 <div>
+                <div className="form-group form_group_home">
+                <input type = "text" value = {this.state.search} onChange={this.updateSearch.bind(this)} placeholder = "Filter by Job Title" className="form-control form-control-lg form_control_home_location col-xs-3"/>
+                </div>
                 <div className="row mt-5">
                     <div className="col-2"></div>
                     <div className="col-8 border content-container mt-3">

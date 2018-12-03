@@ -14,6 +14,7 @@ class EditJobPost extends Component{
             jobTitle: "",
             industry: "",
             employmentType: "Full-time",
+            easyApply: "Yes",
             location: "",
             seniorityLevel: "Full-time",
             jobDescription: "",
@@ -26,6 +27,7 @@ class EditJobPost extends Component{
         this.jobTitleChangeHandler = this.jobTitleChangeHandler.bind(this);
         this.industryChangeHandler = this.industryChangeHandler.bind(this);
         this.employmentTypeChangeHandler = this.employmentTypeChangeHandler.bind(this);
+        this.easyApplyChangeHandler = this.easyApplyChangeHandler.bind(this);
         this.locationChangeHandler = this.locationChangeHandler.bind(this);
         this.seniorityLevelChangeHandler = this.seniorityLevelChangeHandler.bind(this);
         this.jobDescriptionChangeHandler = this.jobDescriptionChangeHandler.bind(this);
@@ -50,6 +52,7 @@ class EditJobPost extends Component{
     jobTitleChangeHandler = (e) => { this.setState({ jobTitle : e.target.value }) }
     industryChangeHandler = (e) => { this.setState({ industry : e.target.value }) }
     employmentTypeChangeHandler = (e) => { this.setState({ employmentType : e.target.value })}
+    easyApplyChangeHandler = (e) => { this.setState({ easyApply : e.target.value })}
     locationChangeHandler = (e) => { this.setState({ location : e.target.value }) }
     seniorityLevelChangeHandler = (e) => { this.setState({ seniorityLevel : e.target.value }) }
     jobDescriptionChangeHandler = (e) => { this.setState({ jobDescription : e.target.value }) }
@@ -94,12 +97,14 @@ class EditJobPost extends Component{
         });
         var img =  this.state.selectedFile.name
        console.log("jobid",this.props.JobHistory.jobId);
+       console.log("easy apply",this.state.easyApply);
         const data = {
             jobId: this.props.JobHistory.jobId,
             companyName: this.state.companyName,
             jobTitle: this.state.jobTitle,
             industry: this.state.industry,
             employmentType: this.state.employmentType,
+            easyApply: this.state.easyApply,
             location: this.state.location,
             seniorityLevel: this.state.seniorityLevel,
             jobDescription: this.state.jobDescription,
@@ -200,6 +205,15 @@ class EditJobPost extends Component{
             {/* <input onChange = {this.employmentTypeChangeHandler} type="text" className="form-control inputfield" name="employmentType" placeholder="Employment Type"/> */}
             </div>
             </span>
+
+            <span class="jobPosting_boxes">
+            <p>Easy Apply</p>
+            <select onChange = {this.easyApplyChangeHandler} className="selectBox_postJob" name="easyApply">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+            </span>
+            
             </div>
 
             <div className="form-group row">
