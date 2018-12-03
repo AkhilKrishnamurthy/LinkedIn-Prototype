@@ -14,6 +14,7 @@ class JobDisplayPage extends Component {
 
         this.state = {
             saveClicked : false,
+            redirectToJobApplication : false,
             redirectToJobApplication : false
         }
         //bind
@@ -66,7 +67,7 @@ class JobDisplayPage extends Component {
       handleEasyApply = ()=>{
         //this.saveJobDetailsToStore();
         this.setState({
-          redirectToJobApplication: true
+          redirectToEasyJobApplication: true
         });
       }
 
@@ -106,6 +107,9 @@ class JobDisplayPage extends Component {
         }
           if(this.state.redirectToJobApplication === true){
             redirectVar = <Redirect to="/jobs/apply-job"/>
+          }
+          if(this.state.redirectToEasyJobApplication === true){
+            redirectVar = <Redirect to="/jobs/easy-apply-job"/>
           }
         return (
             <div>

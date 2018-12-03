@@ -124,7 +124,7 @@ client.get("my test key", function(error, result) {
   console.log("GET result ->" + result);
 });
 
-app.post("/download/:file(*)", (req, res) => {
+app.post("/download-file/:file(*)", (req, res) => {
   console.log("Inside download file", req.params);
   var file = req.params.file;
   var fileLocation = path.join(__dirname + "/uploads", file);
@@ -138,6 +138,11 @@ var getAppliedJobs = require("./controllers/getAppliedJobs");
 
 app.post("/applicant/signup", (req, res) => {
   applicantsignup.applicantsignup(req, res);
+});
+
+app.get("/getProfileData", (req, res) => {
+  console.log("inside profiledata");
+  getProfileData.getProfileData(req, res);
 });
 
 app.post("/peopleSearch", (req, res) => {
@@ -433,8 +438,8 @@ app.get("/getcitywisejobdata/:id", (req, res) => {
 
 /**Analytics */
 
-app.post("/upload_file", upload.any(), (req, res) => {
-  res.send();
+app.post('/upload-file', upload.any(), (req, res) => {
+res.send();
 });
 
 app.use("/jobs", jobs);

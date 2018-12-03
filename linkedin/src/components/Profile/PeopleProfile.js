@@ -19,9 +19,9 @@ class PeopleProfile extends Component{
             senderEmailId : '',
             receiverEmailId : '',
             FName : '',
-            isConnection : false
-        };
-
+            isConnection : false,
+            profileImage: "",
+          };
         //bind
         this.addConnection = this.addConnection.bind(this);
         this.logProfileView = this.logProfileView.bind(this);
@@ -33,11 +33,11 @@ class PeopleProfile extends Component{
         console.log(nextprops)
     }
 
-    componentDidMount(){
         
+    async componentDidMount(){
         this.isConnection();
         this.logProfileView();
-        
+        this.loadProfileImage();
         axios.defaults.withCredentials=true;
         console.log("profile",this.props.profileResultsStateStore.result.user.experience.length);
         var skillsresult = (this.props.profileResultsStateStore.result.user.skills).split(',');
@@ -79,6 +79,15 @@ class PeopleProfile extends Component{
 
     }
 
+    loadProfileImage = ()=>{
+        axios.post('http://localhost:3001/download-file/' +  this.props.profileResultsStateStore.result.user.profileimage).then(response =>{
+            console.log("inside download file");
+         this.setState({   
+             profileImage : 'data:image/jpg;base64, ' + response.data
+        } 
+         )}   
+        )
+    }
     
     logProfileView = ()=>{
         axios.defaults.withCredentials=true;
@@ -263,7 +272,7 @@ class PeopleProfile extends Component{
                                 <img src="https://wallpapercave.com/wp/0557mer.jpg" alt="cover-img" />
                             </div>
                             <div className="profile-img-container ml-4">
-                                <img className="profile-img" src="https://img.freepik.com/free-icon/user-filled-person-shape_318-74922.jpg?size=338c&ext=jpg" alt="profile-img"/>
+                                <img className="profile-img" src={this.state.profileImage} alt="profile-img"/>
                             </div>
                             <div className="pull-down-div ml-4 row">
                                 <div className="col-7">

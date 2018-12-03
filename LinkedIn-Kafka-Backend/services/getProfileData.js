@@ -4,7 +4,7 @@ function handle_request(message,callback){
     console.log('Inside get profile data req body', message.body);
 
     Model.findOne({
-        "user.email" : message.body.email
+        "user.email" : message.session.user
     }, (err, result)=>{
         if(err){
             console.log('Error in getting profile data');

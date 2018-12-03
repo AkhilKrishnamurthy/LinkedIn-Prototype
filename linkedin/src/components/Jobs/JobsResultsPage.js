@@ -23,6 +23,7 @@ class JobsResultsPage extends Component {
       redirectToJobDisplayPage: false,
       saveClicked: false,
       redirectToJobApplication:false,
+      redirectToEasyJobApplication:false,
       companyNameSearchFilter: '',
       experienceLevelSearchFilter: '',
       IndustrySearchFilter: '',
@@ -136,7 +137,7 @@ class JobsResultsPage extends Component {
   handleEasyApply = ()=>{
     this.saveJobDetailsToStore();
     this.setState({
-      redirectToJobApplication: true
+      redirectToEasyJobApplication: true
     });
   }
 

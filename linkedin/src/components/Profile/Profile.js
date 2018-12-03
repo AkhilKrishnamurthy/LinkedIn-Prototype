@@ -69,6 +69,8 @@ class Profile extends Component{
             //skills
             skills : [],
             skillstr : "",
+            profileimage: "",
+            profileImage: "",
 
             //cancel reload
             rel:false
@@ -82,7 +84,7 @@ class Profile extends Component{
 savepersonaldetailschanges=(e)=>{
     e.preventDefault();
     console.log("inside save pd call");
-    var data = {email:'pp@gmail.com',Fname:this.state.fname,Lname:this.state.lname,company:this.state.company, city:this.state.city,aboutMe:this.state.aboutMe}
+    var data = {email:'pp@gmail.com',Fname:this.state.fname,Lname:this.state.lname,company:this.state.company, city:this.state.city,aboutMe:this.state.aboutMe,profileimage:this.state.profileimage}
     console.log("axios pd data is ",data);
     axios.post('http://localhost:3001/updatepdprofile',data)
     .then(response=>{
@@ -154,13 +156,13 @@ saveskillschanges=(e)=>{
 
 
     //component did mount for the first render
-     componentDidMount(){
+     async componentDidMount(){
         console.log("COMPONENT DID MOUNT");
         const data = {email:'pp@gmail.com'};
         // variable s would contain response string from fetch for skills
-        axios.post('http://localhost:3001/FetchProfile',data).then(response => {
+        await axios.post('http://localhost:3001/FetchProfile',data).then(response => {
             //update the state with the response data
-            console.log(response.data);
+            console.log(response.data.docs.user.profileimage);
             console.log("Response of did mount",response);
             var output = response.data;
             console.log("output is",output.docs);
@@ -202,7 +204,8 @@ saveskillschanges=(e)=>{
               tempexp:tempexp,
 
                skills:skillsresult,
-              skillstr:s 
+              skillstr:s ,
+              profileimage: response.data.docs.user.profileimage,
               
             });
             console.log("thisi is m experience array state",this.state.experience);
@@ -216,7 +219,16 @@ saveskillschanges=(e)=>{
             console.log('skillsresult',skillsresult);
             console.log('test after setting it',this.state.test);
           }); 
-          }   
+
+        console.log("end");
+        console.log(this.state.profileimage);  
+	  await axios.post('http://localhost:3001/download-file/' + this.state.profileimage).then(response =>{
+           console.log("inside download file");
+        this.setState({   
+            profileImage : 'data:image/jpg;base64, ' + response.data
+       } 
+        )}   
+       )}
         
     //componentDidUpdate start
 
@@ -513,6 +525,32 @@ console.log(education);
 
 
     }
+
+    
+
+    handleChange = (e) => {
+        const target = e.target;
+            console.log(target.files);
+            var profilePhoto = target.files[0];
+            var data = new FormData();
+            data.append('photos', profilePhoto);
+            axios.defaults.withCredentials = true;
+            axios.post('http://localhost:3001/upload-file', data)
+                .then(response => {
+                    if (response.status === 200) {
+                        console.log('Profile Photo Name: ', profilePhoto.name);
+                        this.setState({
+                            profileimage: profilePhoto.name
+                        });
+                    }
+                }).catch((err) => {
+                    if (err) {
+                        this.setState({
+                            errorRedirect: true
+                        })
+                    }
+                });
+        }
    /*  saveexperiencechanges=()=>{
 
 
@@ -630,7 +668,19 @@ console.log(education);
                                 error="wrong"
                                 success="right"
                                 onChange={this.handlefieldchanges}
-                              />                   
+                              />   
+                               <label  className="grey-text">Profile Image</label>
+              <input
+                                label="profileimage"
+                                icon="fa-map-pin"
+                                group
+                                type="file"
+                                id="profileimage"
+                                validate
+                                error="wrong"
+                                success="right"
+                                onChange={this.handleChange}
+                              />                     
              
               </div>
               <div class="modal-footer">
@@ -1200,7 +1250,7 @@ margin="auto">
                 <div className = "homepage">
                     <div className="col-lg-9 border floatHome">
                     <img src = "https://coverfiles.alphacoders.com/498/49849.jpg"  width="100%" height="100%"/>
-                    <img src = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" height="100" className="ProfileImage"/>
+                    <img src = {this.state.profileImage} height="100" className="ProfileImage"/>
                         <div>
                             <p className="profileDescription">{this.state.fname1}&nbsp;{this.state.lname1}</p>
                             <p className="profileDescription1">{this.state.company1}</p>

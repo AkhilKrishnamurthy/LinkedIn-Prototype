@@ -1,8 +1,9 @@
 var kafka = require("../kafka/client");
-var express = require('express');
-var router = express.Router();
+//var express = require('express');
+//var router = express.Router();
 
-router.post('/', function(req, res){
+var kafka = require("../kafka/client");
+exports.getProfileData = function(req, res) {
     kafka.make_request('get_profile_data_topic', req, function(err, result){
         if(err){
             console.log('Unable to get profile data.', err);
@@ -19,6 +20,4 @@ router.post('/', function(req, res){
             res.end(JSON.stringify(result));
         }
     });
-});
-
-module.exports = router;
+};

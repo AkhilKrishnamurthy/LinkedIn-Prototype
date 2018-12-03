@@ -21,7 +21,7 @@ var UserSchema = new Schema({
  gender: { type: String, trim: true, default: "" },
  experience: {type:Array},            //changed it from type:string to type array for editprofile
  skills: { type: String, trim: true, default: "" },
-
+ profileimage: {type: String, default: ""},
 
  accountType: { type: Number, trim: true, default: "" } //1.Applicant2.Recruiter3.Both
 });
