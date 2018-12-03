@@ -208,7 +208,6 @@
   border-radius: 2px;
   border: 1px solid #0073b1;
   color:white;
-  display: none;
 }
 
 .easy-apply-btn{
@@ -396,6 +395,8 @@ background-color: blue;
 .flt-right{
   float:right;
 }
-
+ .block-btn {
+  display: none;
+ }
 
 

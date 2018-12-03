@@ -2,12 +2,13 @@ var ClickedJobs = require("../model/clickedjobs");
 
 /**************Track Job Clicks *********************/
 function handle_request(msg, callback) {
-  var res = {};
-  console.log("Inside job click", msg);
+ var res = {};
+ console.log("Inside job click", msg);
+ 
+ var myobj = new ClickedJobs({
+   jobData: msg.job
+ });
 
-  var myobj = new ClickedJobs({
-    jobData: msg.body.jobData
-  });
 
   myobj.save().then(
     doc => {

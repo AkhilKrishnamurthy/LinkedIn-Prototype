@@ -6,6 +6,8 @@ import {Redirect} from 'react-router';
 import JobHeader from "../Header/JobHeader";
 import {postedJobs} from '../../actions/jobPostingDetailsAction';
 import { connect } from "react-redux";
+import Pagination from "./pagination";
+import { paginate } from "../../utils/paginate";
 
 class JobPostingDetails extends Component{
     constructor(props){
@@ -14,9 +16,14 @@ class JobPostingDetails extends Component{
         this.state = {  
         postedJobs: [],
         redirectToJobEditPage: false,
-        search: ''
+        search: '',
+        currentPage: 1,
+        pageSize: 3
         }
         this.handleApplyClick = this.handleApplyClick.bind(this);
+    }
+    handlePageChange = page => {
+        this.setState({ currentPage : page });
     }
 
     handleApplyClick = (e) =>{
@@ -44,8 +51,10 @@ class JobPostingDetails extends Component{
 
     handleApplyClick = (e) =>{
         const target = e.target;
-        const id = target.id;
+        console.log("current page", this.state.currentPage);
+        const id = ((this.state.currentPage-1)*this.state.pageSize)+parseInt(target.id);
         console.log("true");
+        console.log(id);
         console.log(this.state.postedJobs[id]);
         this.props.postedJobs(this.state.postedJobs[id]);
         this.setState({
@@ -67,6 +76,10 @@ class JobPostingDetails extends Component{
         if(!this.props.loginStateStore) {
             redirectVar = <Redirect to= "/recruiter-signup"/>
         }
+
+        const {length : count} = this.state.postedJobs;
+        const { pageSize, currentPage } = this.state;
+
         let filteredProperties = this.state.postedJobs
         .filter(
             (job) => {
@@ -75,10 +88,12 @@ class JobPostingDetails extends Component{
             //    && properties.availableStartingDate>=this.state.fromDate;
             });
 
+            const movies = paginate(filteredProperties, currentPage, pageSize)
+
         if(this.state.postedJobs.length>0) {
         console.log(this.state.postedJobs);
         }
-        var savedJobsContent = filteredProperties.map((job, index)=>{
+        var savedJobsContent = movies.map((job, index)=>{
             return(
                 <div key={index}>
                     <div className="job-title"><b><Link to="#" id={index} onClick={this.handleClick}>{job.jobTitle}</Link></b></div>
@@ -106,6 +121,11 @@ class JobPostingDetails extends Component{
                         <hr/>
                         <div>
                             {savedJobsContent}
+                            <div>
+                        <Pagination itemsCount={count} pageSize={pageSize} 
+                        currentPage = {this.state.currentPage}
+                        onPageChange={this.handlePageChange} /> 
+                        </div>
                         </div>                    
                     </div>
                 </div>

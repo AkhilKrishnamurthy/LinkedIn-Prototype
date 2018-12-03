@@ -2,7 +2,7 @@ var Model = require('../model/jobPosts');
 
 function handle_request(message, callback){
     console.log('message:', message);
-    //console.log('session', message.session.user)
+    console.log('session', message.body)
 
     Model.find(
          {$and: [

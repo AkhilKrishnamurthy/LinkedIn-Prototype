@@ -3,8 +3,10 @@ import '../../static/css/PeopleProfile.css';
 import Header from '../Header/Header';
 import{Link} from 'react-router-dom';
 import axios from 'axios';
-import { connect } from "react-redux";
-import {Redirect} from 'react-router';
+import {connect} from 'react-redux';
+import {saveJobDetailsToStore} from '../../actions/jobResultsAction';
+import {Redirect} from 'react-router-dom';
+
 
 class PeopleProfile extends Component{
     
@@ -13,29 +15,84 @@ class PeopleProfile extends Component{
         console.log(props);
         this.state = {
             profile: [],
+            message : [],
+            senderEmailId : '',
+            receiverEmailId : '',
+            FName : '',
+            isConnection : false,
+            profileImage: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAllBMVEX///8IFyYAAAAAFCQAABoAABUAABgAESIAABMAABEEFSUAAAYAABcAAA8ACR0AAA3z9PXV1tmJjZIABxzd3+G0t7o+R1FkanHs7e7k5edXXmb5+fpXXWWanaExOUO6vcAdKDWipanMztGAhIlNU1uIjJF3fIJvdHqqrK5BSFEQHizGyMohKzc4QEqRlZqcoKQqNEAWIzElUYvjAAAIn0lEQVR4nO2d53biOhCAkWQsF1zAZuklFEMgQHj/l7uSbYyLQttwLe2Z78duFkyOBs1oikbaRgMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgL/H7/f7o7oH8Tbax9WZapqGvsbHfb/u0fwqfrc3a0y+seFSYlkWoTY+T/6hmexHGEfdwKMoxUJHNoP+Yrmqe2i/wwm36GFlE5RBl5NotbPtJvbrHtxf0g/ZH0PbQmhHUZ6gqblcYnvW8Cd1j/Iv6Jv9xuhgJHopRI8ae6/uYb7O6JsN/rMlli1V10PjiLt1D/Rlhnav0TNvCcjUdDRuftY90FfZYuNji28LiOw9Ijise6ivMWoR48O7IyAKNhpqduoe62t0mH6eyT0J+RJE53WP9SX8gPy4gpaFtNt1j/YVtncV9IqppEs80PuSXXBVDN5CW6iPhlBvLVz3cF/gwxFIwhZXXSgiVtAQx25uigIv4H9TvG+IHaSzrXu8z+Nlc0Ucrzdbagi1EPfsS5H6svBUNcLLVFlNcmIZ0pwSPEwypY1gkXXHNY/3eWb2ZQ3ZcLk6jqFl8XWvKiL9rnGsr3E0UgFjuRYYL3Opbg+XlxtLU66iEemJgHv+jxBHxarTGpejOaychCs3N4PrQfntbtMtSVh5RHa+eETT3MQ/i0oxg2nRGNVLoLhjJ+iW6h2xprSE3Fl4HzcfGQyxaykrYZ9JSO6uj4tPHKgq4YBJ2Fref24xxkacg2DVSvxcQnvxyJP949RW0VswLbWcRx9maQiZv3Ew78BnDv/xQKxtIwuplVz0dyxmC4aPPj4weXDQe+eIfpudy3PBx0uERGdB3BPP186EhSvmdPn42tEeI1ep5fRMkfnkhPgsyjPW7xnO78OSX7J79kN7G1Flti+6HtIfcPZFRjtiBarslm4dZN6OSEVMqTqGyCR0/m0JmZa+sJl0Jpamipa2MaJ/nv1Q6CE6fcdo3sHIsJD5rMKdTKRt3jKcdzAMkPGsmlKC8Owto3kHM/x0gHJk6YX2puG8AxaguIdnEj7m75Gn0h7iHltIPzxeH9waBNHzGwf0+yyZnrp4vHyk+NKN5raFiGr7axtea3NNel9VZ1inPNdSrmtoHVfR7PuZ+x+WN1lm66GajlwsxpgZF7n7GC/KeWtVopki3PPfncRPF+nqePoyEwfR3W1LjF2ncpsyGSOXIOd2cDOnqKneBvcV3pVg3/IYSxMRXU0bTGFW5t7IGPgyg59PJWWCJVLI+bGiMSIsulOmOPMDHY/N0k/OfKwrvcykHJjjx2J3HnnK6yinzzSRGCIROyyfMJUq5f/AgoXV1NtXXo/Y69rTxQ4p4U6d4FPxRX/MVNQ9K+0oGqN2Z3fkP8x484y9yvvFrqYhpCUCHj4/VFxt/NnmjJtpTjRrsfzB9XqLJILzt1N+QMj5jAUcGq7jTdcLpfaABx8rw9Z41xNNqkvh3LTYnOHdMFpuPg1+wIvgJN7uxR1+tIl3vZkiOrtYf2Mn7SJx9F7qC6M4XSSB3tL4e8Rxk8KaP1nhpDuKaDZenaTvyFj0XLuZ9Xfndy/CHjZoLLdFXJt2rko5WmUNYK5pzztSl/YjrOU78oxC9SzsTHVs29gmq21BH7/yLe/UbElczyg3VVY68PvhbLYIS2vKoNQWTeQt2XyUO7gf22qpnMsgssaqI1I5AfRDQFqkF5Q/pksay+2rTfjGsfCEn0xpaSn5qpw8sSQ9cpn2PRcMsZj8tXHz+3uOiylxaFcPYEh6DKrTrIyUuAVDbGOLUlJaf0THo9SRsGSIbUwZenFie5rSEhYNMfz+wzgU1xFXcEJRIQnvV2FEZqiShOjumbSu6JSiUhLmDTFcDRnjgpZudMUlLBhiF7uMoNDFcBadw1RJwoJrmCQeM9+0Xg5K1ZPQ0nNxdhqfebnIWmiGskp4El6ekDfE9GRw/ljzRuANWdQmZyIsno6cOKNd4vrynUFT4XFoR84suC00qZwhDtLANdfd1Rd+xmrVMf77DIRaSlAWml6+AoKyz4jnXdrjltX8kHPtIslibCPLcCORN5S3we2PKxqumVW7s8X2KnQ1N+S80J36/3AUuYucIQ4v34B3aV8YCD8h7+F8QZKPeI54eX930eKsv3YmvHeB3OluqA9flAjlNvKzLyC4RKZL4QVL7sOHbf53hpWaEudiVdkJ/WuTntgMbWmriY2uUOkuM7a/vpvmVL7YG5ry7l+MNJGakiB59+PqL9OC6F74jWiS1hJjlsK1Mc0lcr4vOaXfWIsfl7mJb1C5K4GT5hK5y07Sm0xWIgcqecd+TxSjpCFKLtdNbjIZCUM2eXctYkLR2pHMyij3VnKTyeLnhyUmqha+0779fOqRhNYT4bPVrg258EXht833ewvxi8ejFpEZyropk6MrUL34rF5hxvjy6u+qXwZ5+qxNDQyrkRg9NEqbaHxWRTYr+TKTMKrWBy2tHzdiXuEpleAyMFPWxLBI26s4RbZ8+IUbFHncUt0ZDaayJhUlqqbI68Lf+altMstEZTOkVAEjTDiVReQbNIV7PllgOij7e3qzX1oyjmURbbZ05u4T5NctlLNf2pQ1sxdyKgWovC5RirxL2a/rKiUgt8XCisorM7kMeN4oX42p7yTtMPmZ9i4/R3HwnfmL+Hal/CxbeKXIKprHH+buZIvj6ewaPt5IlA+7Xe9499dJSde5TmN8hVAaC8S50zbz98SeKrSIFvE3WEt10dkyEU9JaOoxk+tfiqfENGSt/z5E2MN6oqum+bXpxKsp+ToOiZcISL3gqKAFFggj146lsaiWugvSTAqrloa/JvLW1R7H766wrbtFB0lcAzsbmWtOz+HPlp8etj1DZzRND2N3fFTMwz9AONsel1EUrSfdf+x/mAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAafgP4Ap3iSRYr30AAAAASUVORK5CYII=",
           };
         //bind
         this.addConnection = this.addConnection.bind(this);
         this.logProfileView = this.logProfileView.bind(this);
+        this.sendMessageHandler = this.sendMessageHandler.bind(this);
+        this.inputHandler = this.inputHandler.bind(this);
     }
 
-    componentDidMount(){
+    componentWillReceiveProps(nextprops){
+        console.log(nextprops)
+    }
+
+        
+    async componentDidMount(){
+        this.isConnection();
         this.logProfileView();
+        this.loadProfileImage();
         axios.defaults.withCredentials=true;
         console.log("profile",this.props.profileResultsStateStore.result.user.experience.length);
         var skillsresult = (this.props.profileResultsStateStore.result.user.skills).split(',');
         console.log("skills:",skillsresult );
+        console.log("sender" + this.props.loginStateStore.result.email)
         this.setState({
-            profile :  this.props.profileResultsStateStore.result.user
+            profile :  this.props.profileResultsStateStore.result.user,
+            senderEmailId : this.props.loginStateStore.result.email 
         });
+        // this.setState({
+        //     senderEmailId : this.props.loginStateStore.result.email,
+        //     receiverEmailId : "aehari2010@gmail.com",
+        //     FName : this.props.loginStateStore.result.FName
+        // }) 
           // var profileData = this.props.profileResultsStateStore.result.user      
     }
 
+    isConnection = () => {
+        var connectionsArr = this.props.profileResultsStateStore.result.connections;
+        if(connectionsArr.length > 0){
+            for(var i=0;i<connectionsArr.length;i++){
+                console.log('IsConnection!');
+                if(connectionsArr[i].email == this.props.loginStateStore.result.email){
+                    console.log('Is a Connection');
+                    this.setState({
+                        isConnection: true
+                    });
+                    break;
+                }
+                
+            }
+        }
+        else{
+            this.setState({
+                isConnection: false
+            });
+        }
+        
+
+    }
+
+    loadProfileImage = ()=>{
+        axios.post('http://localhost:3001/download-file/' +  this.props.profileResultsStateStore.result.user.profileimage).then(response =>{
+            console.log("inside download file");
+         this.setState({   
+             profileImage : 'data:image/jpg;base64, ' + response.data
+        } 
+         )}   
+        )
+    }
     
     logProfileView = ()=>{
         axios.defaults.withCredentials=true;
         var data = {
-            profileEmail : "aehari2010@gmail.com",
+            profileEmail : this.props.loginStateStore.result.email,
             viewTime : new Date()
         }
 
@@ -45,6 +102,7 @@ class PeopleProfile extends Component{
                     console.log('profile view response', response.data);
                 }
             });
+
     }
 
     addConnection = ()=>{
@@ -71,19 +129,38 @@ class PeopleProfile extends Component{
                         console.log('Send Connection res', response.data);
                     });
                 }
-            });
+            });    
+    }
 
-       
-        
+    inputHandler = (e) => {
+        this.setState({
+            message : e.target.value
+        })
+    }
+
+    sendMessageHandler = ()=>{
+        console.log("Sender Email ID " + this.state.senderEmailId)
+        var values = {
+            messageThread : "this.state.FName" + " : " + this.state.message,
+            senderEmailId :  "amruta@gmail.com", //this.state.senderEmailId,
+            receiverEmailId : "aehari2010@gmail.com" //this.state.receiverEmailId
+        }
+        console.log(JSON.stringify(values))
+        axios.post('http://localhost:3001/sendmessage', values)
+            .then((response)=>{
+                if(response.status === 200){
+                    console.log("Message sent")
+                }
+            });  
         
     }
 
     render(){
-        var redirectVar = null;
 
-        // if(!this.props.loginStateStore) {
-        //     redirectVar = <Redirect to= "/signup"/>
-        // }
+        var redirectVar = null;
+        if(this.props.loginStateStore.isAuthenticated === false){
+            redirectVar  = <Redirect to="/signup"/>
+        }
 
          var experience = null;
         if(this.props.profileResultsStateStore.result.user.experience.length > 0){
@@ -92,7 +169,7 @@ class PeopleProfile extends Component{
                     <div key={index}>
                      <div className="exp-content-container ml-4 row">
                                 <div className="col-1">
-                                    <img className="profile-company-img-container" src="https://media.licdn.com/dms/image/C4D0BAQEl0ggQ_q2eow/company-logo_400_400/0?e=1551916800&v=beta&t=bRRW076zg7OTMag2B9OrXHSfIXdP9GRXVd5YVUNr3bw" alt="profile-company-img"/>
+                                    <img className="profile-company-img-container" src="https://static.pulse.ng/img/incoming/origs8609049/1036368589-w644-h960/work-experience.jpg" alt="profile-company-img"/>
                                 </div>
                                 <div className="col-6 ml-4">
                                     <div>{exp.designation}</div>
@@ -114,7 +191,7 @@ class PeopleProfile extends Component{
                     <div key={index}>
                      <div className="exp-content-container ml-4 row">
                                 <div className="col-1">
-                                    <img className="profile-company-img-container" src="https://media.licdn.com/dms/image/C4D0BAQEl0ggQ_q2eow/company-logo_400_400/0?e=1551916800&v=beta&t=bRRW076zg7OTMag2B9OrXHSfIXdP9GRXVd5YVUNr3bw" alt="profile-company-img"/>
+                                    <img className="profile-company-img-container" src="https://st2.depositphotos.com/2586633/10219/v/950/depositphotos_102194092-stock-illustration-books-vector-illustrator-stack-of.jpg" alt="profile-company-img"/>
                                 </div>
                                 <div className="col-6 ml-4">
                                     <div>{edu.school}</div>
@@ -144,6 +221,45 @@ class PeopleProfile extends Component{
             });
         } 
 
+        var connectButton = null;
+        var messageButton = null;
+        if(this.state.isConnection === false){
+            connectButton = <div className="mt-2"><button className="btn btn-md profile-btn" onClick={this.addConnection}>Connect</button></div>
+        }
+        if(this.state.isConnection === true){
+            messageButton =  <div className="mt-2">
+            <button type="button" className="btn btn-md profile-btn" data-toggle="modal" data-target="#exampleModal">
+            Message
+            </button>
+
+            <div className="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">Send message to Arivoli</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div className="modal-body">
+                <form>
+                    <div className="form-group">
+                        <label htmlFor="message-text" className="col-form-label">Message:</label>
+                        <textarea className="form-control" id="message-text" onChange = {this.inputHandler}></textarea>
+                    </div>
+                    </form>
+                </div>
+                <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" className="btn btn-primary" onClick = {this.sendMessageHandler}>Send</button>
+                </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        }
+        
+
         return(
             <div>
                  {redirectVar}
@@ -156,14 +272,17 @@ class PeopleProfile extends Component{
                                 <img src="https://wallpapercave.com/wp/0557mer.jpg" alt="cover-img" />
                             </div>
                             <div className="profile-img-container ml-4">
-                                <img className="profile-img" src="https://img.freepik.com/free-icon/user-filled-person-shape_318-74922.jpg?size=338c&ext=jpg" alt="profile-img"/>
+                                <img className="profile-img" src={this.state.profileImage} alt="profile-img"/>
                             </div>
                             <div className="pull-down-div ml-4 row">
                                 <div className="col-7">
                                     <div className="profile-name">{this.state.profile.Fname} {this.state.profile.Lname}</div>
                                     <div className="profile-summary">{this.state.profile.aboutMe}</div>
                                     <div>{this.state.profile.city}, {this.state.profile.state}</div>
-                                    <div className="mt-2"><button className="btn btn-md profile-btn" onClick={this.addConnection}>Connect</button></div>
+                                    {/* <div className="mt-2"><button className="btn btn-md profile-btn" onClick={this.addConnection}>Connect</button></div> */}
+                                    {/* <div className="mt-2"><button className="btn btn-md profile-btn" onClick={this.sendMessage}>Message</button></div> */}
+                                    {connectButton}
+                                    {messageButton}
                                 </div>
                                 <div className="col-5 flt-right">
                                     <div className="p-1">{this.state.profile.Company}</div>
