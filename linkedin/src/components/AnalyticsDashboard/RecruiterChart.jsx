@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Bar, Line, Pie } from "react-chartjs-2";
+import { HorizontalBar, Line, Pie, Bar } from "react-chartjs-2";
 
 class RecruiterChart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      chartData: props.chartData
+      toptenjobdata: this.props.toptenjobdata,
+      lasttenjobdata: this.props.lasttenjobdata
     };
   }
 
@@ -19,9 +20,9 @@ class RecruiterChart extends Component {
   render() {
     return (
       <div className="chart row">
-        <div className="col-md-4">
-          <Bar
-            data={this.state.chartData}
+        <div className="col-md-6">
+          <HorizontalBar
+            data={this.state.toptenjobdata}
             options={{
               title: {
                 display: this.props.displayTitle,
@@ -35,9 +36,9 @@ class RecruiterChart extends Component {
             }}
           />
         </div>
-        <div className="col-md-4">
-          <Line
-            data={this.state.chartData}
+        <div className="col-md-6">
+          <Bar
+            data={this.state.lasttenjobdata}
             options={{
               title: {
                 display: this.props.displayTitle,
@@ -51,7 +52,7 @@ class RecruiterChart extends Component {
             }}
           />
         </div>
-        <div className="col-md-4">
+        {/* <div className="col-md-4">
           <Pie
             data={this.state.chartData}
             options={{
@@ -66,7 +67,7 @@ class RecruiterChart extends Component {
               }
             }}
           />
-        </div>
+        </div> */}
       </div>
     );
   }
