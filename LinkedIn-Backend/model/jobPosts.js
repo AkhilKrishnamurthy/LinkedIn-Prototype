@@ -9,6 +9,7 @@ var JobPosts = new Schema({
   jobTitle: { type: String, trim: true, default: "" },
   industry: { type: String, trim: true, default: "" },
   employmentType: { type: String, trim: true, default: "" },
+  easyApply: { type: String, trim: true, default: "" },
   location: { type: String, trim: true, default: "" },
   seniorityLevel: { type: String, trim: true, default: "" },
   jobDescription: { type: String, trim: true, default: "" },

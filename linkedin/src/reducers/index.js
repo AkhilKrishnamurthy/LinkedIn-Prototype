@@ -6,6 +6,7 @@ import peopleSearchReducer from './peopleSearchReducer';
 import jobSearchReducer from './jobSearchReducer'
 import { reducer as formReducer } from "redux-form";
 import jobsLandingPageReducer from './jobsLandingPageReducer';
+import profileResultsReducer from './profileResultsReducer';
 import PostedjobReducer from './jobPostingHistoryReducer';
 import viewApplicantResumeReducer from './viewApplicantResumeReducer';
 
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   jobsLandingPageStateStore : jobsLandingPageReducer,
   JobPostingHistory : PostedjobReducer,
   ViewApplicantResume : viewApplicantResumeReducer,
-  peopleSearchFieldsStateStore : peopleSearchReducer
+  peopleSearchFieldsStateStore : peopleSearchReducer,
+  profileResultsStateStore : profileResultsReducer,
 });
 
 export default rootReducer;

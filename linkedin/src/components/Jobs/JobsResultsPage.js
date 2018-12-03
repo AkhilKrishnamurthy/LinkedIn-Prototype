@@ -20,7 +20,9 @@ class JobsResultsPage extends Component {
       jobDetails: "",
       redirectToJobDisplayPage: false,
       saveClicked: false,
-      redirectToJobApplication:false
+      redirectToJobApplication:false,
+      companyNameSearchFilter: '',
+      experienceLevelSearchFilter: ''
     };
 
     //bind
@@ -107,6 +109,15 @@ class JobsResultsPage extends Component {
     });
   }
 
+  updateCompanySearch(event) {
+    this.setState({companyNameSearchFilter: event.target.value.substr(0,20)});
+}
+
+updateExperienceLevelSearch(event) {
+  this.setState({experienceLevelSearchFilter: event.target.value.substr(0,20)});
+}
+
+
 
 
   render() {
@@ -120,7 +131,16 @@ class JobsResultsPage extends Component {
       redirectVar = <Redirect to="/jobs/apply-job"/>
     }
 
-    var briefPaneContent = this.state.jobData.map((job, index)=> {
+    let filteredProperties = this.state.jobData
+    .filter(
+        (job) => {
+            console.log(this.state.jobData);
+           return job.companyName.indexOf(this.state.companyNameSearchFilter) !== -1 
+           && job.seniorityLevel.indexOf(this.state.experienceLevelSearchFilter) !== -1;
+        //    && properties.availableStartingDate>=this.state.fromDate;
+        });
+
+    var briefPaneContent = filteredProperties.map((job, index)=> {
       return (
         <div className="job-result-data p-3 mt-2 mb-2 row border" key={index}>
           <span className="job-logo-container col-lg-2">
@@ -219,21 +239,20 @@ class JobsResultsPage extends Component {
                 <option value="2">Easy Apply</option>
                 <option value="3">Under 10 Applicants</option>
               </select>
+              </span>
+
+            <span>
+            <input type = "text" value = {this.state.companyNameSearchFilter} onChange={this.updateCompanySearch.bind(this)} placeholder = "Filter by Company Name" className="custom-search"/>
             </span>
             <span>
-              <select className="custom-select">
-                <option defaultValue>Company</option>
-                <option value="1">Adobe</option>
-                <option value="2">Google</option>
-                <option value="3">Facebook</option>
-              </select>
-            </span>
-            <span>
-              <select className="custom-select">
+              <select value = {this.state.experienceLevelSearchFilter} onChange={this.updateExperienceLevelSearch.bind(this)} className="custom-select">
                 <option defaultValue>Experience Level</option>
-                <option value="1">Internship</option>
-                <option value="2">Entry Level</option>
-                <option value="3">Associate</option>
+                <option value="Internship">Internship</option>
+                <option value="Entry-level">Entry-level</option>
+                <option value="Mid-Senior level">Mid-Senior level</option>
+                <option value="Director">Director</option>
+                <option value="Associate">Associate</option>
+                <option value="Not Applicable">Not Applicable</option>
               </select>
             </span>
           </div>

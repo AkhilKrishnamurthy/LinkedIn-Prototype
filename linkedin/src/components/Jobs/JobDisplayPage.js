@@ -5,11 +5,21 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
 import {Link} from 'react-router-dom';
+import {saveJobDetailsToStore} from '../../actions/jobResultsAction';
 
 class JobDisplayPage extends Component {
     constructor(props) {
         super(props);
         console.log(props);
+
+        this.state = {
+            saveClicked : false,
+            redirectToJobApplication : false
+        }
+        //bind
+        this.handleSaveClick = this.handleSaveClick.bind(this);
+        this.handleApplyJob = this.handleApplyJob.bind(this);
+        this.handleEasyApply = this.handleEasyApply.bind(this);
     }
 
     componentDidMount(){
@@ -17,7 +27,9 @@ class JobDisplayPage extends Component {
         var data = {
             jobData : this.props.jobResultsStateStore.result
         };
-        axios.post("http://localhost:3001/analytics/userclicks", data).then(
+
+        if(this.props.jobResultsStateStore.result != null){
+            axios.post("http://localhost:3001/analytics/userclicks", data).then(
             response => {
               console.log("job click updated");
               console.log(response.data)
@@ -26,13 +38,60 @@ class JobDisplayPage extends Component {
               console.log(error);
             }
         );
+        }
+        
     }
+
+    handleApplyJob = ()=>{
+        //this.saveJobDetailsToStore();
+        this.setState({
+          redirectToJobApplication: true
+        });
+      }
+      handleEasyApply = ()=>{
+        //this.saveJobDetailsToStore();
+        this.setState({
+          redirectToJobApplication: true
+        });
+      }
+
+      saveJobDetailsToStore = () =>{
+        console.log('Inside saveJobDetailstoStore');
+        this.props.saveJobDetailsToStore(this.state.jobDetails);
+        this.setState({
+            redirectToJobApplication : true
+        });
+      }
+
+    handleSaveClick = () =>{
+        //console.log('Job details',this.state.jobDetails);
+        if(this.state.saveClicked === false){
+          var data = {
+            jobDetails : this.props.jobResultsStateStore.result
+          };
+    
+          axios.post('http://localhost:3001/save-job', data)
+          .then((response) =>{
+            if(response.status === 200){
+              this.setState({
+                saveClicked: true
+              });
+            }
+          });
+        }
+        
+      }
 
     render() {
         var redirectVar = null;
-        if(!this.props.loginStateStore) {
-            redirectVar = <Redirect to= "/signup"/>
+        console.log('props login', this.props.loginStateStore.isAuthenticated );
+        if(this.props.loginStateStore.isAuthenticated == false){
+            console.log('inside signup');
+            redirectVar  = <Redirect to="/signup"/>
         }
+          if(this.state.redirectToJobApplication === true){
+            redirectVar = <Redirect to="/jobs/apply-job"/>
+          }
         return (
             <div>
                 {redirectVar}
@@ -53,12 +112,12 @@ class JobDisplayPage extends Component {
                                 </div>
                                 <div className="job-display-title-container-content col-lg-7 col-md-7 col-sm-7">
                               
-                                    <div><b>{this.props.jobResultsStateStore.result.jobTitle}</b></div>
-                                    <div>{this.props.jobResultsStateStore.result.location}</div>
+                                    <div><b>{this.props.jobResultsStateStore.result != null ? this.props.jobResultsStateStore.result.jobTitle:""}</b></div>
+                                    <div>{this.props.jobResultsStateStore.result != null ? this.props.jobResultsStateStore.result.location:""}</div>
                                 
                                 <div className="mt-2"> 
-                                    <button className="btn btn-lg save-btn">Save</button>
-                                    <button className="btn btn-lg ml-3 easy-apply-btn">
+                                    <button className="btn btn-lg save-btn" onClick={this.handleSaveClick}>Save</button>
+                                    <button className="btn btn-lg ml-3 easy-apply-btn" onClick={this.handleEasyApply}>
                                         <span className="">
                                         <img
                                             className="apply-logo mr-2"
@@ -68,14 +127,14 @@ class JobDisplayPage extends Component {
                                         </span>
                                         <span><b>Easy apply</b></span>
                                     </button>
-                                    <button className="btn btn-lg ml-3 apply-btn">Apply</button>
+                                    <button className="btn btn-lg ml-3 apply-btn" onClick={this.handleApplyJob}>Apply</button>
                                 </div>
                                 </div>
                             </div>
                         </div>
                         <div className="job-desc-container mt-3 border">
                             <div className="job-desc-container-content mt-3 ml-4 mb-5">
-                                {this.props.jobResultsStateStore.result.jobDescription}
+                                {this.props.jobResultsStateStore.result != null ? this.props.jobResultsStateStore.result.jobDescription:""}
                             </div>  
                         </div>
                     </div>
@@ -88,8 +147,8 @@ class JobDisplayPage extends Component {
 //
 const mapStateToProps = state =>({
     jobResultsStateStore : state.jobResultsStateStore,
-    loginStateStore : state.Login.result
+    loginStateStore : state.Login
 });
 
 //export default JobDisplayPage;
-export default connect(mapStateToProps, {})(JobDisplayPage);
+export default connect(mapStateToProps, {saveJobDetailsToStore})(JobDisplayPage);
