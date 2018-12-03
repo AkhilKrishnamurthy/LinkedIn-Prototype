@@ -100,6 +100,7 @@ var logProfileView = require("./controllers/logProfileView");
 var searchPeople = require("./controllers/searchPeople");
 var submitEditedJobDetails = require("./controllers/submitEditedJobDetails");
 var getProfileData = require("./controllers/getProfileData");
+var getProfileDataUpdated = require('./controllers/getprofileDataUpdated')
 
 //Analytics
 var analytics = require("./controllers/analytics");
@@ -124,7 +125,7 @@ client.get("my test key", function(error, result) {
   console.log("GET result ->" + result);
 });
 
-app.post("/download-file/:file(*)", (req, res) => {
+app.post("/download/:file(*)", (req, res) => {
   console.log("Inside download file", req.params);
   var file = req.params.file;
   var fileLocation = path.join(__dirname + "/uploads", file);
@@ -438,7 +439,7 @@ app.get("/getcitywisejobdata/:id", (req, res) => {
 
 /**Analytics */
 
-app.post('/upload-file', upload.any(), (req, res) => {
+app.post('/upload_file', upload.any(), (req, res) => {
 res.send();
 });
 
@@ -465,7 +466,7 @@ app.use("/log-job-viewed", logJobViewed);
 app.use("/log-app-halffilled", logAppHalffilled);
 app.use("/log-application-submitted", logApplicationSubmitted);
 app.use("/log-profile-view", logProfileView);
-app.use("/get-profile-data", getProfileData);
+app.use("/get-profile-data", getProfileDataUpdated);
 
 app.use('/sendmessage', sendMessage);
 app.use('/getmessages', getMessages);

@@ -535,7 +535,7 @@ console.log(education);
             var data = new FormData();
             data.append('photos', profilePhoto);
             axios.defaults.withCredentials = true;
-            axios.post('http://localhost:3001/upload-file', data)
+            axios.post('http://localhost:3001/upload_file', data)
                 .then(response => {
                     if (response.status === 200) {
                         console.log('Profile Photo Name: ', profilePhoto.name);
