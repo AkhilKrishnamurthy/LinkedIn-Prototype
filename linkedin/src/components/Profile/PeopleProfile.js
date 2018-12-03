@@ -218,7 +218,36 @@ class PeopleProfile extends Component{
             connectButton = <div className="mt-2"><button className="btn btn-md profile-btn" onClick={this.addConnection}>Connect</button></div>
         }
         if(this.state.isConnection === true){
-            messageButton = <div>Message</div>
+            messageButton =  <div className="mt-2">
+            <button type="button" className="btn btn-md profile-btn" data-toggle="modal" data-target="#exampleModal">
+            Message
+            </button>
+
+            <div className="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">Send message to Arivoli</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div className="modal-body">
+                <form>
+                    <div className="form-group">
+                        <label htmlFor="message-text" className="col-form-label">Message:</label>
+                        <textarea className="form-control" id="message-text" onChange = {this.inputHandler}></textarea>
+                    </div>
+                    </form>
+                </div>
+                <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" className="btn btn-primary" onClick = {this.sendMessageHandler}>Send</button>
+                </div>
+                </div>
+            </div>
+            </div>
+            </div>
         }
         
 
@@ -241,40 +270,8 @@ class PeopleProfile extends Component{
                                     <div className="profile-name">{this.state.profile.Fname} {this.state.profile.Lname}</div>
                                     <div className="profile-summary">{this.state.profile.aboutMe}</div>
                                     <div>{this.state.profile.city}, {this.state.profile.state}</div>
-                                    <div className="mt-2"><button className="btn btn-md profile-btn" onClick={this.addConnection}>Connect</button></div>
+                                    {/* <div className="mt-2"><button className="btn btn-md profile-btn" onClick={this.addConnection}>Connect</button></div> */}
                                     {/* <div className="mt-2"><button className="btn btn-md profile-btn" onClick={this.sendMessage}>Message</button></div> */}
-                                <div className="mt-2">
-                                <button type="button" className="btn btn-md profile-btn" data-toggle="modal" data-target="#exampleModal">
-                                Message
-                                </button>
-
-                                <div className="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div className="modal-dialog" role="document">
-                                    <div className="modal-content">
-                                    <div className="modal-header">
-                                        <h5 className="modal-title" id="exampleModalLabel">Send message to Arivoli</h5>
-                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div className="modal-body">
-                                    <form>
-                                        <div className="form-group">
-                                            <label htmlFor="message-text" className="col-form-label">Message:</label>
-                                            <textarea className="form-control" id="message-text" onChange = {this.inputHandler}></textarea>
-                                        </div>
-                                        </form>
-                                    </div>
-                                    <div className="modal-footer">
-                                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" className="btn btn-primary" onClick = {this.sendMessageHandler}>Send</button>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                                </div>
-
-
                                     {connectButton}
                                     {messageButton}
                                 </div>
