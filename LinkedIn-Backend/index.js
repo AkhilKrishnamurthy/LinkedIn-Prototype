@@ -151,7 +151,7 @@ app.get("/getProfileData/:id", (req, res) => {
 app.post("/peopleSearch", (req, res) => {
   console.log("in search people");
   console.log("search for:", req.body);
-  req.body.user = req.session.user;
+  //req.body.user = req.session.user;
   searchPeople.searchPeople(req, res);
 });
 
