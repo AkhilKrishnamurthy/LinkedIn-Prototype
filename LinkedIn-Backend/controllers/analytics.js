@@ -158,3 +158,23 @@ exports.getcitywisedata = function(req, res) {
     }
   });
 };
+
+exports.getprofileviews = function(req, res) {
+  //console.log(req.body);
+  var user = {
+    username: req.session.user //req.session.user //"aehari2010@gmail.com"
+  };
+  console.log("inside profile views data req");
+  kafka.make_request("get_profile_views", user, function(err, result) {
+    console.log("in get_profile_views");
+    //  console.log(req.body);
+    if (err) {
+      console.log("err", err);
+      res.status(500).send({ message: "Server Error!" });
+    } else {
+      console.log("get_profile_views job data!");
+      console.log("profile views results", result);
+      res.status(200).send({ result: result });
+    }
+  });
+};

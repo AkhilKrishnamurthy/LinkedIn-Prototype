@@ -16,15 +16,16 @@ import JobsLandingPage from "./Jobs/JobsLandingPage";
 import JobsResultsPage from "./Jobs/JobsResultsPage";
 import PeopleSearch from "./PeopleSearch/PeopleSearch";
 import RecruiterDashboard from "./AnalyticsDashboard/RecruiterDashboard";
-import SavedJobs from "./Jobs/SavedJobs";
-import JobApplication from './Jobs/JobApplication';
-import EasyJobApplication from './Jobs/EasyJobApplication';
-import AppliedJobs from './Jobs/AppliedJobs';
-import PeopleProfile from './Profile/PeopleProfile';
-import MyMessages from './MyMessages/Inbox';
-import ViewApplicantResumePDF from './ReactPDF/viewApplicantResumePDF';
-import EditJobPost from './Jobs/EditJobPost';
+import ApplicantDashboard from "./AnalyticsDashboard/ApplicantDashboard";
 
+import SavedJobs from "./Jobs/SavedJobs";
+import JobApplication from "./Jobs/JobApplication";
+import EasyJobApplication from "./Jobs/EasyJobApplication";
+import AppliedJobs from "./Jobs/AppliedJobs";
+import PeopleProfile from "./Profile/PeopleProfile";
+import MyMessages from "./MyMessages/Inbox";
+import ViewApplicantResumePDF from "./ReactPDF/viewApplicantResumePDF";
+import EditJobPost from "./Jobs/EditJobPost";
 
 class Main extends Component {
   constructor(props) {
@@ -47,6 +48,7 @@ class Main extends Component {
           component={AnalysticsDashboardLandingPage}
         />
         <Route path="/recruiter/dashboard" component={RecruiterDashboard} />
+        <Route path="/applicant/dashboard" component={ApplicantDashboard} />
         <Route path="/jobs/add-job" component={AddJobs} />
         <Route path="/jobs/app-info" component={ApplicationInfo} />
         <Route path="/jobs/display" component={JobDisplayPage} />
@@ -61,7 +63,10 @@ class Main extends Component {
         <Route path="/jobs/applied-jobs" component={AppliedJobs} />
         <Route path="/profile/:id" component={PeopleProfile} />
         <Route path="/mymessages" component={MyMessages} />
-        <Route path="/viewApplicantResumePDF" component={ViewApplicantResumePDF} />
+        <Route
+          path="/viewApplicantResumePDF"
+          component={ViewApplicantResumePDF}
+        />
         <Route path="/jobs/edit-job-post" component={EditJobPost} />
         <Route path="/inbox" component={MyMessages} />
       </div>

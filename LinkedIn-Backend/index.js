@@ -100,14 +100,14 @@ var logProfileView = require("./controllers/logProfileView");
 var searchPeople = require("./controllers/searchPeople");
 var submitEditedJobDetails = require("./controllers/submitEditedJobDetails");
 var getProfileData = require("./controllers/getProfileData");
-var getProfileDataUpdated = require('./controllers/getprofileDataUpdated')
+var getProfileDataUpdated = require("./controllers/getprofileDataUpdated");
 
 //Analytics
 var analytics = require("./controllers/analytics");
 //var jobPostingHistory = require("./controllers/jobPostingHistory");
 var jobFormAnalytics = require("./controllers/jobFormAnalytics");
-var sendMessage = require('./controllers/sendMessages');
-var getMessages = require('./controllers/getMessages')
+var sendMessage = require("./controllers/sendMessages");
+var getMessages = require("./controllers/getMessages");
 
 client.on("connect", function() {
   console.log("Redis client connected");
@@ -440,11 +440,16 @@ app.get("/getcitywisejobdata/:id", (req, res) => {
   console.log("inside get city wise job posts");
   analytics.getcitywisedata(req, res);
 });
+app.get("/getprofileviews", (req, res) => {
+  // req.body.user = req.session.user;
+  console.log("inside get profile views");
+  analytics.getprofileviews(req, res);
+});
 
 /**Analytics */
 
-app.post('/upload_file', upload.any(), (req, res) => {
-res.send();
+app.post("/upload_file", upload.any(), (req, res) => {
+  res.send();
 });
 
 app.use("/jobs", jobs);
@@ -472,8 +477,8 @@ app.use("/log-application-submitted", logApplicationSubmitted);
 app.use("/log-profile-view", logProfileView);
 app.use("/get-profile-data", getProfileDataUpdated);
 
-app.use('/sendmessage', sendMessage);
-app.use('/getmessages', getMessages);
+app.use("/sendmessage", sendMessage);
+app.use("/getmessages", getMessages);
 console.log("Linked Backend!");
 app.listen(3001);
 console.log("Server Listening on port 3001");

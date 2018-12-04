@@ -204,6 +204,19 @@ class JobHeader extends Component {
                         {/* <li><Link to= "/jobs/posting-details">Posted Jobs</Link><span className="glyphicon glyphicon-log-out pull-right"></span></li> */}
                         {/* <li><a>Profile<span className="glyphicon glyphicon-log-out pull-right"></span></a></li> */}
                         <li className="divider" />
+                        <li className="dropdownFontColor">
+                          <span className="glyphicon glyphicon-log-out pull-right">
+                            <Link
+                              to="/applicant/dashboard"
+                              className="text-dark"
+                            >
+                              Profile DashBoard
+                            </Link>
+                          </span>
+                        </li>
+                        {/* <li><Link to= "/jobs/posting-details">Posted Jobs</Link><span className="glyphicon glyphicon-log-out pull-right"></span></li> */}
+                        {/* <li><a>Profile<span className="glyphicon glyphicon-log-out pull-right"></span></a></li> */}
+                        <li className="divider" />
                         <li>
                           <span className="glyphicon glyphicon-log-out">
                             <Link
