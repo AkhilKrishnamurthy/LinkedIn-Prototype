@@ -5,6 +5,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import * as helper from "../../utils/helper";
+import {Redirect} from 'react-router';
 
 class Profile extends Component {
   constructor(props) {
@@ -628,7 +629,10 @@ class Profile extends Component {
 
   render() {
     //personal detail section start
-
+    var redirectVar=null;
+    if(!this.props.loginStateStore.result) {
+      redirectVar = <Redirect to= "/login"/>
+  }
     var modalpersonaldetails = (
       <div>
         <div>
@@ -1557,6 +1561,7 @@ class Profile extends Component {
 
     return (
       <div>
+        {redirectVar}
         <Header />
 
         <div className="profile-total-content-container">

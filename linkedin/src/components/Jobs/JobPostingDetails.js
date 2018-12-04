@@ -37,6 +37,7 @@ class JobPostingDetails extends Component{
     // }
 
     async componentDidMount(){
+        if(this.props.loginStateStore) {
         var data = {
             username: this.props.loginStateStore.email
         }
@@ -50,6 +51,7 @@ class JobPostingDetails extends Component{
                     postedJobs : this.state.postedJobs.concat(arr) 
                 });   
         });
+        }
     }
 
     handleApplyClick = job => {
