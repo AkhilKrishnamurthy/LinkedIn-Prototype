@@ -186,87 +186,91 @@ class Profile extends Component {
   fetchprofiledbcall = () => {
     //e.preventDefault();
     console.log("COMPONENT DID MOUNT");
-    var email = this.props.loginStateStore.result.email;
-    console.log("Emaild id is:", email);
-    const data = { email: email };
-    // variable s would contain response string from fetch for skills
-    axios.post("http://localhost:3001/FetchProfile", data).then(response => {
-      //update the state with the response data
-      console.log(response.data);
-      console.log("Response of did mount", response);
-      var output = response.data;
-      console.log("output is", output.docs);
+    if (
+      this.props.loginStateStore.result !== null &&
+      this.props.loginStateStore.result !== undefined
+    ) {
+      var email = this.props.loginStateStore.result.email;
+      console.log("Emaild id is:", email);
+      const data = { email: email };
+      // variable s would contain response string from fetch for skills
+      axios.post("http://localhost:3001/FetchProfile", data).then(response => {
+        //update the state with the response data
+        console.log(response.data);
+        console.log("Response of did mount", response);
+        var output = response.data;
+        console.log("output is", output.docs);
 
-      var experience1 = output.docs.user.experience;
-      console.log("experience1", experience1);
-      var test = output.docs.user.experience;
-      var testedu = output.docs.user.education;
+        var experience1 = output.docs.user.experience;
+        console.log("experience1", experience1);
+        var test = output.docs.user.experience;
+        var testedu = output.docs.user.education;
 
-      var experience = [...output.docs.user.experience];
-      var education = [...output.docs.user.education];
+        var experience = [...output.docs.user.experience];
+        var education = [...output.docs.user.education];
 
-      var tempexp = [...output.docs.user.experience];
+        var tempexp = [...output.docs.user.experience];
 
-      var tempedu = [...output.docs.user.education];
+        var tempedu = [...output.docs.user.education];
 
-      var s = output.docs.user.skills;
+        var s = output.docs.user.skills;
 
-      var skillsresult = s.split(",");
+        var skillsresult = s.split(",");
 
-      console.log("above this.state", skillsresult);
-      console.log("test value is", test);
-      console.log("end");
-      console.log(this.state.profileimage);
-      axios
-        .post(
-          "http://localhost:3001/download/" +
-            response.data.docs.user.profileimage
-        )
-        .then(response => {
-          console.log("inside download file");
+        console.log("above this.state", skillsresult);
+        console.log("test value is", test);
+        console.log("end");
+        console.log(this.state.profileimage);
+        axios
+          .post(
+            "http://localhost:3001/download/" +
+              response.data.docs.user.profileimage
+          )
+          .then(response => {
+            console.log("inside download file");
 
-          var profileImage = "data:image/jpg;base64, " + response.data;
-          this.setState({
-            profileImage: profileImage
+            var profileImage = "data:image/jpg;base64, " + response.data;
+            this.setState({
+              profileImage: profileImage
+            });
           });
+        this.setState({
+          test: test,
+          testedu: testedu,
+          fname: output.docs.user.Fname,
+          lname: output.docs.user.Lname,
+          headline: output.docs.user.headline,
+          company: output.docs.user.company,
+          city: output.docs.user.output,
+          aboutMe: output.docs.user.aboutMe,
+          zipcode: output.docs.user.zip,
+          stateval: output.docs.user.state,
+          //copy
+          fname1: output.docs.user.Fname,
+          lname1: output.docs.user.Lname,
+          headline1: output.docs.user.headline,
+          company1: output.docs.user.company,
+          city1: output.docs.user.city,
+          aboutMe1: output.docs.user.aboutMe,
+          zipcode1: output.docs.user.zip,
+          stateval1: output.docs.user.state,
+          experience: experience,
+
+          education: education,
+
+          tempexp: tempexp,
+          tempedu: tempedu,
+
+          skills: skillsresult,
+          skillstr: s,
+
+          experienceid: 0,
+
+          educationid: 0
+          // profileimage : profileImage
         });
-      this.setState({
-        test: test,
-        testedu: testedu,
-        fname: output.docs.user.Fname,
-        lname: output.docs.user.Lname,
-        headline: output.docs.user.headline,
-        company: output.docs.user.company,
-        city: output.docs.user.output,
-        aboutMe: output.docs.user.aboutMe,
-        zipcode: output.docs.user.zip,
-        stateval: output.docs.user.state,
-        //copy
-        fname1: output.docs.user.Fname,
-        lname1: output.docs.user.Lname,
-        headline1: output.docs.user.headline,
-        company1: output.docs.user.company,
-        city1: output.docs.user.city,
-        aboutMe1: output.docs.user.aboutMe,
-        zipcode1: output.docs.user.zip,
-        stateval1: output.docs.user.state,
-        experience: experience,
 
-        education: education,
-
-        tempexp: tempexp,
-        tempedu: tempedu,
-
-        skills: skillsresult,
-        skillstr: s,
-
-        experienceid: 0,
-
-        educationid: 0
-        // profileimage : profileImage
-      });
-
-      /*   console.log("thisi is m experience array state",this.state.experience);
+        /*   console.log("thisi is m experience array state",this.state.experience);
               console.log(output.docs);
               console.log("fname db",output.docs.user.Fname);
               console.log('Fname',this.state.fname);
@@ -276,7 +280,8 @@ class Profile extends Component {
               console.log('skill',this.state.skill);
               console.log('skillsresult',skillsresult);
               console.log('test after setting it',this.state.test); */
-    });
+      });
+    }
   };
 
   //component did mount for the first render
