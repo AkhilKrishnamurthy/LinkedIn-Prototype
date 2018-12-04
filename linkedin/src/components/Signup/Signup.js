@@ -3,6 +3,7 @@ import LoginHeader from "../Header/LoginHeader";
 import { Field, reduxForm } from "redux-form";
 import { Redirect } from "react-router";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { userActions } from "../../actions/applicantSignupAction";
 class Signup extends React.Component {
@@ -121,6 +122,10 @@ class Signup extends React.Component {
                   >
                     Join Now
                   </button>
+                </div>
+                <br />
+                <div>
+                  <Link to="/login">Login</Link>
                 </div>
               </form>
             </div>

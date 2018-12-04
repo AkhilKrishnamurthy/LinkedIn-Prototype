@@ -70,12 +70,12 @@ class Login extends Component {
       }
       const { handleSubmit } = this.props;
       return (
-        <div class="container">
+        <div className="">
           {redirectVar}
-          <div class="login-form">
+          <div className="login-form">
             <form>
-              <div class="main-div">
-                <div class="panel">
+              <div className="main-div">
+                <div className="panel">
                   <h2>Welcome Back</h2>
                   <p>
                     Don't miss your next opportunity. Sign in to stay updated on
@@ -83,7 +83,7 @@ class Login extends Component {
                   </p>
                 </div>
                 {error}
-                <div class="form-group">
+                <div className="form-group">
                   <Field
                     label=""
                     className="form-control"
@@ -94,7 +94,7 @@ class Login extends Component {
                   />
                   {/* <input type="text" class="form-control" name="email" placeholder="Email"/> */}
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <Field
                     label=""
                     className="form-control"
@@ -106,7 +106,7 @@ class Login extends Component {
                   {/* <input type="password" class="form-control" name="password" placeholder="Password"/> */}
                 </div>
                 <button
-                  class="btn btn-primary"
+                  className="btn btn-primary"
                   type="submit"
                   onClick={handleSubmit(this.submitLogin.bind(this))}
                 >
@@ -124,12 +124,12 @@ class Login extends Component {
     }
     const { handleSubmit } = this.props;
     return (
-      <div class="container">
+      <div className="">
         {redirectVar}
-        <div class="login-form">
+        <div className="login-form">
           <form>
-            <div class="main-div">
-              <div class="panel">
+            <div className="main-div">
+              <div className="panel">
                 <h2>Welcome Back</h2>
                 <p>
                   Don't miss your next opportunity. Sign in to stay updated on
@@ -137,7 +137,7 @@ class Login extends Component {
                 </p>
               </div>
               {error}
-              <div class="form-group">
+              <div className="form-group">
                 <Field
                   label=""
                   className="form-control"
@@ -148,7 +148,7 @@ class Login extends Component {
                 />
                 {/* <input type="text" class="form-control" name="email" placeholder="Email"/> */}
               </div>
-              <div class="form-group">
+              <div className="form-group">
                 <Field
                   label=""
                   className="form-control"
@@ -160,7 +160,7 @@ class Login extends Component {
                 {/* <input type="password" class="form-control" name="password" placeholder="Password"/> */}
               </div>
               <button
-                class="btn btn-primary"
+                className="btn btn-primary"
                 type="submit"
                 onClick={handleSubmit(this.submitLogin.bind(this))}
               >
