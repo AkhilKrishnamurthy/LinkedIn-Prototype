@@ -239,8 +239,12 @@ class RecruiterDashoard extends Component {
   getJobList() {
     var labeldb = [];
     var joblistdata = [];
+
+    var data = {
+      username: this.props.loginStateStore.email
+    };
     axios.defaults.withCredentials = true;
-    axios.get("http://localhost:3001/JobPostingHistory").then(
+    axios.post("http://localhost:3001/JobPostingHistory", data).then(
       response => {
         // console.log("job list job data from db", response.data.value);
         joblistdata = response.data.value;

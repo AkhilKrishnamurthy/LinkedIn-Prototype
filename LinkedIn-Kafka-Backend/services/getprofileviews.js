@@ -18,21 +18,35 @@ function handle_request(message, callback) {
   //   );
   //}
 
+  var dat = new Date();
+  dat.setDate(dat.getDate() - 30);
+  console.log("new Date() - 30", dat);
+  var dat1 = new Date();
+  dat1.setDate(dat1.getDate());
   var pipeline = [
-    { $match: { profileEmail: message.username } },
+    {
+      $match: {
+        profileEmail: message.username,
+        viewTime: {
+          $gte: dat,
+          $lt: dat1
+        }
+      }
+    },
+
     {
       $project: {
         viewTime: { $substr: ["$viewTime", 0, 10] }
         //   viewTime: { $dateToString: { format: "%Y-%m-%d", date: "$date" } }
       }
-    },
-    { $limit: 50 }
+    }
+    // { $limit: 50 }
   ];
   var res = {};
   var promise = Model.aggregate(pipeline).exec();
   promise
     .then(function(data) {
-      console.log("top 10 job data-");
+      console.log("profile view data-");
       console.log(data);
       res.value = data;
       if (data) {

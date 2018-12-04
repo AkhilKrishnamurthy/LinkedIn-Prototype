@@ -114,7 +114,7 @@ class ApplicantDashoard extends Component {
 
     if (this.state.showprofileviews === true)
       showbar = (
-        <Line
+        <Bar
           data={this.state.profileviewdata}
           options={{
             title: {

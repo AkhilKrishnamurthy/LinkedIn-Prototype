@@ -151,7 +151,7 @@ app.get("/getProfileData/:id", (req, res) => {
 app.post("/peopleSearch", (req, res) => {
   console.log("in search people");
   console.log("search for:", req.body);
-  req.body.user = req.session.user;
+  //req.body.user = req.session.user;
   searchPeople.searchPeople(req, res);
 });
 
@@ -440,7 +440,7 @@ app.post("/submitEditedJobDetails", (req, res) => {
   console.log("inside edit job post");
   console.log(req.body);
   req.body.user = req.body.username;
-  console.log(req.session.user);
+  //console.log(req.session.user);
   submitEditedJobDetails.submitEditedJobDetails(req, res);
 });
 
