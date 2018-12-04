@@ -2,7 +2,7 @@
 var JwtStrategy = require('passport-jwt').Strategy;
 var ExtractJwt = require('passport-jwt').ExtractJwt;
 //var db = require('../app/db');
-//var Model = require('../DatabaseConnection');
+var Model = require('../model/linkedin');
 //var config = require('./settings');
 const secret = "secret";
 
@@ -14,18 +14,19 @@ module.exports = function (passport) {
     };
     passport.use(new JwtStrategy(opts, function (jwt_payload, callback) {
 
-        // Model.Userdetails.findOne({ 
-        //     'Username': jwt_payload.Username 
-        // }, (err, res) => {
+        Model.findOne({ 
+            'user.email': jwt_payload.email 
+        }, (err, res) => {
 
-        //         if (res) {
-        //             var user = res;
-        //             delete user.Password;
-        //             callback(null, user);
-        //         }
-        //         else {
-        //             callback(err, false);
-        //         }
-        //     });
+                if (res) {
+                    var user = res.user.email;
+                    //delete user.user.password;
+                    console.log('Session Email: ', user.email);
+                    callback(null, user.email);
+                }
+                else {
+                    callback(err, false);
+                }
+            });
     }));
 };

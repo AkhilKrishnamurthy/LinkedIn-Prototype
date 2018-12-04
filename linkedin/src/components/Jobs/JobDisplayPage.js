@@ -121,7 +121,7 @@ class JobDisplayPage extends Component {
     render() {
         var redirectVar = null;
         if(!this.props.loginStateStore) {
-            redirectVar = <Redirect to= "/signup"/>
+            redirectVar = <Redirect to= "/login"/>
         }
           if(this.state.redirectToJobApplication === true){
             redirectVar = <Redirect to="/jobs/apply-job"/>

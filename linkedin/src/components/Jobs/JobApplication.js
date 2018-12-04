@@ -168,7 +168,7 @@ class JobApplication extends Component{
             redirectVar  = <Redirect to="/"/>
         }
         if(this.props.loginStateStore.isAuthenticated === false){
-            redirectVar = <Redirect to= "/signup"/>
+            redirectVar = <Redirect to= "/login"/>
         }
         return(
             <div>

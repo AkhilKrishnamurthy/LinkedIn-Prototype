@@ -46,6 +46,10 @@ class SavedJobs extends Component{
 
         var redirectVar = null;
 
+        if(this.props.loginStateStore.isAuthenticated === false){
+            redirectVar  = <Redirect to="/login"/>
+        }
+
         if(this.state.redirectToDisplayPage === true){
             redirectVar  = <Redirect to="/jobs/display"/>
         }
@@ -53,18 +57,20 @@ class SavedJobs extends Component{
         if(this.state.redirectToApplicationPage === true){
             redirectVar  = <Redirect to="/jobs/apply-job"/>
         }
-
-        var savedJobsContent = this.props.jobsLandingPageStateStore.result.map((job, index)=>{
-            return(
-                <div key={index}>
-                    <div className="job-title"><b><Link to="#" id={index} onClick={this.handleClick}>{job.jobTitle}</Link></b></div>
-                    <button className="btn btn-lg save-btn flt-right" id={index} onClick={this.handleApplyClick}>Apply</button>
-                    <div className="">{job.companyName}</div>
-                    <div className="">{job.location}</div>
-                    <hr/>
-                </div>
-            )
-        });
+        if(this.props.jobsLandingPageStateStore.result){
+            var savedJobsContent = this.props.jobsLandingPageStateStore.result.map((job, index)=>{
+                return(
+                    <div key={index}>
+                        <div className="job-title"><b><Link to="#" id={index} onClick={this.handleClick}>{job.jobTitle}</Link></b></div>
+                        <button className="btn btn-lg save-btn flt-right" id={index} onClick={this.handleApplyClick}>Apply</button>
+                        <div className="">{job.companyName}</div>
+                        <div className="">{job.location}</div>
+                        <hr/>
+                    </div>
+                )
+            });
+        }
+        
 
         return(
             <div className="saved-jobs-main-container">
@@ -91,7 +97,8 @@ class SavedJobs extends Component{
 
 //mapStateToProps
 const mapStateToProps = state =>({
-    jobsLandingPageStateStore : state.jobsLandingPageStateStore
+    jobsLandingPageStateStore : state.jobsLandingPageStateStore,
+    loginStateStore :state.Login
 });
 
 //export default SavedJobs;

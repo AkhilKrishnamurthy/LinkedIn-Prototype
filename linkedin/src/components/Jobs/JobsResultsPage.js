@@ -70,7 +70,8 @@ class JobsResultsPage extends Component {
 
 
   componentDidMount() {
-    axios.defaults.withCredentials = true;
+    if(this.props.loginStateStore.isAuthenticated !== false){
+      axios.defaults.withCredentials = true;
     var values = {
       jobTitle: this.props.searchFieldToStore.searchfieldresult.jobTitle,
       location: this.props.searchFieldToStore.searchfieldresult.location
@@ -108,6 +109,8 @@ class JobsResultsPage extends Component {
         console.log("jobData length" + this.state.jobData.length);
       }
     });
+    }
+    
   }
 
   toggleDetailsPane = (Parameter, event) => {
@@ -194,6 +197,10 @@ updateEasyApplySearch(event) {
   render() {
     //left-pane content
     var redirectVar = null;
+    if(this.props.loginStateStore.isAuthenticated === false){
+      redirectVar = <Redirect to="/login" />;
+    }
+
     if (this.state.redirectToJobDisplayPage === true) {
       redirectVar = <Redirect to="/jobs/display" />;
     }
@@ -435,7 +442,8 @@ updateEasyApplySearch(event) {
 
 const mapStateToProps = state => ({
   jobResultsStateStore: state.jobResultsStateStore,
-  searchFieldToStore: state.jobSearchFieldsStateStore
+  searchFieldToStore: state.jobSearchFieldsStateStore,
+  loginStateStore : state.Login
 });
 
 function mapDispatchToProps(dispatch) {
