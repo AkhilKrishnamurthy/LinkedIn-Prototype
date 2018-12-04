@@ -23,13 +23,16 @@ class MyNetwork extends Component {
     }
 
     async componentDidMount(){
-       this.getPendingRequests();
-        this.getConnections();
+        if(this.props.loginStateStore.isAuthenticated == "true"){
+            this.getPendingRequests();
+            this.getConnections();
+        }
+       
     }
 
     getConnections = ()=>{
         axios.defaults.withCredentials=true;
-       axios.get('http://localhost:3001/get-connections')
+       axios.get('http://localhost:3001/get-connections/'+this.props.loginStateStore.result.email)
             .then((response)=>{
                 if(response.status === 200){
                     console.log('Response connections', response.data);
@@ -65,7 +68,7 @@ class MyNetwork extends Component {
 
     getPendingRequests = ()=>{
         axios.defaults.withCredentials=true;
-        axios.get('http://localhost:3001/get-pending-requests')
+        axios.get('http://localhost:3001/get-pending-requests/'+this.props.loginStateStore.result.email)
             .then((response)=>{
                 if(response.status === 200){
                     console.log('Response pedning requests', response.data);
@@ -103,7 +106,8 @@ class MyNetwork extends Component {
         console.log('Ignore request no: ', Parameter);
         const index = Parameter;
         var data = {
-            index : index
+            index : index,
+            email : this.props.loginStateStore.result.email
         }
         axios.defaults.withCredentials=true;
         axios.post('http://localhost:3001/ignore-request',data)
@@ -123,7 +127,8 @@ class MyNetwork extends Component {
     acceptRequest = (Parameter, event) =>{
         const index = Parameter;
         var data = {
-            index : index
+            index : index,
+            email: this.props.loginStateStore.result.email
         }
         axios.defaults.withCredentials=true;
         axios.post('http://localhost:3001/accept-request',data)

@@ -30,9 +30,13 @@ class JobsLandingPage extends Component {
   }
 
   componentDidMount(){
-    this.getInterestedJobs();
+
+    if(this.props.loginStateStore){
+      this.getInterestedJobs();
     this.getSavedJobs();
-    this.getAppliedJobs();    
+    this.getAppliedJobs();
+    }
+        
   }
 
   getInterestedJobs = ()=>{
@@ -50,7 +54,10 @@ class JobsLandingPage extends Component {
 
   getSavedJobs = ()=>{
     axios.defaults.withCredentials=true;
-    axios.get('http://localhost:3001/saved-jobs')
+    var data = {
+      email : this.props.loginStateStore.email
+    }
+    axios.get('http://localhost:3001/saved-jobs/'+ this.props.loginStateStore.email)
             .then((response)=>{
                 if(response.status === 200){
                     console.log('saved jobs: ', response.data);
@@ -65,7 +72,7 @@ class JobsLandingPage extends Component {
 
   getAppliedJobs = ()=>{
     axios.defaults.withCredentials=true;
-    axios.get('http://localhost:3001/getAppliedJobs')
+    axios.get('http://localhost:3001/getAppliedJobs/' + this.props.loginStateStore.email)
       .then((response)=>{
         if(response.status === 200){
           console.log('Response applied jobs', response.data);

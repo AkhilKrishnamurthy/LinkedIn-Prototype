@@ -100,6 +100,7 @@ class EditJobPost extends Component{
        console.log("jobid",this.props.JobHistory.jobId);
        console.log("easy apply",this.state.easyApply);
         const data = {
+            username: this.props.loginStateStore.email,
             jobId: this.props.JobHistory.jobId,
             companyName: this.state.companyName,
             jobTitle: this.state.jobTitle,

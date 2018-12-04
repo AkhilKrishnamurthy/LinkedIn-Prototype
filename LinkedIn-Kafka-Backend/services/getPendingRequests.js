@@ -1,9 +1,9 @@
 var Model = require('../model/linkedin');
 
 function handle_request(message, callback){
-    console.log('Inside get Pending requests kafka, email ', message.session.user);
+    //console.log('Inside get Pending requests kafka, email ', message.session.user);
     Model.findOne({
-        "user.email": message.session.user 
+        "user.email": message
     }, (err, result)=>{
         if(err){
             console.log('Error in getting pedning requests');

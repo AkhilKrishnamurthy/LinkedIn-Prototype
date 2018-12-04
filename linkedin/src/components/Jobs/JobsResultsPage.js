@@ -148,7 +148,8 @@ class JobsResultsPage extends Component {
     console.log("Job details", this.state.jobDetails);
     if (this.state.saveClicked === false) {
       var data = {
-        jobDetails: this.state.jobDetails
+        jobDetails: this.state.jobDetails,
+        email : this.props.loginStateStore.result.email
       };
 
       axios.post("http://localhost:3001/save-job", data).then(response => {

@@ -1,10 +1,10 @@
 var Model = require('../model/linkedin');
 
 function handle_request(message, callback){
-    console.log('Inside Kafks egt connections, email : ', message.session.user);
+    console.log('Inside Kafks egt connections, email : ', message);
 
     Model.findOne({
-        "user.email" : message.session.user
+        "user.email" : message
     }, (err, result)=>{
         if(err){
             console.log('Error in gettig connection data');

@@ -2,7 +2,7 @@ var Model = require('../model/linkedin');
 
 function handle_request(message, callback){
     Model.find({
-        "user.email": message.session.user
+        "user.email": message
     }, (err, result)=>{
         if(err){
             console.log('Error in getting applied jobs');
