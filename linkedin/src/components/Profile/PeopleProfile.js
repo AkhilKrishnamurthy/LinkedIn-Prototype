@@ -35,7 +35,9 @@ class PeopleProfile extends Component{
 
         
     async componentDidMount(){
-        this.isConnection();
+
+       if(this.props.loginStateStore.isAuthenticated == "true"){
+            this.isConnection();
         this.logProfileView();
         this.loadProfileImage();
         axios.defaults.withCredentials=true;
@@ -47,12 +49,9 @@ class PeopleProfile extends Component{
             profile :  this.props.profileResultsStateStore.result.user,
             senderEmailId : this.props.loginStateStore.result.email 
         });
-        // this.setState({
-        //     senderEmailId : this.props.loginStateStore.result.email,
-        //     receiverEmailId : "aehari2010@gmail.com",
-        //     FName : this.props.loginStateStore.result.FName
-        // }) 
-          // var profileData = this.props.profileResultsStateStore.result.user      
+        }
+        
+        
     }
 
     isConnection = () => {
@@ -159,54 +158,57 @@ class PeopleProfile extends Component{
 
         var redirectVar = null;
         if(this.props.loginStateStore.isAuthenticated === false){
-            redirectVar  = <Redirect to="/signup"/>
+            redirectVar  = <Redirect to="/login"/>
         }
-
-         var experience = null;
-        if(this.props.profileResultsStateStore.result.user.experience.length > 0){
-            experience = this.props.profileResultsStateStore.result.user.experience.map((exp, index)=>{
-                return (
-                    <div key={index}>
-                     <div className="exp-content-container ml-4 row">
-                                <div className="col-1">
-                                    <img className="profile-company-img-container" src="https://static.pulse.ng/img/incoming/origs8609049/1036368589-w644-h960/work-experience.jpg" alt="profile-company-img"/>
+        else{
+            var experience = null;
+        if(this.props.profileResultsStateStore.result != null){
+            if(this.props.profileResultsStateStore.result.user.experience.length > 0){
+                experience = this.props.profileResultsStateStore.result.user.experience.map((exp, index)=>{
+                    return (
+                        <div key={index}>
+                         <div className="exp-content-container ml-4 row">
+                                    <div className="col-1">
+                                        <img className="profile-company-img-container" src="https://static.pulse.ng/img/incoming/origs8609049/1036368589-w644-h960/work-experience.jpg" alt="profile-company-img"/>
+                                    </div>
+                                    <div className="col-6 ml-4">
+                                        <div>{exp.designation}</div>
+                                        <div>{exp.companyname}</div>
+                                        <div>{exp.responsibility}</div>
+                                        <div>{exp.location}</div>
+                                    </div>
                                 </div>
-                                <div className="col-6 ml-4">
-                                    <div>{exp.designation}</div>
-                                    <div>{exp.companyname}</div>
-                                    <div>{exp.responsibility}</div>
-                                    <div>{exp.location}</div>
+                                <hr/>
                                 </div>
-                            </div>
-                            <hr/>
-                            </div>
-                            )
-                        });
-                    } 
+                                )
+                            });
+                        } 
+        }
+        
 
                     var education = null;
-        if(this.props.profileResultsStateStore.result.user.education.length > 0){
-            education = this.props.profileResultsStateStore.result.user.education.map((edu, index)=>{
-                return (
-                    <div key={index}>
-                     <div className="exp-content-container ml-4 row">
-                                <div className="col-1">
-                                    <img className="profile-company-img-container" src="https://st2.depositphotos.com/2586633/10219/v/950/depositphotos_102194092-stock-illustration-books-vector-illustrator-stack-of.jpg" alt="profile-company-img"/>
+        if(this.props.profileResultsStateStore.result != null){
+            if(this.props.profileResultsStateStore.result.user.education.length > 0){
+                education = this.props.profileResultsStateStore.result.user.education.map((edu, index)=>{
+                    return (
+                        <div key={index}>
+                         <div className="exp-content-container ml-4 row">
+                                    <div className="col-1">
+                                        <img className="profile-company-img-container" src="https://st2.depositphotos.com/2586633/10219/v/950/depositphotos_102194092-stock-illustration-books-vector-illustrator-stack-of.jpg" alt="profile-company-img"/>
+                                    </div>
+                                    <div className="col-6 ml-4">
+                                        <div>{edu.school}</div>
+                                        <div>{edu.degree}</div>
+                                        <div>{edu.fromyear} - {edu.toyear}</div>
+                                    </div>
                                 </div>
-                                <div className="col-6 ml-4">
-                                    <div>{edu.school}</div>
-                                    <div>{edu.degree}</div>
-                                    <div>{edu.fromyear} - {edu.toyear}</div>
+                                <hr/>
                                 </div>
-                            </div>
-                            <hr/>
-                            </div>
-                            )
-                        });
-                    } 
-
-            var skillsresult = (this.props.profileResultsStateStore.result.user.skills).split(',');
-            var skillsresult1 = null;
+                                )
+                            });
+                        } 
+                        var skillsresult = (this.props.profileResultsStateStore.result.user.skills).split(',');
+                        var skillsresult1 = null;
             console.log(skillsresult);
             if(skillsresult.length > 0){
                  skillsresult1 = skillsresult.map((skill, index)=>{
@@ -220,6 +222,11 @@ class PeopleProfile extends Component{
               )
             });
         } 
+        }
+        
+        
+        
+            
 
         var connectButton = null;
         var messageButton = null;
@@ -258,12 +265,16 @@ class PeopleProfile extends Component{
             </div>
             </div>
         }
+        }
+
+         
         
 
         return(
             <div>
-                 {redirectVar}
+                 
                 <Header />
+                {redirectVar}
                 <div className="row people-profile-container">
                     <div className="col-lg-1"></div>
                     <div className="content-container col-lg-8 mt-5">
