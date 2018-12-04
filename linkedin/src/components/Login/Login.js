@@ -70,9 +70,9 @@ class Login extends Component {
       }
       const { handleSubmit } = this.props;
       return (
-        <div class="container">
+        <div class="">
           {redirectVar}
-          <div class="login-form">
+          <div class="login-form one">
             <form>
               <div class="main-div">
                 <div class="panel">
@@ -124,10 +124,11 @@ class Login extends Component {
     }
     const { handleSubmit } = this.props;
     return (
-      <div class="container">
+      <div class="">
         {redirectVar}
         <div class="login-form">
-          <form>
+        <div className="">
+          <form className="pad-10-pc-top">
             <div class="main-div">
               <div class="panel">
                 <h2>Welcome Back</h2>
@@ -172,6 +173,7 @@ class Login extends Component {
               <Link to="/signup">Join</Link>
             </div>
           </form>
+          </div>
         </div>
       </div>
     );

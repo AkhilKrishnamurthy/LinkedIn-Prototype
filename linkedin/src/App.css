@@ -398,5 +398,7 @@ background-color: blue;
  .block-btn {
   display: none;
  }
-
+.pad-10-pc-top{
+  padding-top:10%;
+}
 
