@@ -359,7 +359,9 @@ background-color: blue;
 }
 .companyDescImage img{
   float: left;
-  border-radius: 200%;
+  border-radius: 100%;
+  width: 80px;
+  margin-right: 10px;
 }
 .jobPostingDescriptionInbutBox {
   padding-bottom: 90px;
