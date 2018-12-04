@@ -3,7 +3,7 @@ var Model = require("../model/clickedjobs");
 function handle_request(message, callback) {
   console.log("message.username for clicked jobs");
   Model.find(
-    { "jobData.user": message.username },
+    { "jobData.jobData.user": message.username },
     { _id: 0 },
     (err, result) => {
       if (err) {

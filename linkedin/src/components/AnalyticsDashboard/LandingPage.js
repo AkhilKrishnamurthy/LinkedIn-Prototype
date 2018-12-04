@@ -63,7 +63,8 @@ class LandingPage extends Component {
         var counterdb = {};
         clickedJobdatadb.forEach(function(obj) {
           // console.log("obj.jobData.jobId", obj.jobData.jobId);
-          var key = obj.jobData.jobId + " " + obj.jobData.jobTitle;
+          var key =
+            obj.jobData.jobData.jobId + " " + obj.jobData.jobData.jobTitle;
           counterdb[key] = (counterdb[key] || 0) + 1;
 
           var resultClickedJobsdb = Object.keys(counterdb).map(function(key) {
