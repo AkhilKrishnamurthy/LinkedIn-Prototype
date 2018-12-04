@@ -31,7 +31,7 @@ class MyMessages extends Component {
   componentDidMount() {
    // console.log("login reducer" + JSON.stringify(this.props.LoginStateStore.result.email))
     axios.defaults.withCredentials = true;
-    if(this.props.LoginStateStore.result !== null && this.props.LoginStateStore.result !== undefined)
+    if(this.props.LoginStateStore.isAuthenticated == 'true')
     {
     var values = {
       senderEmailId : this.props.LoginStateStore.result.email
@@ -50,8 +50,6 @@ class MyMessages extends Component {
           messageDetails: messageResult[0]
         });
       }
-        console.log("messageDetails ID" + this.state.messageDetails.messageThread[0])
-  
       }     
     });
     }
