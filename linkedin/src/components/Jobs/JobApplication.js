@@ -145,7 +145,8 @@ class JobApplication extends Component{
                 coverletter : this.state.coverletter
             }, 
             jobId : this.props.jobResultsStateStore.result.jobId,
-            jobData : this.props.jobResultsStateStore.result
+            jobData : this.props.jobResultsStateStore.result,
+            email : this.props.loginStateStore.result.email
             
         }
         

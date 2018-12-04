@@ -2,7 +2,7 @@ var Model = require('../model/linkedin');
 
 function handle_request(message,callback){
     Model.findOne({
-        "user.email" : message.session.user
+        "user.email" : message.body.email
     }, (err, user)=>{
         if(err){
             console.log('Error in getting profile data');

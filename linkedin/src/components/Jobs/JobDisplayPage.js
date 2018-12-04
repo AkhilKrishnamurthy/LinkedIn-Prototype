@@ -25,6 +25,10 @@ class JobDisplayPage extends Component {
     }
 
     componentDidMount(){
+
+        if(this.props.loginStateStore){
+
+        
         axios.defaults.withCredentials=true;
         
         /**Get company logo */
@@ -49,7 +53,7 @@ class JobDisplayPage extends Component {
             }
         );
         }
-        
+    }
     }
 
     getLogo = ()=>{
@@ -103,7 +107,8 @@ class JobDisplayPage extends Component {
         //console.log('Job details',this.state.jobDetails);
         if(this.state.saveClicked === false){
           var data = {
-            jobDetails : this.props.jobResultsStateStore.result
+            jobDetails : this.props.jobResultsStateStore.result,
+            email : this.props.loginStateStore.email
           };
     
           axios.post('http://localhost:3001/save-job', data)
@@ -121,6 +126,7 @@ class JobDisplayPage extends Component {
     render() {
         var redirectVar = null;
         if(!this.props.loginStateStore) {
+            
             redirectVar = <Redirect to= "/login"/>
         }
           if(this.state.redirectToJobApplication === true){
@@ -130,7 +136,7 @@ class JobDisplayPage extends Component {
             redirectVar = <Redirect to="/jobs/easy-apply-job"/>
           }
 
-          console.log('Image data: ',this.state.logo );
+          console.log('Image data: ',redirectVar );
         return (
             <div>
                 {redirectVar}
@@ -158,7 +164,7 @@ class JobDisplayPage extends Component {
                                 
                                 <div className="mt-2"> 
                                     <button className="btn btn-lg save-btn" onClick={this.handleSaveClick}>Save</button>
-                                    <button className={this.props.jobResultsStateStore.result.easyApplyClassName} onClick={this.handleEasyApply}>
+                                    <button className={this.props.jobResultsStateStore.result != null ? this.props.jobResultsStateStore.result.easyApplyClassName : ""} onClick={this.handleEasyApply}>
                                         <span className="">
                                         <img
                                             className="apply-logo mr-2"
@@ -168,7 +174,7 @@ class JobDisplayPage extends Component {
                                         </span>
                                         <span><b>Easy apply</b></span>
                                     </button>
-                                    <button className={this.props.jobResultsStateStore.result.applyClassName} onClick={this.handleApplyJob}>Apply</button>
+                                    <button className={this.props.jobResultsStateStore.result != null ? this.props.jobResultsStateStore.result.applyClassName:""} onClick={this.handleApplyJob}>Apply</button>
                                 </div>
                                 </div>
                             </div>

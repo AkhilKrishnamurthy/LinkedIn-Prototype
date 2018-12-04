@@ -143,7 +143,7 @@ app.post("/applicant/signup", (req, res) => {
   applicantsignup.applicantsignup(req, res);
 });
 
-app.get("/getProfileData", (req, res) => {
+app.get("/getProfileData/:id", (req, res) => {
   console.log("inside profiledata");
   getProfileData.getProfileData(req, res);
 });

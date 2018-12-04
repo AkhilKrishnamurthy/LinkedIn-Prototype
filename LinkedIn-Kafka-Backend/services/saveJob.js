@@ -6,7 +6,7 @@ function handle_request(message, callback){
     //console.log('session', message.session.user)
 
     Model.findOneAndUpdate({
-        "user.email" : message.session.user
+        "user.email" : message.body.email
     },
     {
         $push:{

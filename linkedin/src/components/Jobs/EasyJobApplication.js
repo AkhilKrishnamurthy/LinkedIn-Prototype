@@ -23,20 +23,21 @@ class EasyJobApplication extends Component{
     }
 
     componentDidMount(){
-        if(this.props.loginStateStore.isAuthenticated === true){
+        if(this.props.loginStateStore.isAuthenticated == "true"){
             this.jobViewed();
-        }
-        axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/getProfileData')
-        .then((response)=>{
-            if(response.status === 200){
-                console.log("response:",response.data);
-                this.setState({
-                    profile : response.data.user,
-                });
+            axios.defaults.withCredentials = true;
+                axios.get('http://localhost:3001/getProfileData/'+ this.props.loginStateStore.result.email)
+                .then((response)=>{
+                    if(response.status === 200){
+                        console.log("response:",response.data);
+                        this.setState({
+                            profile : response.data.user,
+                        });
 
+                }
+            });
         }
-    });
+        
         
         
     }
@@ -159,7 +160,8 @@ class EasyJobApplication extends Component{
                 coverletter : this.state.coverletter
             }, 
             jobId : this.props.jobResultsStateStore.result.jobId,
-            jobData : this.props.jobResultsStateStore.result
+            jobData : this.props.jobResultsStateStore.result,
+            email : this.props.loginStateStore.result.email
             
         }
         

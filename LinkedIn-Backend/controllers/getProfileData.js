@@ -4,7 +4,7 @@ var kafka = require("../kafka/client");
 
 var kafka = require("../kafka/client");
 exports.getProfileData = function(req, res) {
-    kafka.make_request('get_profile_data_topic', req, function(err, result){
+    kafka.make_request('get_profile_data_topic', req.params.id, function(err, result){
         if(err){
             console.log('Unable to get profile data.', err);
             res.writeHead(400, {

@@ -5,7 +5,7 @@ function handle_request(message, callback){
     console.log('Apply Job kafka', message);
     //Push to user details collection
     userModel.findOneAndUpdate({
-        "user.email" : message.session.user
+        "user.email" : message.body.email
     }, {
         $push: {
             appliedJobs : message.body.jobData
