@@ -328,11 +328,13 @@ app.post("/updateexpprofile", function(req, res) {
 
 //axios profile save changes _ Education start
 
-app.post("/updateeduprofile", function(req, res) {
+app.post('/updateeduprofile',function(req,res){
+    
   console.log("Inside Update Profile Post Request mlab");
-  console.log("request body is", req.body);
+  console.log("request body is",req.body);
   kafka.make_request("updateedu_topic", req.body, function(err, results) {
-    console.log("Inside Update Education Profile ");
+
+    console.log("Inside Education Update Profile ");
     console.log(typeof results);
 
     if (err) {
@@ -342,16 +344,18 @@ app.post("/updateeduprofile", function(req, res) {
         msg: err
       });
     } else {
-      if (results.code === 400) {
-        console.log(results.value);
+      console.log("inside else1");
+      if (results.code === "400") {
+       // console.log(results.value);
+       console.log("inside 400");
         res.sendStatus(400).end();
-      } else if (results.code === 200) {
+      } else if(results.code === "200"){
         res.code = "200";
-        console.log("Education  is updated");
+        console.log(" Education is updated");
         res.sendStatus(200).end("Education of the profile is updated");
-      }
+        }
     }
-  });
+    });      
 });
 
 //axios profile save changes _ Education end

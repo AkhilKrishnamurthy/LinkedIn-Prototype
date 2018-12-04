@@ -76,9 +76,10 @@ class Profile extends Component{
             addtesteduschool:"",
             addtestedudegree:"",
             addtestedufromyear:"",
-            addtestedutoyear:"",            
-            profileimage : "",
-			profileImage : "",
+            addtestedutoyear:"", 
+             profileimage : "",
+			profileImage : "",			
+
             //skills
             skills : [],
             skillstr : "",
@@ -136,7 +137,7 @@ savepersonaldetailschanges=(e)=>{
          var email = this.props.loginStateStore.result.email;
         console.log("Emaild id is:",email);
         console.log("About me values is",this.state.aboutMe);
-        var data = {email:email,Fname:this.state.fname,Lname:this.state.lname,headline:this.state.headline,company:this.state.company, city:this.state.city,aboutMe:this.state.aboutMe,zipcode:this.state.zipcode,stateval:this.state.stateval}
+        var data = {email:email,Fname:this.state.fname,Lname:this.state.lname,headline:this.state.headline,company:this.state.company, city:this.state.city,aboutMe:this.state.aboutMe,zipcode:this.state.zipcode,stateval:this.state.stateval,profileimage:this.state.profileimage}
         console.log("axios pd data is ",data);
         axios.post('http://localhost:3001/updatepdprofile',data)
         .then(response=>{
@@ -265,43 +266,55 @@ fetchprofiledbcall=()=>{
          
         console.log('above this.state',skillsresult);
         console.log("test value is",test);
-        this.setState({
-            test:test,
-            testedu:testedu,
-          fname:output.docs.user.Fname,
-          lname:output.docs.user.Lname,
-          headline:output.docs.user.headline,
-          company:output.docs.user.company,
-          city:output.docs.user.output,
-          aboutMe:output.docs.user.aboutMe,
-          zipcode:output.docs.user.zip,
-          stateval:output.docs.user.state,
-          //copy
-          fname1:output.docs.user.Fname,
-          lname1:output.docs.user.Lname,
-          headline1:output.docs.user.headline,
-          company1:output.docs.user.company,
-          city1:output.docs.user.city,
-          aboutMe1:output.docs.user.aboutMe,
-          zipcode1:output.docs.user.zip,
-          stateval1:output.docs.user.state,
-          profileimage: response.data.docs.user.profileimage,
-          experience:experience,
+        console.log("end");
+        console.log(this.state.profileimage);  
+	   axios.post('http://localhost:3001/download/' + response.data.docs.user.profileimage).then(response =>{
+           console.log("inside download file");  
 
-          education:education,
+            var profileImage = 'data:image/jpg;base64, ' + response.data ;
+            this.setState({
+                profileImage: profileImage
+            })
+                    }   
+       )
+       this.setState({
+        test:test,
+        testedu:testedu,
+      fname:output.docs.user.Fname,
+      lname:output.docs.user.Lname,
+      headline:output.docs.user.headline,
+      company:output.docs.user.company,
+      city:output.docs.user.output,
+      aboutMe:output.docs.user.aboutMe,
+      zipcode:output.docs.user.zip,
+      stateval:output.docs.user.state,
+      //copy
+      fname1:output.docs.user.Fname,
+      lname1:output.docs.user.Lname,
+      headline1:output.docs.user.headline,
+      company1:output.docs.user.company,
+      city1:output.docs.user.city,
+      aboutMe1:output.docs.user.aboutMe,
+      zipcode1:output.docs.user.zip,
+      stateval1:output.docs.user.state,
+      experience:experience,
 
-          tempexp:tempexp,
-          tempedu:tempedu,
+      education:education,
 
-           skills:skillsresult,
-          skillstr:s, 
+      tempexp:tempexp,
+      tempedu:tempedu,
 
-          experienceid:0,    
-          
-          educationid:0
-          
-        });
-        console.log("thisi is m experience array state",this.state.experience);
+       skills:skillsresult,
+      skillstr:s, 
+
+      experienceid:0,    
+      
+      educationid:0,
+     // profileimage : profileImage
+      
+    });
+
+      /*   console.log("thisi is m experience array state",this.state.experience);
         console.log(output.docs);
         console.log("fname db",output.docs.user.Fname);
         console.log('Fname',this.state.fname);
@@ -310,24 +323,16 @@ fetchprofiledbcall=()=>{
         console.log('skillstr',this.state.skillstr);
         console.log('skill',this.state.skill);
         console.log('skillsresult',skillsresult);
-        console.log('test after setting it',this.state.test);
+        console.log('test after setting it',this.state.test); */
       }); 
 	  
-	     console.log("end");
-        console.log(this.state.profileimage);  
-	   axios.post('http://localhost:3001/download/' + this.state.profileimage).then(response =>{
-           console.log("inside download file");
-        this.setState({   
-            profileImage : 'data:image/jpg;base64, ' + response.data
-       } 
-        )}   
-       )
+	  
 }
 
 
 
     //component did mount for the first render
-      componentDidMount(){
+     componentDidMount(){
         
         this.fetchprofiledbcall();
 
@@ -668,7 +673,7 @@ axios.post('http://localhost:3001/updateeduprofile',data)
        /*  this.setState({rel:true});
         console.log("Reload value for cancel",this.state.rel);
         window.location.reload(); */
-        this.fetchupdatedbcall();
+        this.fetchprofiledbcall();
     }
 
     //cancel edit education end
@@ -699,6 +704,7 @@ axios.post('http://localhost:3001/updateeduprofile',data)
         this.setState({[event.target.id]:event.target.value});
 
     }
+	
 	//For Image upload
 	  handleChange = (e) => {
         const target = e.target;
@@ -707,7 +713,7 @@ axios.post('http://localhost:3001/updateeduprofile',data)
             var data = new FormData();
             data.append('photos', profilePhoto);
             axios.defaults.withCredentials = true;
-            axios.post('http://localhost:3001/upload-file', data)
+            axios.post('http://localhost:3001/upload_file', data)
                 .then(response => {
                     if (response.status === 200) {
                         console.log('Profile Photo Name: ', profilePhoto.name);
@@ -723,6 +729,8 @@ axios.post('http://localhost:3001/updateeduprofile',data)
                     }
                 });
         }
+
+    
 
     
     render(){
@@ -860,8 +868,9 @@ axios.post('http://localhost:3001/updateeduprofile',data)
                                 error="wrong"
                                 success="right"
                                 onChange={this.handlefieldchanges}
-                              />   
-              <label  className="grey-text">Profile Image</label>
+                              />    
+
+ <label  className="grey-text">Profile Image</label>
               <input
                                 label="profileimage"
                                 icon="fa-map-pin"
@@ -872,7 +881,7 @@ axios.post('http://localhost:3001/updateeduprofile',data)
                                 error="wrong"
                                 success="right"
                                 onChange={this.handleChange}
-                              />   							  
+                              />  							  
              
               </div>
               <div class="modal-footer">
