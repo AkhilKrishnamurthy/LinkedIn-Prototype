@@ -48,6 +48,7 @@ var sendMessages = require("./services/sendMessages");
 var getMessages = require("./services/getMessages");
 var getProfileDataUpdated = require("./services/getProfileDataUpdated");
 var getprofileviews = require("./services/getprofileviews");
+var deleteAccount = require('./services/deleteAccount');
 
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
@@ -125,3 +126,4 @@ handleTopicRequest("send_messages_topic", sendMessages);
 handleTopicRequest("get_messages_topic", getMessages);
 handleTopicRequest("get_profile_data_updated_topic", getProfileDataUpdated);
 handleTopicRequest("get_profile_views", getprofileviews);
+handleTopicRequest('delete_profile_topic', deleteAccount);

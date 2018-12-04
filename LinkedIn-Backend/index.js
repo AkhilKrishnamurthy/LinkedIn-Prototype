@@ -102,7 +102,8 @@ var logProfileView = require("./controllers/logProfileView");
 var searchPeople = require("./controllers/searchPeople");
 var submitEditedJobDetails = require("./controllers/submitEditedJobDetails");
 var getProfileData = require("./controllers/getProfileData");
-var getProfileDataUpdated = require("./controllers/getprofileDataUpdated");
+var getProfileDataUpdated = require('./controllers/getprofileDataUpdated');
+var deleteAccount = require('./controllers/deleteAccount');
 
 //Analytics
 var analytics = require("./controllers/analytics");
@@ -146,6 +147,11 @@ app.post("/applicant/signup", (req, res) => {
 app.get("/getProfileData/:id", (req, res) => {
   console.log("inside profiledata");
   getProfileData.getProfileData(req, res);
+});
+
+app.get("/deleteAccount/:id", (req, res) => {
+  console.log("inside deleteAccount");
+  deleteAccount.deleteAccount(req, res);
 });
 
 app.post("/peopleSearch", (req, res) => {

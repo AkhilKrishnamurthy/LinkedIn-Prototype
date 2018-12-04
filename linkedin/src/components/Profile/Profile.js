@@ -179,9 +179,23 @@ class Profile extends Component {
           console.log("error updating");
         }
         //console.log("state",isupdated);
-        console.log("", this.state.skillstr);
-      });
-  };
+        console.log("",this.state.skillstr);
+        
+    })
+
+}
+
+deleteAccount=()=>{
+    console.log("delete Account")
+    axios.defaults.withCredentials = true;
+    axios.get('http://localhost:3001/deleteAccount/'+ this.props.loginStateStore.result.email)
+    .then((response)=>{
+        if(response.status === 200){
+            console.log("deleted account");
+        }
+    });
+    window.location.reload();
+}
 
   //axios post call section ends
   fetchprofiledbcall = () => {
@@ -1667,6 +1681,9 @@ class Profile extends Component {
             <div className="col-3" />
           </div>
         </div>
+        <div>
+                  <button className="btn accept-btn ml-2" onClick={this.deleteAccount.bind(this)}>Delete Account</button>
+                  </div> 
       </div>
     );
   }
