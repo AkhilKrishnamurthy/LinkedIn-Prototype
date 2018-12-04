@@ -203,8 +203,7 @@ class Profile extends Component {
     fetchprofiledbcall = () => {
         //e.preventDefault();
         console.log("COMPONENT DID MOUNT");
-        //var email = this.props.loginStateStore.result.email;
-        var email = "aehari2010@gmail.com";
+        var email = this.props.loginStateStore.result.email;
         console.log("Emaild id is:", email);
         const data = { email: email };
         // variable s would contain response string from fetch for skills
