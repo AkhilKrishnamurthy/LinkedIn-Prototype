@@ -9,7 +9,7 @@ class AppliedJobs extends Component{
     render(){
         var redirectVar = null;
         if(!this.props.loginStateStore) {
-            redirectVar = <Redirect to= "/signup"/>
+            redirectVar = <Redirect to= "/login"/>
         }
         else {
 

@@ -99,7 +99,7 @@ class AddJobs extends Component{
         var redirectVar = null;
         console.log(this.props.loginStateStore);
         if(!this.props.loginStateStore) {
-            redirectVar = <Redirect to= "/signup"/>
+            redirectVar = <Redirect to= "/login"/>
         }
         if(this.state.redirectState) {
             redirectVar = <Redirect to= "/home"/>

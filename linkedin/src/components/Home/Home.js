@@ -15,7 +15,7 @@ class Home extends Component {
     render() {
         var redirectVar = null;
         if(!this.props.loginStateStore) {
-            redirectVar = <Redirect to= "/signup"/>
+            redirectVar = <Redirect to= "/login"/>
         }
         var profileName = null;
         if (this.props && this.props.loginStateStore && this.props.loginStateStore.responseFlag) {

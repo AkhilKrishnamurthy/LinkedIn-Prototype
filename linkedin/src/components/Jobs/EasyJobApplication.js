@@ -142,9 +142,9 @@ class EasyJobApplication extends Component{
     
         var data = {
             applicationData : {
-                firstname : this.state.firstname,
-                lastname : this.state.lastname,
-                email : this.state.email,
+                firstname : this.state.profile.Fname,
+                lastname : this.state.profile.Lname,
+                email : this.state.profile.email,
                 country : this.state.country,
                 address : this.state.address,
                 postedDate : new Date(),
@@ -178,12 +178,13 @@ class EasyJobApplication extends Component{
     render(){
 
         var redirectVar = null;
+        if(this.props.loginStateStore.isAuthenticated == false){
+            redirectVar = <Redirect to="/login" />
+        }
         if(this.state.applicationSubmitted === true){
             redirectVar  = <Redirect to="/"/>
         }
-        if(this.props.loginStateStore.isAuthenticated === false){
-            redirectVar = <Redirect to= "/signup"/>
-        }
+    
         return(
             <div>
                 {redirectVar}

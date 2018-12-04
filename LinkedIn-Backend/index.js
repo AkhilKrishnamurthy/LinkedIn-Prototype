@@ -71,6 +71,8 @@ app.use(function(req, res, next) {
   res.setHeader("Cache-Control", "no-cache");
   next();
 });
+//require('./app/routes')(app);
+app.use(passport.initialize());
 
 require("./config/passport")(passport);
 
@@ -171,64 +173,110 @@ app.post("/submitJobDetails", (req, res) => {
 //   jobPostingHistory.jobPostingHistory(req,res);
 // });
 
+var jwt = require("jsonwebtoken");
+// Set up middleware
+var requireAuth = passport.authenticate("jwt", { session: false });
+const secret = "secret";
+
 app.post("/login", function(req, res) {
   console.log("Inside Login Post Request", req.body);
-
-  // return client.get("/login", (err, result) => {
   const query = req.body.username + req.body.password;
-  return client.get(`login:${query}`, (err, result) => {
-    console.log("result redis", JSON.stringify(result));
-    // If that key exist in Redis store
-    if (result) {
-      console.log("result redis", JSON.stringify(result));
-      const resultJSON = result;
-      req.session.user = req.body.username;
-      console.log(req.session.user);
-      return res.status(200).send(resultJSON);
-    } else {
-      kafka.make_request("user_login_topic", req.body, function(err, results) {
-        console.log("in result");
-        console.log(results.code);
-        if (err) {
-          console.log("Inside err");
-          res.json({
-            status: "error",
-            msg: "System Error, Try Again."
-          });
-          console.log("mismatch login");
-          res.value =
-            "The email and password you entered did not match our records. Please double-check and try again.";
-          console.log(res.value);
-          res.sendStatus(400).end();
-        } else if (results.code == 200) {
-          console.log("Inside else");
-          console.log("success login");
-          // res.value = user;
-          console.log(results);
-          console.log("session to be set", results.value[0].email);
-          req.session.user = results.value[0].email;
-          console.log("resres", results);
-          //res.sendStatus(200).end();
-          // const responseJSON = req.session.user;
-          const responseJSON = { value: req.session.user };
-          // Save the Wikipedia API response in Redis store
-          client.setex(
-            `login:${query}`,
-            3600,
-            //source: "Redis Cache",
-            JSON.stringify({ source: "Redis cache", value: results.value[0] })
-          );
-          console.log("respnose json", responseJSON);
-          res.status(200).send({ value: results.value[0] });
-        } else {
-          res.value =
-            "The email and password you entered did not match our records. Please double-check and try again.";
-          res.sendStatus(400).end();
-        }
+  kafka.make_request("user_login_topic", req.body, function(err, results) {
+    console.log("in result");
+    console.log(results.code);
+    if (err) {
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again."
       });
+      console.log("mismatch login");
+      res.value =
+        "The email and password you entered did not match our records. Please double-check and try again.";
+      console.log(res.value);
+      res.sendStatus(400).end();
+    } else if (results.code == 200) {
+      var userResult = {
+        email: results.value[0].email
+      };
+      req.session.user = results.value[0].email;
+      /**Generating token */
+      var token = jwt.sign(userResult, secret, {
+        expiresIn: 10080 // in seconds
+      });
+
+      const responseJSON = { value: req.session.user, Token: token };
+      // Save the Wikipedia API response in Redis store
+      client.setex(
+        `login:${query}`,
+        3600,
+        //source: "Redis Cache",
+        JSON.stringify({ source: "Redis cache", value: results.value[0] })
+      );
+      console.log("respnose json", responseJSON);
+      res.status(200).send({ value: results.value[0] });
+    } else {
+      res.value =
+        "The email and password you entered did not match our records. Please double-check and try again.";
+      res.sendStatus(400).end();
     }
   });
 });
+// // return client.get("/login", (err, result) => {
+// const query = req.body.username + req.body.password;
+// return client.get(`login:${query}`, (err, result) => {
+//   console.log("result redis", JSON.stringify(result));
+//   // If that key exist in Redis store
+//   if (result) {
+//     console.log("result redis", JSON.stringify(result));
+//     const resultJSON = result;
+//     req.session.user = req.body.username;
+//     console.log(req.session.user);
+//     return res.status(200).send(resultJSON);
+//   } else {
+//     kafka.make_request("user_login_topic", req.body, function(err, results) {
+//       console.log("in result");
+//       console.log(results.code);
+//       if (err) {
+//         console.log("Inside err");
+//         res.json({
+//           status: "error",
+//           msg: "System Error, Try Again."
+//         });
+//         console.log("mismatch login");
+//         res.value =
+//           "The email and password you entered did not match our records. Please double-check and try again.";
+//         console.log(res.value);
+//         res.sendStatus(400).end();
+//       } else if (results.code == 200) {
+//         console.log("Inside else");
+//         console.log("success login");
+//         // res.value = user;
+//         console.log(results);
+//         console.log("session to be set", results.value[0].email);
+//         req.session.user = results.value[0].email;
+//         console.log("resres", results);
+//         //res.sendStatus(200).end();
+//         // const responseJSON = req.session.user;
+//         const responseJSON = { value: req.session.user };
+//         // Save the Wikipedia API response in Redis store
+//         client.setex(
+//           `login:${query}`,
+//           3600,
+//           //source: "Redis Cache",
+//           JSON.stringify({ source: "Redis cache", value: results.value[0] })
+//         );
+//         console.log("respnose json", responseJSON);
+//         res.status(200).send({ value: results.value[0] });
+//       } else {
+//         res.value =
+//           "The email and password you entered did not match our records. Please double-check and try again.";
+//         res.sendStatus(400).end();
+//       }
+//     });
+//     }
+//   });
+// });
 
 //****************************** */
 
@@ -328,12 +376,10 @@ app.post("/updateexpprofile", function(req, res) {
 
 //axios profile save changes _ Education start
 
-app.post('/updateeduprofile',function(req,res){
-    
+app.post("/updateeduprofile", function(req, res) {
   console.log("Inside Update Profile Post Request mlab");
-  console.log("request body is",req.body);
+  console.log("request body is", req.body);
   kafka.make_request("updateedu_topic", req.body, function(err, results) {
-
     console.log("Inside Education Update Profile ");
     console.log(typeof results);
 
@@ -346,16 +392,16 @@ app.post('/updateeduprofile',function(req,res){
     } else {
       console.log("inside else1");
       if (results.code === "400") {
-       // console.log(results.value);
-       console.log("inside 400");
+        // console.log(results.value);
+        console.log("inside 400");
         res.sendStatus(400).end();
-      } else if(results.code === "200"){
+      } else if (results.code === "200") {
         res.code = "200";
         console.log(" Education is updated");
         res.sendStatus(200).end("Education of the profile is updated");
-        }
+      }
     }
-    });      
+  });
 });
 
 //axios profile save changes _ Education end
@@ -407,10 +453,10 @@ app.post("/analytics/userclicks", function(req, res) {
   analytics.userclicks(req, res);
 });
 
-app.get("/getuserclicks", function(req, res) {
+app.get("/getuserclicks/:id", function(req, res) {
   analytics.getuserclicks(req, res);
 });
-app.get("/getsavedjobs", function(req, res) {
+app.get("/getsavedjobs/:id", function(req, res) {
   analytics.getsavedjobs(req, res);
 });
 app.post("/JobPostingHistory", (req, res) => {
@@ -425,12 +471,12 @@ app.get("/getjobformanalytics/:id", (req, res) => {
   jobFormAnalytics.jobformanalytics(req, res);
 });
 
-app.get("/gettoptenjobposts", (req, res) => {
+app.get("/gettoptenjobposts/:id", (req, res) => {
   // req.body.user = req.session.user;
   console.log("inside top ten job posts");
   analytics.gettoptenjobposts(req, res);
 });
-app.get("/getlasttenjobposts", (req, res) => {
+app.get("/getlasttenjobposts/:id", (req, res) => {
   // req.body.user = req.session.user;
   console.log("inside last ten job posts");
   analytics.getlasttenjobposts(req, res);
@@ -441,7 +487,7 @@ app.get("/getcitywisejobdata/:id", (req, res) => {
   console.log("inside get city wise job posts");
   analytics.getcitywisedata(req, res);
 });
-app.get("/getprofileviews", (req, res) => {
+app.get("/getprofileviews/:id", (req, res) => {
   // req.body.user = req.session.user;
   console.log("inside get profile views");
   analytics.getprofileviews(req, res);

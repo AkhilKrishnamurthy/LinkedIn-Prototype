@@ -142,7 +142,7 @@ class EditJobPost extends Component{
         var redirectVar = null;
 
         if(!this.props.loginStateStore) {
-            redirectVar = <Redirect to= "/signup"/>
+            redirectVar = <Redirect to= "/login"/>
         }
         const enabled = this.state.companyName.length > 0 && this.state.industry.length > 0 && this.state.employmentType.length > 0 &&
         this.state.jobTitle.length >0 && this.state.easyApply.length && this.state.location.length > 0 && this.state.seniorityLevel.length > 0 

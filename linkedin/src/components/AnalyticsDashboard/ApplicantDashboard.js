@@ -27,67 +27,85 @@ class ApplicantDashoard extends Component {
   getviews() {
     var labeltoptenjob = [];
     var datatoptenjob = [];
-    axios.defaults.withCredentials = true;
-    axios.get("http://localhost:3001/getprofileviews").then(
-      response => {
-        console.log("top 10 job data from the db", response.data.result.value);
-        var topTenJobdatadb = [];
-        topTenJobdatadb = response.data.result.value;
+    if (
+      this.props.loginStateStore !== null &&
+      this.props.loginStateStore !== undefined
+    ) {
+      axios.defaults.withCredentials = true;
+      axios
+        .get(
+          "http://localhost:3001/getprofileviews/" +
+            this.props.loginStateStore.email
+        )
+        .then(
+          response => {
+            console.log(
+              "top 10 job data from the db",
+              response.data.result.value
+            );
+            var topTenJobdatadb = [];
+            topTenJobdatadb = response.data.result.value;
 
-        var countertoptenjob = {};
-        topTenJobdatadb.forEach(function(obj) {
-          //  console.log("obj.jobData.jobId", obj.jobId);
-          var key = obj.viewTime;
-          // countertoptenjob[key] = obj.size;
-          countertoptenjob[key] = (countertoptenjob[key] || 0) + 1;
-          var resulttopJotenjobs = Object.keys(countertoptenjob).map(function(
-            key
-          ) {
-            //    var key1 = key.substr(key.indexOf(" ") + 1);
-            return [key, countertoptenjob[key]];
-          });
-          console.log(resulttopJotenjobs, "is the length");
-          var i;
+            var countertoptenjob = {};
+            topTenJobdatadb.forEach(function(obj) {
+              //  console.log("obj.jobData.jobId", obj.jobId);
+              var key = obj.viewTime;
+              // countertoptenjob[key] = obj.size;
+              countertoptenjob[key] = (countertoptenjob[key] || 0) + 1;
+              var resulttopJotenjobs = Object.keys(countertoptenjob).map(
+                function(key) {
+                  //    var key1 = key.substr(key.indexOf(" ") + 1);
+                  return [key, countertoptenjob[key]];
+                }
+              );
+              console.log(resulttopJotenjobs, "is the length");
+              var i;
 
-          for (i = 0; i < resulttopJotenjobs.length; i++) {
-            labeltoptenjob[i] = resulttopJotenjobs[i][0];
-            datatoptenjob[i] = resulttopJotenjobs[i][1];
-          }
-        });
-        console.log("label saved job  for db", labeltoptenjob);
-        console.log("label saved jab data for db", datatoptenjob);
-        this.setState({
-          ...this.state,
-          profileviewdata: {
-            labels: labeltoptenjob,
-            datasets: [
-              {
-                label: "Profile Views in the last 30 days",
-                data: datatoptenjob,
-                backgroundColor: [
-                  "rgba(255, 99, 132, 0.6)",
-                  "rgba(54, 162, 235, 0.6)",
-                  "rgba(255, 206, 86, 0.6)",
-                  "rgba(75, 192, 192, 0.6)",
-                  "rgba(153, 102, 255, 0.6)",
-                  "rgba(255, 159, 64, 0.6)",
-                  "rgba(255, 99, 132, 0.6)"
-                ]
+              for (i = 0; i < resulttopJotenjobs.length; i++) {
+                labeltoptenjob[i] = resulttopJotenjobs[i][0];
+                datatoptenjob[i] = resulttopJotenjobs[i][1];
               }
-            ]
+            });
+            console.log("label saved job  for db", labeltoptenjob);
+            console.log("label saved jab data for db", datatoptenjob);
+            this.setState({
+              ...this.state,
+              profileviewdata: {
+                labels: labeltoptenjob,
+                datasets: [
+                  {
+                    label: "Profile Views in the last 30 days",
+                    data: datatoptenjob,
+                    backgroundColor: [
+                      "rgba(255, 99, 132, 0.6)",
+                      "rgba(54, 162, 235, 0.6)",
+                      "rgba(255, 206, 86, 0.6)",
+                      "rgba(75, 192, 192, 0.6)",
+                      "rgba(153, 102, 255, 0.6)",
+                      "rgba(255, 159, 64, 0.6)",
+                      "rgba(255, 99, 132, 0.6)"
+                    ]
+                  }
+                ]
+              },
+              showprofileviews: true
+            });
           },
-          showprofileviews: true
-        });
-      },
-      error => {
-        // dispatch(alertActions.projectPostError(error.data.message));
-      }
-    );
+          error => {
+            // dispatch(alertActions.projectPostError(error.data.message));
+          }
+        );
+    }
   }
 
   render() {
     var redirectVar = null;
-    console.log(this.props.loginStateStore);
+
+    if (
+      this.props.loginStateStore !== null &&
+      this.props.loginStateStore !== undefined
+    )
+      console.log("loginStateStore", this.props.loginStateStore.email);
     if (!this.props.loginStateStore) {
       redirectVar = <Redirect to="/signup" />;
     }
