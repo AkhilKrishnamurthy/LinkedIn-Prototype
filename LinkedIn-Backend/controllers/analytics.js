@@ -80,7 +80,7 @@ exports.getuserclicks = function(req, res) {
 };
 
 exports.getsavedjobs = function(req, res) {
-  console.log("session user", req.session.user);
+  // console.log("session user", req.session.user);
   var user = {
     username: req.params.id //.user //req.session.user
   };
