@@ -258,7 +258,7 @@ updateEasyApplySearch(event) {
             <small className="text-muted">
               <p className="overflow-ellipsis">{job.jobDescription}</p>
             </small>
-            <small className="text-muted">{job.postedDate}</small>
+            <small className="text-muted">{job.postedDate.substring(0,10)}</small>
           </span>
         </div>
       );

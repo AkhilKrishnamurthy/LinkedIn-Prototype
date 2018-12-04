@@ -20,7 +20,8 @@ class AddJobs extends Component{
             companyPic: '',
             selectedFile: '',
             images: '',
-            postedDate: new Date()
+            postedDate: new Date(),
+            redirectState: false
         }
         this.companyNameChangeHandler = this.companyNameChangeHandler.bind(this);
         this.jobTitleChangeHandler = this.jobTitleChangeHandler.bind(this);
@@ -50,6 +51,7 @@ class AddJobs extends Component{
         }else{
           this.setState({ [e.target.name]: e.target.value });
         }
+        console.log("selectedFile file",this.state.selectedFile);
     }
 
     async submitJobDetails(event) {
@@ -57,7 +59,6 @@ class AddJobs extends Component{
         const { selectedFile } = this.state;
         let formData = new FormData();
         formData.append('selectedFile', selectedFile);
-        console.log("selectedFile file",this.state.selectedFile);
        
         console.log("image file",formData);
         await axios.post('http://localhost:3001/upload_file', formData)
@@ -67,7 +68,7 @@ class AddJobs extends Component{
         console.log(this.state.selectedFile.name);
         var img =  this.state.selectedFile.name
        
-        console.log("image file",this.state.easyApply);
+        console.log("easy apply",this.state.easyApply);
         const data = {
             companyName: this.state.companyName,
             jobTitle: this.state.jobTitle,
@@ -85,7 +86,9 @@ class AddJobs extends Component{
         post("http://localhost:3001/submitJobDetails", data)
             .then(async (response) => {
                 if(response.status === 200){
-               
+                    this.setState({
+                        redirectState: true
+                    })
                 }else{
                 }
             });
@@ -97,6 +100,12 @@ class AddJobs extends Component{
         if(!this.props.loginStateStore) {
             redirectVar = <Redirect to= "/signup"/>
         }
+        if(this.state.redirectState) {
+            redirectVar = <Redirect to= "/home"/>
+        }
+        const enabled = this.state.companyName.length > 0 && this.state.industry.length > 0 && this.state.employmentType.length > 0 &&
+        this.state.jobTitle.length >0 && this.state.easyApply.length && this.state.location.length > 0 && this.state.seniorityLevel.length > 0 
+        && this.state.jobDescription.length > 0 && this.state.selectedFile!='';
         return(
             <div>
                 {redirectVar}
@@ -198,7 +207,7 @@ class AddJobs extends Component{
             </span>
             </div>
 
-            <button className="btn btn-primary" onClick = {this.submitJobDetails}><Link to={'/home'}>Submit</Link></button>
+            <button disabled={!enabled} className="btn btn-primary" onClick = {this.submitJobDetails}>Submit</button>
             </div>
 
          <div class="post_job_columns col-lg-3 border post-job-border">

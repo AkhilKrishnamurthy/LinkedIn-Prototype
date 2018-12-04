@@ -21,7 +21,8 @@ class EditJobPost extends Component{
             companyPic: '',
             selectedFile: '',
             images: '',
-            postedDate: new Date()
+            postedDate: new Date(),
+            redirectState: false
         }
         this.companyNameChangeHandler = this.companyNameChangeHandler.bind(this);
         this.jobTitleChangeHandler = this.jobTitleChangeHandler.bind(this);
@@ -116,7 +117,9 @@ class EditJobPost extends Component{
         post("http://localhost:3001/submitEditedJobDetails", data)
             .then(async (response) => {
                 if(response.status === 200){
-               
+                    this.setState({
+                        redirectState: true
+                    })
                 }else{
                 }
             });
@@ -140,6 +143,13 @@ class EditJobPost extends Component{
         if(!this.props.loginStateStore) {
             redirectVar = <Redirect to= "/signup"/>
         }
+        const enabled = this.state.companyName.length > 0 && this.state.industry.length > 0 && this.state.employmentType.length > 0 &&
+        this.state.jobTitle.length >0 && this.state.easyApply.length && this.state.location.length > 0 && this.state.seniorityLevel.length > 0 
+        && this.state.jobDescription.length > 0 && this.state.selectedFile!='';
+        if(this.state.redirectState) {
+            redirectVar = <Redirect to= "/home"/>
+        }
+        
         else {
         console.log("jobid",this.props.JobHistory.jobId);
         var applicantArray = null;
@@ -259,7 +269,7 @@ class EditJobPost extends Component{
             </span>
             </div>
 
-            <button className="btn btn-primary" onClick = {this.submitJobDetails}><Link to={'/home'}>Submit</Link></button>
+            <button disabled={!enabled} className="btn btn-primary" onClick = {this.submitJobDetails}>Submit</button>
             </div>
             <div className="post_job_columns col-lg-3 border post-job-border">
             <p>Show your job to the right candidates</p>
