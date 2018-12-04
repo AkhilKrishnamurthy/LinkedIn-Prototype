@@ -169,7 +169,7 @@ class Login extends Component {
               <br />
               <br />
               <p>New to LinkedIn? Join now</p>
-              <Link to="/signup">Join</Link>
+              <Link to="/signup">Signup</Link>/<Link to="/recruiter-signup">Signup as a recruiter</Link>
             </div>
           </form>
         </div>

@@ -26,15 +26,15 @@ class JobPostingDetails extends Component{
         this.setState({ currentPage : page });
     }
 
-    handleApplyClick = (e) =>{
-        const target = e.target;
-        const id = target.id;
+    // handleApplyClick = (e) =>{
+    //     const target = e.target;
+    //     const id = target.id;
 
-        // this.props.saveJobDetailsToStore(this.props.jobsLandingPageStateStore.result[id]);
-        // this.setState({
-        //     redirectToApplicationPage : true
-        // });
-    }
+    //     // this.props.saveJobDetailsToStore(this.props.jobsLandingPageStateStore.result[id]);
+    //     // this.setState({
+    //     //     redirectToApplicationPage : true
+    //     // });
+    // }
 
     async componentDidMount(){
     
@@ -49,18 +49,18 @@ class JobPostingDetails extends Component{
         });
     }
 
-    handleApplyClick = (e) =>{
-        const target = e.target;
-        console.log("current page", this.state.currentPage);
-        const id = ((this.state.currentPage-1)*this.state.pageSize)+parseInt(target.id);
+    handleApplyClick = job => {
+        //  const target = e.target;
+        //console.log("current page", this.state.currentPage);
+        // const id = ((this.state.currentPage-1)*this.state.pageSize)+parseInt(target.id);
         console.log("true");
-        console.log(id);
-        console.log(this.state.postedJobs[id]);
-        this.props.postedJobs(this.state.postedJobs[id]);
+        //   console.log(id);
+        //   console.log(this.state.postedJobs[job]);
+        this.props.postedJobs(job);
         this.setState({
-            redirectToJobEditPage : true
+          redirectToJobEditPage: true
         });
-    }
+      };
 
     updateSearch(event) {
         this.setState({search: event.target.value.substr(0,20)});
@@ -97,7 +97,7 @@ class JobPostingDetails extends Component{
             return(
                 <div key={index}>
                     <div className="job-title"><b><Link to="#" id={index} onClick={this.handleClick}>{job.jobTitle}</Link></b></div>
-                    <button className="btn btn-lg save-btn flt-right" id={index} onClick={this.handleApplyClick}>Edit</button>
+                    <button className="btn btn-lg save-btn flt-right" id={index} onClick={() => this.handleApplyClick(job)}>Edit</button>
                     <div className="">{job.companyName}</div>
                     <div className="">{job.employmentType}</div>
                     <hr/>

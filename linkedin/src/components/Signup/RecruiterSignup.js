@@ -8,7 +8,7 @@ import { userActions } from "../../actions/recruitersignup";
 import '../../static/css/RecruiterSignup.css'
 
 
-class Signup extends React.Component {
+class RecruiterSignup extends React.Component {
   constructor(props) {
     super(props);
     console.log(props);
@@ -50,7 +50,7 @@ class Signup extends React.Component {
 
     if (this.props.isSignedup) {
       console.log("issigned", this.props.isSignedup);
-      redirectVar = <Redirect to="/home" />;
+      redirectVar = <Redirect to="/signup" />;
     }
     // if (this.props.loginStateStore.result.responseFlag == "") {
     //   console.log("error");
@@ -178,5 +178,5 @@ export default reduxForm({ validate, form: "NewBookForm" })(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Signup)
+  )(RecruiterSignup)
 );
