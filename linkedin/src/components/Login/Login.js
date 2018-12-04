@@ -130,14 +130,17 @@ class Login extends Component {
           <div className="">
             <form className="pad-10-pc-top">
               <div class="main-div">
-                <div class="panel">
-                  <h2>Welcome Back</h2>
+                <div class="panel pt-3">
+                  <h2 className="">Welcome Back</h2>
                   <p>
                     Don't miss your next opportunity. Sign in to stay updated on
                     your professional world.
                   </p>
                 </div>
                 {error}
+                <div className="pl-5 pr-5">
+
+                
                 <div className="form-group">
                   <Field
                     label=""
@@ -160,17 +163,20 @@ class Login extends Component {
                   />
                   {/* <input type="password" class="form-control" name="password" placeholder="Password"/> */}
                 </div>
+                <div className="form-group">
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-primary form-control "
                   type="submit"
                   onClick={handleSubmit(this.submitLogin.bind(this))}
                 >
-                  Signin
+                  <b>Signin</b>
                 </button>
+                </div>
                 <br />
                 <br />
                 <p>New to LinkedIn? Join now</p>
                 <Link to="/signup">Join</Link>
+                </div>
               </div>
             </form>
           </div>

@@ -87,9 +87,7 @@ render() {
                             <div><b> <Link to="#" onClick={this.saveUserProfiletoStore.bind(this, index)}>{profile.user.Fname} {profile.user.Lname}</Link></b></div>
                             <div>{profile.user.aboutMe}</div>
                         </div>
-                        <div className="col-4">
-                            <button className="btn accept-btn ml-2" /* onClick={this.acceptRequest.bind(this, index)}*/>Message</button>
-                        </div>
+                        
                     </div>
                 </div>
                 </div>
