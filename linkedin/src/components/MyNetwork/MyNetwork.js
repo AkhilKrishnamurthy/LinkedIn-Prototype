@@ -29,7 +29,7 @@ class MyNetwork extends Component {
 
     getConnections = ()=>{
         axios.defaults.withCredentials=true;
-        axios.get('http://localhost:3001/get-connections')
+       axios.get('http://localhost:3001/get-connections')
             .then((response)=>{
                 if(response.status === 200){
                     console.log('Response connections', response.data);
@@ -40,7 +40,7 @@ class MyNetwork extends Component {
                         if(connections[i].profileimage.length > 0){
                             console.log('profile image', connections[i].profileimage);
                             //axios.post('http://localhost:3001/download/'+connections[i].profileimage)
-                            axios.post('http://localhost:3001/download/'+connections[i].profileimage)
+                        axios.post('http://localhost:3001/download/'+connections[i].profileimage)
                                 .then((res)=>{
                                     if(res.status === 200){
                                         connections[i].profileimage = 'data:image/jpg;base64, ' + res.data;

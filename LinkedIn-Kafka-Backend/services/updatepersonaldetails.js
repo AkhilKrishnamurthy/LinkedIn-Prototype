@@ -6,7 +6,7 @@ function handle_request(msg, callback) {
     var res = {};
 
 
-    linkedInUser.findOneAndUpdate({"user.email":msg.email},{"$set": { "user.Fname":msg.Fname,"user.Lname":msg.Lname,"user.company":msg.company,"user.city":msg.city,"user.aboutMe":msg.aboutMe,"user.profileimage":msg.profileimage }},
+    linkedInUser.findOneAndUpdate({"user.email":msg.email},{"$set": { "user.Fname":msg.Fname,"user.Lname":msg.Lname,"user.company":msg.company,"user.city":msg.city,"user.aboutMe":msg.aboutMe,"user.profileimage":msg.profileimage, "user.zip":msg.zipcode,"user.state":msg.stateval }},
         function(err, user) {
           if (err) {
             res.code = "400";
