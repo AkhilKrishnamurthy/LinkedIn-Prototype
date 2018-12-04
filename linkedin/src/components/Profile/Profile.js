@@ -3,6 +3,7 @@ import Header from '../Header/Header';
 import './modal.css'; 
 import axios from "axios";
 import { Link } from 'react-router-dom';
+import {connect} from 'react-redux';
 
 class Profile extends Component{
     constructor(props){
@@ -11,11 +12,15 @@ class Profile extends Component{
 
         this.state={
             test : [],
+            testedu : [],   
             fname : "",
             lname : "",
             company : "",
             city : "",
             aboutMe:"",
+            headline:"",
+            zipcode:"",
+            stateval:"",
 
             //copy
             fname1 : "",
@@ -23,7 +28,9 @@ class Profile extends Component{
             company1 : "",
             city1 : "",
             aboutMe1:"",
-
+            headline1:"",
+            zipcode1:"",
+            stateval1:"",
             //rerender variable
            
             isupdated:0,
@@ -53,7 +60,7 @@ class Profile extends Component{
 
               //education variables
               education:[],
-
+              tempedu:[],  
             edu1:[],
 
             educationid:0,
@@ -66,11 +73,15 @@ class Profile extends Component{
             addfromyear:"",
             addtoyear:"",
 
+            addtesteduschool:"",
+            addtestedudegree:"",
+            addtestedufromyear:"",
+            addtestedutoyear:"",            
+            profileimage : "",
+			profileImage : "",
             //skills
             skills : [],
             skillstr : "",
-            profileimage: "",
-            profileImage: "",
 
             //cancel reload
             rel:false
@@ -82,27 +93,87 @@ class Profile extends Component{
 
 //call to save edited personal details 
 savepersonaldetailschanges=(e)=>{
-    e.preventDefault();
+
+      e.preventDefault();
     console.log("inside save pd call");
-    var data = {email:'pp@gmail.com',Fname:this.state.fname,Lname:this.state.lname,company:this.state.company, city:this.state.city,aboutMe:this.state.aboutMe,profileimage:this.state.profileimage}
-    console.log("axios pd data is ",data);
-    axios.post('http://localhost:3001/updatepdprofile',data)
-    .then(response=>{
+    
+    // zipcode validation
+    var regexresult = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(this.state.zipcode);
+    console.log("Result of zipcode regex",regexresult);
+
+    //us state validation
+    const stateAbbreviations = [
+        'AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FM','FL','GA',
+        'GU','HI','ID','IL','IN','IA','KS','KY','LA','ME','MH','MD','MA',
+        'MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND',
+        'MP','OH','OK','OR','PW','PA','PR','RI','SC','SD','TN','TX','UT',
+        'VT','VI','VA','WA','WV','WI','WY'
+       ];
+
+    const statenames = 
+       ['Alabama','Alaska','American Samoa','Arizona','Arkansas','California','Colorado',
+       'Connecticut','Delaware','District of Columbia','Federated States of Micronesia',
+       'Florida','Georgia','Guam','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas',
+       'Kentucky','Louisiana','Maine','Marshall Islands','Maryland','Massachusetts','Michigan',
+       'Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire',
+       'New Jersey','New Mexico','New York','North Carolina','North Dakota',
+       'Northern Mariana Islands','Ohio','Oklahoma','Oregon','Palau','Pennsylvania',
+       'Puerto Rico','Rhode Island','South Carolina','South Dakota','Tennessee','Texas',
+       'Utah','Vermont','Virgin Island','Virginia','Washington','West Virginia','Wisconsin',
+       'Wyoming'];
+
+       var checkstate = false;
+       if(stateAbbreviations.includes(this.state.stateval)||statenames.includes(this.state.stateval))
+        {
+            checkstate = true;
+        }
+
+
+
+        if(regexresult == true && checkstate == true)
+    {
+        console.log("value of regex is true");
+         var email = this.props.loginStateStore.result.email;
+        console.log("Emaild id is:",email);
+        console.log("About me values is",this.state.aboutMe);
+        var data = {email:email,Fname:this.state.fname,Lname:this.state.lname,headline:this.state.headline,company:this.state.company, city:this.state.city,aboutMe:this.state.aboutMe,zipcode:this.state.zipcode,stateval:this.state.stateval}
+        console.log("axios pd data is ",data);
+        axios.post('http://localhost:3001/updatepdprofile',data)
+        .then(response=>{
         if(response.status === 200){
             console.log("inside resp status");
             var isupdated = 1+this.state.isupdated;
            this.setState({isupdated:isupdated});
+           this.fetchprofiledbcall();
             }
             else{
                 console.log("error updating");
             }
             console.log("state",this.state.isupdated);
-    })
+    }) 
+}
+else if(regexresult == false && checkstate == true)
+{
+    console.log("Invalid US zip code");
+    alert("Please enter a valid US zip code!!");
+  
+}
+else if(regexresult == true && checkstate == false)
+{
+    console.log("Invalid US state: malformed_state exception");
+    alert("Please enter a valid US State!!,malformed_state exception");
+   
+}
+else{
+    console.log("Invalid US zip code && Invalid US state: malformed_state exception");
+    alert("Please enter a valid US zip code and State!!:malformed_state exception");
+    
+}
 }
 
 
 //call to save edited experience changes
-saveexperiencechanges=(e)=>{
+/* saveexperiencechanges=(e)=>{
     //e.preventDefault();
     console.log("save add exp changes",this.state.exp1);
     var data = {email:'pp@gmail.com',experience:this.state.exp1};
@@ -115,23 +186,27 @@ saveexperiencechanges=(e)=>{
     })
     
 
-}
+} */
 
 //call to save edited education changes
-saveeducationchanges=(e)=>{
+/* saveeducationchanges=(e)=>{
     e.preventDefault();
     var data = {education:this.state.education}
     console.log("axios education data is ",data);
     axios.post('http://localhost:3001/updateeduprofile',data)
     .then()
-}
+} */
 
 
 //call to save edited skills changes
 saveskillschanges=(e)=>{
     console.log("inside save skill axios call");
     e.preventDefault();
-    var data = {email:'pp@gmail.com',skills:this.state.skillstr}
+   // var email = sessionStorage.getItem('key');
+    var email = this.props.loginStateStore.result.email;
+   console.log("Emaild id is:",email);
+   
+    var data = {email:email,skills:this.state.skillstr}
     console.log("axios skills data is ",data);
     axios.post('http://localhost:3001/updateskillsprofile',data)
     .then(response=>{
@@ -139,6 +214,7 @@ saveskillschanges=(e)=>{
         if(response.status === 200){
             var isupdated = 1+this.state.isupdated;
             this.setState({isupdated:isupdated});
+            this.fetchprofiledbcall();
         }
         else{
             console.log("error updating");
@@ -152,83 +228,110 @@ saveskillschanges=(e)=>{
 
 
 //axios post call section ends
+fetchprofiledbcall=()=>{
+    //e.preventDefault();
+    console.log("COMPONENT DID MOUNT");
+     var email = this.props.loginStateStore.result.email;
+    console.log("Emaild id is:",email); 
+
+    const data = {email:email};
+    // variable s would contain response string from fetch for skills
+    axios.post('http://localhost:3001/FetchProfile',data).then(response => {
+        //update the state with the response data
+        console.log(response.data);
+        console.log("Response of did mount",response);
+        var output = response.data;
+        console.log("output is",output.docs);
+
+       
+        var experience1 = output.docs.user.experience;
+        console.log('experience1',experience1);
+        var test = output.docs.user.experience;
+        var testedu = output.docs.user.education;
+     
+        var experience = [...output.docs.user.experience];
+        var education  = [...output.docs.user.education];
+      
+        var tempexp = [...output.docs.user.experience];
+       
+        var tempedu = [...output.docs.user.education];
 
 
+        var s = output.docs.user.skills;
 
-    //component did mount for the first render
-     async componentDidMount(){
-        console.log("COMPONENT DID MOUNT");
-        const data = {email:'pp@gmail.com'};
-        // variable s would contain response string from fetch for skills
-        await axios.post('http://localhost:3001/FetchProfile',data).then(response => {
-            //update the state with the response data
-            console.log(response.data.docs.user.profileimage);
-            console.log("Response of did mount",response);
-            var output = response.data;
-            console.log("output is",output.docs);
-            var experience1 = output.docs.user.experience;
-            console.log('experience1',experience1);
-            var test = output.docs.user.experience;
-            var experience = [...output.docs.user.experience];
-            var education  = [...output.docs.user.education];
-            var tempexp = [...output.docs.user.experience];
+    
 
-            var s = output.docs.user.skills;
+        var skillsresult = s.split(',');
+         
+        console.log('above this.state',skillsresult);
+        console.log("test value is",test);
+        this.setState({
+            test:test,
+            testedu:testedu,
+          fname:output.docs.user.Fname,
+          lname:output.docs.user.Lname,
+          headline:output.docs.user.headline,
+          company:output.docs.user.company,
+          city:output.docs.user.output,
+          aboutMe:output.docs.user.aboutMe,
+          zipcode:output.docs.user.zip,
+          stateval:output.docs.user.state,
+          //copy
+          fname1:output.docs.user.Fname,
+          lname1:output.docs.user.Lname,
+          headline1:output.docs.user.headline,
+          company1:output.docs.user.company,
+          city1:output.docs.user.city,
+          aboutMe1:output.docs.user.aboutMe,
+          zipcode1:output.docs.user.zip,
+          stateval1:output.docs.user.state,
+          profileimage: response.data.docs.user.profileimage,
+          experience:experience,
 
-        
+          education:education,
 
-            var skillsresult = s.split(',');
-             
-            console.log('above this.state',skillsresult);
-            console.log("test value is",test);
-            this.setState({
-                test:test,
-              fname:output.docs.user.Fname,
-              lname:output.docs.user.Lname,
-              company:output.docs.user.company,
-              city:output.docs.user.output,
-              aboutMe:output.docs.user.aboutMe,
+          tempexp:tempexp,
+          tempedu:tempedu,
 
+           skills:skillsresult,
+          skillstr:s, 
 
-              //copy
-              fname1:output.docs.user.Fname,
-              lname1:output.docs.user.Lname,
-              company1:output.docs.user.company,
-              city1:output.docs.user.output,
-              aboutMe1:output.docs.user.aboutMe,
-
-              experience:experience,
-
-              education:education,
-
-              tempexp:tempexp,
-
-               skills:skillsresult,
-              skillstr:s ,
-              profileimage: response.data.docs.user.profileimage,
-              
-            });
-            console.log("thisi is m experience array state",this.state.experience);
-            console.log(output.docs);
-            console.log("fname db",output.docs.user.Fname);
-            console.log('Fname',this.state.fname);
-            console.log('Fname',this.state.company);
-            console.log('Fname',this.state.city);
-            console.log('skillstr',this.state.skillstr);
-            console.log('skill',this.state.skill);
-            console.log('skillsresult',skillsresult);
-            console.log('test after setting it',this.state.test);
-          }); 
-
-        console.log("end");
+          experienceid:0,    
+          
+          educationid:0
+          
+        });
+        console.log("thisi is m experience array state",this.state.experience);
+        console.log(output.docs);
+        console.log("fname db",output.docs.user.Fname);
+        console.log('Fname',this.state.fname);
+        console.log('Fname',this.state.company);
+        console.log('Fname',this.state.city);
+        console.log('skillstr',this.state.skillstr);
+        console.log('skill',this.state.skill);
+        console.log('skillsresult',skillsresult);
+        console.log('test after setting it',this.state.test);
+      }); 
+	  
+	     console.log("end");
         console.log(this.state.profileimage);  
-	  await axios.post('http://localhost:3001/download-file/' + this.state.profileimage).then(response =>{
+	   axios.post('http://localhost:3001/download/' + this.state.profileimage).then(response =>{
            console.log("inside download file");
         this.setState({   
             profileImage : 'data:image/jpg;base64, ' + response.data
        } 
         )}   
-       )}
+       )
+}
+
+
+
+    //component did mount for the first render
+      componentDidMount(){
+        
+        this.fetchprofiledbcall();
+
+          }   
         
     //componentDidUpdate start
 
@@ -255,8 +358,11 @@ if (index > -1) {
   experience.splice(index, 1);
 }
 // array = [2, 9]
-console.log("Experience is isi isisisis",experience);
-var data = {email:'pp@gmail.com',experience:experience};
+console.log("Experience is ",experience);
+ var email = this.props.loginStateStore.result.email;
+console.log("Emaild id is:",email); 
+
+var data = {email:email,experience:experience};
 axios.post('http://localhost:3001/updateexpprofile',data)
        .then(response=>{
            console.log("Resose",response);
@@ -264,7 +370,7 @@ axios.post('http://localhost:3001/updateexpprofile',data)
 
            {  console.log("Inside del");
                this.setState({isExpUpdated:true});}
-           
+               this.fetchprofiledbcall();
        }) 
 
 
@@ -295,12 +401,17 @@ axios.post('http://localhost:3001/updateexpprofile',data)
     const test = this.state.test.slice();
     test.push(obj);
     console.log('test the o/p',test);
-    var data = {email:'pp@gmail.com',experience:test};
+    //var email = sessionStorage.getItem('key');
+    var email = this.props.loginStateStore.result.email;
+    console.log("Emaild id is:",email);
+    
+    var data = {email:email,experience:test};
     axios.post('http://localhost:3001/updateexpprofile',data)
     .then(response=>{
-        this
+        
         console.log(response);
         console.log("experience val",this.state.test);
+        this.fetchprofiledbcall();
 
     }) 
 
@@ -381,6 +492,7 @@ axios.post('http://localhost:3001/updateexpprofile',data)
     canceleditexperiencechanges=(e)=>{
         e.preventDefault();
         this.setState({rel:true});
+        this.fetchprofiledbcall();
         //console.log("Reload value for cancel",this.state.rel);
         //window.location.reload();
     }
@@ -391,19 +503,23 @@ axios.post('http://localhost:3001/updateexpprofile',data)
     saveeditexperiencechanges=(e)=>{
         e.preventDefault();
         console.log('edit experience of the ',this.state.experience);
-        var data = {email:'pp@gmail.com',experience:this.state.experience};
+        //var email = sessionStorage.getItem('key');
+         var email = this.props.loginStateStore.result.email;
+        console.log("Emaild id is:",email);
+      
+        var data = {email:email,experience:this.state.experience};
        
        console.log("axios experience data is edited ",data);
        axios.post('http://localhost:3001/updateexpprofile',data)
        .then(response=>{
            console.log(response);
            console.log("experience val",this.state.experience);
+           this.fetchprofiledbcall();
        }) 
 
     }
 
     //For education functions start
-
 
 
 
@@ -424,6 +540,23 @@ if (index1 > -1) {
 }
 // array = [2, 9]
 console.log(education);
+
+//var email = sessionStorage.getItem('key');
+ var email = this.props.loginStateStore.result.email;
+console.log("Emaild id is:",email); 
+
+var data = {email:email,education:education};
+axios.post('http://localhost:3001/updateeduprofile',data)
+       .then(response=>{
+           console.log("Response",response);
+           if(response.status===200)
+
+           {  console.log("Inside del");
+               this.setState({isEduUpdated:true});
+               this.fetchprofiledbcall();
+            }
+           
+       }) 
     }
 
     //handle add experience modal
@@ -436,44 +569,40 @@ console.log(education);
     }
 
 
-    //handle add object to experience array
+    //handle add object to education array
     handleaddtoeducationarray=(e)=>{
         e.preventDefault();
-        console.log("inside add1");
-        console.log("state school",this.state.addschool);
-        var self= this.state;
-        var education = [...this.state.edu1];
-        education.push({
-            school:self.addschool,
-            degree:self.adddegree,
-            fromyear:self.addfromyear,
-            toyear:self.addtoyear
-            
-        })
-        console.log("Education array",education);
-        this.setState({edu1:education});
-        console.log("state experience",this.state.edu1);
-        //axios post call to send the value to the db.
-        //axios.post('/profile',)
-        var data = {Fname:this.state.fname,Lname:this.state.lname,company:this.state.company, city:this.state.city,aboutMe:this.state.aboutMe,experience:this.state.experience,education:this.state.education,skills:this.state.skills}
-        console.log("data is ",data);
-        axios.post('/profile',data)
-        .then()
+        const addtesteduschool = this.state.addtesteduschool;
+    const addtestedudegree = this.state.addtestedudegree;
+    const  addtestedufromyear  = this.state.addtestedufromyear;
+    const  addtestedutoyear = this.state.addtestedutoyear;
+    const obj = {'school':addtesteduschool, 'degree': addtestedudegree, 'fromyear':addtestedufromyear, 'toyear':addtestedutoyear };
+    const testedu = this.state.testedu.slice();
+    testedu.push(obj);
+    console.log('test the o/p',testedu);
+    //var email = sessionStorage.getItem('key');
+    var email = this.props.loginStateStore.result.email;
+    console.log("Emaild id is:",email);
+  
+    var data = {email:email,education:testedu};
+    console.log("data is",data);
+    console.log("exp is", this.state.experience);
+     axios.post('http://localhost:3001/updateeduprofile',data)
+    .then(response=>{
+        
+        console.log(response);
+        console.log("educcation val",this.state.testedu);
+        console.log("CHECKPOINT");
+        this.fetchprofiledbcall();
+    })      
+
+       
+       
+        
     }
 
 
-
-    //handle fieldchanges for personal details,experience,education variables in state
-    handlefieldchanges=(event)=>{
-
-        this.setState({[event.target.id]:event.target.value});
-
-    }
-
-
-
-
-    //fieldchanges for experience
+   //fieldchanges for experience
     handlefieldchangeseducation=(event)=>{
         
         console.log("Education 0 ",this.state.education[this.state.educationid].school)
@@ -494,48 +623,91 @@ console.log(education);
       
        if(event.target.id === "degree")
        {
-        var education = [...this.state.education];
+        var education1 = [...this.state.education];
         const educationid = this.state.educationid;
-        education[educationid].degree = event.target.value;
-        console.log('education',education);
-        this.setState({education:education});
+        education1[educationid].degree = event.target.value;
+        console.log('education',education1);
+        this.setState({education:education1});
         console.log(this.state.education);
        } 
 
        if(event.target.id === "fromyear")
        {
-        var education = [...this.state.education];
+        var education2 = [...this.state.education];
         const educationid = this.state.educationid;
-        education[educationid].fromyear = event.target.value;
-        console.log('education',education);
-        this.setState({education:education});
+        education2[educationid].fromyear = event.target.value;
+        console.log('education',education2);
+        this.setState({education:education2});
         console.log(this.state.education);
        } 
 
 
        if(event.target.id === "toyear")
        {
-        var education = [...this.state.education];
+        var education3 = [...this.state.education];
             const educationid = this.state.educationid;
-            education[educationid].toyear = event.target.value;
-            console.log('education',education);
-            this.setState({education:education});
+            education3[educationid].toyear = event.target.value;
+            console.log('education',education3);
+            this.setState({education:education3});
             console.log(this.state.education);
        } 
 
 
     }
+ 
 
+
+    //For education function ends
+
+
+
+	  //cancel edit educatioon start
+
+      cancelediteducationchanges=(e)=>{
+        e.preventDefault();
+       /*  this.setState({rel:true});
+        console.log("Reload value for cancel",this.state.rel);
+        window.location.reload(); */
+        this.fetchupdatedbcall();
+    }
+
+    //cancel edit education end
     
 
-    handleChange = (e) => {
+    saveediteducationchanges=(e)=>{
+        e.preventDefault();
+        console.log('edit education of the ',this.state.education);
+        //var email = sessionStorage.getItem('key');
+        var email = this.props.loginStateStore.result.email;
+        console.log("Emaild id is:",email); 
+       
+        var data = {email:email,education:this.state.education};
+       
+       console.log("axios education data is edited ",data);
+       axios.post('http://localhost:3001/updateeduprofile',data)
+       .then(response=>{
+           console.log(response);   
+           console.log("education val",this.state.education);
+           this.fetchprofiledbcall();
+       }) 
+    }
+
+
+    //handle fieldchanges for personal details,experience,education variables in state
+    handlefieldchanges=(event)=>{
+
+        this.setState({[event.target.id]:event.target.value});
+
+    }
+	//For Image upload
+	  handleChange = (e) => {
         const target = e.target;
             console.log(target.files);
             var profilePhoto = target.files[0];
             var data = new FormData();
             data.append('photos', profilePhoto);
             axios.defaults.withCredentials = true;
-            axios.post('http://localhost:3001/upload_file', data)
+            axios.post('http://localhost:3001/upload-file', data)
                 .then(response => {
                     if (response.status === 200) {
                         console.log('Profile Photo Name: ', profilePhoto.name);
@@ -551,28 +723,6 @@ console.log(education);
                     }
                 });
         }
-   /*  saveexperiencechanges=()=>{
-
-
-
-
-    } */
-
-   /*  savechanges=(e)=>{
-        e.preventDefault(); */
-        
-        /* axios.post('url',data).then(
-
-        ) */
-        //this.setState({experience:experience});
-
-   /*  } */
-
-
-
-
-
-    //For education function ends
 
     
     render(){
@@ -627,6 +777,19 @@ console.log(education);
                                 onChange={this.handlefieldchanges}
                               />
 
+                                    <label  className="grey-text">Headline</label>
+              <input
+                                label="currentposition"
+                                icon="fa-map-pin"
+                                group
+                                value={this.state.headline}
+                                type="text"
+                                id="headline"
+                                validate
+                                error="wrong"
+                                success="right"
+                                onChange={this.handlefieldchanges}
+                              />
 
                   <label  className="grey-text">Current Position</label>
               <input
@@ -642,7 +805,7 @@ console.log(education);
                                 onChange={this.handlefieldchanges}
                               />   
 
-                     <label  className="grey-text">Country/Region</label>
+                     <label  className="grey-text">City</label>
               <input
                                 label="country"
                                 icon="fa-map-pin"
@@ -668,8 +831,37 @@ console.log(education);
                                 error="wrong"
                                 success="right"
                                 onChange={this.handlefieldchanges}
+                              />     
+
+                                                               <label  className="grey-text">State</label>
+              <input
+                                label="stateval"
+                                icon="fa-map-pin"
+                                group
+                                value={this.state.stateval}
+                                type="text"
+                                id="stateval"
+                                validate
+                                error="wrong"
+                                success="right"
+                                onChange={this.handlefieldchanges}
                               />   
-                               <label  className="grey-text">Profile Image</label>
+
+
+                                                <label  className="grey-text">ZipCode</label>
+              <input
+                                label="zipcode"
+                                icon="fa-map-pin"
+                                group
+                                value={this.state.zipcode}
+                                type="text"
+                                id="zipcode"
+                                validate
+                                error="wrong"
+                                success="right"
+                                onChange={this.handlefieldchanges}
+                              />   
+              <label  className="grey-text">Profile Image</label>
               <input
                                 label="profileimage"
                                 icon="fa-map-pin"
@@ -680,7 +872,7 @@ console.log(education);
                                 error="wrong"
                                 success="right"
                                 onChange={this.handleChange}
-                              />                     
+                              />   							  
              
               </div>
               <div class="modal-footer">
@@ -830,8 +1022,10 @@ console.log(education);
     )
 
     
-    if(this.state.showmodaleditexperience === true ){
+    if(this.state.showmodaleditexperience === true && this.state.test.length > 0){
         console.log("tesst is value",this.state.test);
+        console.log("id val",this.state.experienceid);
+        console.log("exp array",this.state.experience);
         var modaleditexperience = (
 
             <div>
@@ -983,7 +1177,7 @@ margin="auto">
                                     label="school"
                                     icon="fa-map-pin"
                                     placeholder="Ex. sjsu"
-                                    id="addschool"
+                                    id="addtesteduschool"
                                     group
                                     type="text"
                                     
@@ -1001,7 +1195,7 @@ margin="auto">
                                    
                                     type="text"
                                     placeholder="Ex. Bachelor's"
-                                    id="adddegree"
+                                    id="addtestedudegree"
                                     validate
                                     error="wrong"
                                     success="right"
@@ -1015,9 +1209,9 @@ margin="auto">
                                     icon="fa-map-pin"
                                     group
                                     
-                                    type="text"
+                                    type="date"
                                     placeholder="Year"
-                                    id="addfromyear"
+                                    id="addtestedufromyear"
                                     validate
                                     error="wrong"
                                     success="right"
@@ -1030,9 +1224,9 @@ margin="auto">
                                     icon="fa-map-pin"
                                     group
                                    
-                                    type="text"
+                                    type="date"
                                     placeholder="Year"
-                                    id="addtoyear"
+                                    id="addtestedutoyear"
                                     validate
                                     error="wrong"
                                     success="right"
@@ -1060,7 +1254,9 @@ margin="auto">
 
 
        var it1 = -1;
-       let educationvar = this.state.education.map((educationvalues,index)=>{
+       const test2 = this.state.testedu;
+       console.log('test2 is',test2);
+       const educationvar = test2.map((educationvalues,index)=>{
            it1 = it1+1;
            var id1=0;
            return(
@@ -1081,7 +1277,12 @@ margin="auto">
    )
 
    
-   if(this.state.showmodalediteducation === true ){
+   if(this.state.showmodalediteducation === true && this.state.testedu.length > 0){
+
+   
+        console.log("tesstedu is value",this.state.testedu);
+        console.log("id for edu val",this.state.educationid);
+        console.log("exp array",this.state.education);
        var modalediteducation = (
 
            <div>
@@ -1113,7 +1314,7 @@ margin="auto">
                            validate
                            error="wrong"
                            success="right"
-                           onChange={this.handlefieldchangesducation}
+                           onChange={this.handlefieldchangeseducation}
                          />
 
                           <label  className="grey-text">degree</label>
@@ -1137,7 +1338,7 @@ margin="auto">
                            icon="fa-map-pin"
                            group
                            value={this.state.education[this.state.educationid].fromyear}
-                           type="text"
+                           type="date"
                            id="fromyear"
                            validate
                            error="wrong"
@@ -1151,7 +1352,7 @@ margin="auto">
                            icon="fa-map-pin"
                            group
                            value={this.state.education[this.state.educationid].toyear}
-                           type="text"
+                           type="date"
                            id="toyear"
                            validate
                            error="wrong"
@@ -1161,8 +1362,8 @@ margin="auto">
         
          </div>
          <div class="modal-footer">
-           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-           <button type="button" class="btn btn-primary" onclick={this.saveeducationchanges}>Save changes</button>
+           <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick={this.cancelediteducationchanges}>Close</button>
+           <button type="button" class="btn btn-primary" onClick={this.saveediteducationchanges}>Save changes</button>
          </div>
        </div>
      </div>
@@ -1240,10 +1441,6 @@ margin="auto">
 
     
 
-
-
-
-
         return(
             <div>
                 <Header />
@@ -1252,11 +1449,15 @@ margin="auto">
                     <img src = "https://coverfiles.alphacoders.com/498/49849.jpg"  width="100%" height="100%"/>
                     <img src = {this.state.profileImage} height="100" className="ProfileImage"/>
                         <div>
-                            <p className="profileDescription">{this.state.fname1}&nbsp;{this.state.lname1}</p>
-                            <p className="profileDescription1">{this.state.company1}</p>
+                            <p className="profileDescription"><h2>{this.state.fname1}&nbsp;{this.state.lname1}</h2></p>
+                            <p className="profileDescription1"><h4>{this.state.headline1}</h4></p>
+                            <p className="profileDescription1"><h6>{this.state.company1}</h6></p>
                             <div> 
-                            <p className="">{this.state.city1}</p>
-                            <p className="">{this.state.aboutMe1}</p>
+
+                            <p className=""><h6>{this.state.city1}</h6></p>
+                            <p className=""><h6>{this.state.stateval1}</h6></p>
+                            <p className=""><h6>{this.state.zipcode1}</h6></p>
+                            <p className=""><h5>{this.state.aboutMe1}</h5></p>
                             <p className="">{modalpersonaldetails}</p>
                             </div>
                         </div>
@@ -1377,4 +1578,8 @@ margin="auto">
     }
 }
 
-export default Profile;
+const mapStateToProps = state =>({
+    loginStateStore : state.Login
+});
+
+export default connect(mapStateToProps, {})(Profile);
