@@ -37,8 +37,11 @@ class JobPostingDetails extends Component{
     // }
 
     async componentDidMount(){
+        var data = {
+            username: this.props.loginStateStore.email
+        }
     
-        axios.get('http://localhost:3001/JobPostingHistory')
+        axios.post('http://localhost:3001/JobPostingHistory',data)
             .then(async (response) => {
                 console.log(response);
                 var arr = response.data.value;

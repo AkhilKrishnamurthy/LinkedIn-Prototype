@@ -160,7 +160,7 @@ app.post("/recruiter/signup", (req, res) => {
 
 app.post("/submitJobDetails", (req, res) => {
   console.log(req.body);
-  req.body.user = req.session.user;
+  req.body.user = req.body.username;
   console.log(req.session.user);
   postJobRecruiter.postJobRecruiter(req, res);
 });
@@ -393,7 +393,7 @@ app.post("/updateskillsprofile", function(req, res) {
 app.post("/submitEditedJobDetails", (req, res) => {
   console.log("inside edit job post");
   console.log(req.body);
-  req.body.user = req.session.user;
+  req.body.user = req.body.username;
   console.log(req.session.user);
   submitEditedJobDetails.submitEditedJobDetails(req, res);
 });
@@ -413,9 +413,10 @@ app.get("/getuserclicks", function(req, res) {
 app.get("/getsavedjobs", function(req, res) {
   analytics.getsavedjobs(req, res);
 });
-app.get("/JobPostingHistory", (req, res) => {
+app.post("/JobPostingHistory", (req, res) => {
   // req.body.user = req.session.user;
   console.log("inside job posting history");
+  console.log(req.body);
   jobPostingHistory.jobPostingHistory(req, res);
 });
 app.get("/getjobformanalytics/:id", (req, res) => {

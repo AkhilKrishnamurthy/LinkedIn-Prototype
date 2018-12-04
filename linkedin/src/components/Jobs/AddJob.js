@@ -70,6 +70,7 @@ class AddJobs extends Component{
        
         console.log("easy apply",this.state.easyApply);
         const data = {
+            username: this.props.loginStateStore.email,
             companyName: this.state.companyName,
             jobTitle: this.state.jobTitle,
             industry: this.state.industry,

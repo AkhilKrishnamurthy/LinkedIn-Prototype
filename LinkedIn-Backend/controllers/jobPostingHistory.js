@@ -1,13 +1,13 @@
 var kafka = require("../kafka/client");
 exports.jobPostingHistory = function(req, res) {
   console.log("Inside postJob as a recruiter Handler");
-  console.log(req.session.user);
+  console.log(req.body);
   var user = {
-    username: req.session.user //req.session.user
+    username: req.body.username //req.session.user
   };
   kafka.make_request("job_posting_history_topic", user, function(err, results) {
     console.log(user);
-    console.log("resultresult", req.session.user);
+    console.log("resultresult", req.body.username);
     if (err) {
       console.log("unable to reach kafka job post history");
       res.value = "unable to reach kafka job post history";
