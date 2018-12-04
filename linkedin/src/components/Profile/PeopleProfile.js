@@ -140,9 +140,9 @@ class PeopleProfile extends Component{
     sendMessageHandler = ()=>{
         console.log("Sender Email ID " + this.state.senderEmailId)
         var values = {
-            messageThread : "this.state.FName" + " : " + this.state.message,
-            senderEmailId :  "amruta@gmail.com", //this.state.senderEmailId,
-            receiverEmailId : "aehari2010@gmail.com" //this.state.receiverEmailId
+            messageThread : this.props.loginStateStore.result.FName + " : " + this.state.message,
+            senderEmailId :  this.props.loginStateStore.result.email,
+            receiverEmailId : this.props.profileResultsStateStore.result.user.email
         }
         console.log(JSON.stringify(values))
         axios.post('http://localhost:3001/sendmessage', values)
@@ -243,7 +243,7 @@ class PeopleProfile extends Component{
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                 <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">Send message to Arivoli</h5>
+                    <h5 className="modal-title" id="exampleModalLabel">Send message </h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>

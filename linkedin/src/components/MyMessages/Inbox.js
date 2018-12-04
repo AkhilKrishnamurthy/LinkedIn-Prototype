@@ -6,8 +6,6 @@ import {Redirect} from 'react-router';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import swal from 'sweetalert'
-import {saveMessageDetailsToStore} from '../../actions/jobResultsAction';
-import {saveSearchFieldToStore} from '../../actions/jobSearchAction';
 import '../../static/css/JobResultsPage.css'
 
 class MyMessages extends Component {
@@ -16,7 +14,7 @@ class MyMessages extends Component {
     console.log(props);
     this.state = {
       messageData: [],
-      messageDetails: "",
+      messageDetails: {},
       redirectToJobDisplayPage: false,
       saveClicked: false,
       redirectToJobApplication:false
@@ -47,11 +45,10 @@ class MyMessages extends Component {
         else{
         this.setState({
           messageData: messageResult,
-          messageDetails: messageResult[0],
-          recieverEmail : ""
+          messageDetails: messageResult[0]
         });
       }
-        console.log("messageDetails ID" + this.state.messageDetails._id)
+        console.log("messageDetails ID" + this.state.messageDetails.messageThread[0])
   
       }     
     });
@@ -96,7 +93,7 @@ class MyMessages extends Component {
         var messageDetail = this.state.messageData[index];
         
         
-        console.log('job details', messageDetail);
+        console.log('Message details', messageDetail);
         this.setState({
             messageDetails: messageDetail,
 
@@ -120,14 +117,7 @@ class MyMessages extends Component {
       {
         sendertoggle = message.senderEmailId
       }
-      // if(this.state.messageDetails.senderEmailId === this.props.LoginStateStore.result.email)
-      // {
-      //   senderdetailstoggle = this.state.messageDetails.receiverEmailId
-      // }
-      // else
-      // {
-      //   senderdetailstoggle = this.state.messageDetails.senderEmailId
-      // }
+
       return (
         <div className="job-result-data p-3 mt-2 mb-2 row border" key={index}>
           <span className="job-logo-container col-lg-2">
@@ -149,19 +139,24 @@ class MyMessages extends Component {
       );
     });
 
+    if(this.state.messageDetails.messageThread != null){
+      var messages = this.state.messageDetails.messageThread.map((message, i) => {
+      return(
+            <div>
+                <span> {message}</span>
+                <br/>
+            </div>
+      )
+    })
+  }
+
     var detailsPaneContent = (
       <div className="mt-2 border">
         <div className="job-title-container pad-2-pc row">
 
           <div className="col-lg-9">
-            {/* <div className="">
-              <b> 
-                <Link to="#">{senderdetailstoggle}</Link>
-              </b>
-              <br />
-            </div> */}
             <div className="">
-              {this.state.messageDetails.messageThread}
+              {messages}
               <hr/>
             </div>
 
