@@ -23,9 +23,14 @@ class RecruiterDashoard extends Component {
     this.handleClickPage = this.handleClickPage.bind(this);
   }
   componentDidMount() {
-    this.gettoptenjobposts();
-    this.getlasttenjobposts();
-    this.getJobList();
+    if (
+      this.props.loginStateStore !== null &&
+      this.props.loginStateStore !== undefined
+    ) {
+      this.gettoptenjobposts();
+      this.getlasttenjobposts();
+      this.getJobList();
+    }
   }
   handleClickPage(event) {
     this.setState({
@@ -37,122 +42,132 @@ class RecruiterDashoard extends Component {
     var labeltoptenjob = [];
     var datatoptenjob = [];
     axios.defaults.withCredentials = true;
-    axios.get("http://localhost:3001/gettoptenjobposts").then(
-      response => {
-        console.log("top 10 job data from the db", response.data.result);
-        var topTenJobdatadb = [];
-        topTenJobdatadb = response.data.result.value;
+    axios
+      .get(
+        "http://localhost:3001/gettoptenjobposts/" +
+          this.props.loginStateStore.email
+      )
+      .then(
+        response => {
+          console.log("top 10 job data from the db", response.data.result);
+          var topTenJobdatadb = [];
+          topTenJobdatadb = response.data.result.value;
 
-        var countertoptenjob = {};
-        topTenJobdatadb.forEach(function(obj) {
-          //  console.log("obj.jobData.jobId", obj.jobId);
-          var key = obj._id;
-          countertoptenjob[key] = obj.size;
+          var countertoptenjob = {};
+          topTenJobdatadb.forEach(function(obj) {
+            //  console.log("obj.jobData.jobId", obj.jobId);
+            var key = obj._id;
+            countertoptenjob[key] = obj.size;
 
-          var resulttopJotenjobs = Object.keys(countertoptenjob).map(function(
-            key
-          ) {
-            //    var key1 = key.substr(key.indexOf(" ") + 1);
-            return [key, countertoptenjob[key]];
+            var resulttopJotenjobs = Object.keys(countertoptenjob).map(function(
+              key
+            ) {
+              //    var key1 = key.substr(key.indexOf(" ") + 1);
+              return [key, countertoptenjob[key]];
+            });
+            console.log(resulttopJotenjobs, "is the length");
+            var i;
+
+            for (i = 0; i < resulttopJotenjobs.length; i++) {
+              labeltoptenjob[i] = resulttopJotenjobs[i][0];
+              datatoptenjob[i] = resulttopJotenjobs[i][1];
+            }
           });
-          console.log(resulttopJotenjobs, "is the length");
-          var i;
-
-          for (i = 0; i < resulttopJotenjobs.length; i++) {
-            labeltoptenjob[i] = resulttopJotenjobs[i][0];
-            datatoptenjob[i] = resulttopJotenjobs[i][1];
-          }
-        });
-        console.log("label saved job  for db", labeltoptenjob);
-        console.log("label saved jab data for db", datatoptenjob);
-        this.setState({
-          ...this.state,
-          toptenjobdata: {
-            labels: labeltoptenjob,
-            datasets: [
-              {
-                label: "Top 10 Jobs with highest applicants",
-                data: datatoptenjob,
-                backgroundColor: [
-                  "rgba(255, 99, 132, 0.6)",
-                  "rgba(54, 162, 235, 0.6)",
-                  "rgba(255, 206, 86, 0.6)",
-                  "rgba(75, 192, 192, 0.6)",
-                  "rgba(153, 102, 255, 0.6)",
-                  "rgba(255, 159, 64, 0.6)",
-                  "rgba(255, 99, 132, 0.6)"
-                ]
-              }
-            ]
-          },
-          showtoptenjobs: true
-        });
-      },
-      error => {
-        // dispatch(alertActions.projectPostError(error.data.message));
-      }
-    );
+          console.log("label saved job  for db", labeltoptenjob);
+          console.log("label saved jab data for db", datatoptenjob);
+          this.setState({
+            ...this.state,
+            toptenjobdata: {
+              labels: labeltoptenjob,
+              datasets: [
+                {
+                  label: "Top 10 Jobs with highest applicants",
+                  data: datatoptenjob,
+                  backgroundColor: [
+                    "rgba(255, 99, 132, 0.6)",
+                    "rgba(54, 162, 235, 0.6)",
+                    "rgba(255, 206, 86, 0.6)",
+                    "rgba(75, 192, 192, 0.6)",
+                    "rgba(153, 102, 255, 0.6)",
+                    "rgba(255, 159, 64, 0.6)",
+                    "rgba(255, 99, 132, 0.6)"
+                  ]
+                }
+              ]
+            },
+            showtoptenjobs: true
+          });
+        },
+        error => {
+          // dispatch(alertActions.projectPostError(error.data.message));
+        }
+      );
   }
 
   getlasttenjobposts() {
     var labellasttenjob = [];
     var datalasttenjob = [];
     axios.defaults.withCredentials = true;
-    axios.get("http://localhost:3001/getlasttenjobposts").then(
-      response => {
-        console.log("last 10 job data from the db", response.data.result);
-        var lastTenJobdatadb = [];
-        lastTenJobdatadb = response.data.result.value;
+    axios
+      .get(
+        "http://localhost:3001/getlasttenjobposts/" +
+          this.props.loginStateStore.email
+      )
+      .then(
+        response => {
+          console.log("last 10 job data from the db", response.data.result);
+          var lastTenJobdatadb = [];
+          lastTenJobdatadb = response.data.result.value;
 
-        var counterlasttenjob = {};
-        lastTenJobdatadb.forEach(function(obj) {
-          //  console.log("obj.jobData.jobId", obj.jobId);
-          var key = obj._id;
-          counterlasttenjob[key] = obj.size;
+          var counterlasttenjob = {};
+          lastTenJobdatadb.forEach(function(obj) {
+            //  console.log("obj.jobData.jobId", obj.jobId);
+            var key = obj._id;
+            counterlasttenjob[key] = obj.size;
 
-          var resultlasttenjobs = Object.keys(counterlasttenjob).map(function(
-            key
-          ) {
-            //    var key1 = key.substr(key.indexOf(" ") + 1);
-            return [key, counterlasttenjob[key]];
+            var resultlasttenjobs = Object.keys(counterlasttenjob).map(function(
+              key
+            ) {
+              //    var key1 = key.substr(key.indexOf(" ") + 1);
+              return [key, counterlasttenjob[key]];
+            });
+            console.log(resultlasttenjobs, "is the length");
+            var i;
+
+            for (i = 0; i < resultlasttenjobs.length; i++) {
+              labellasttenjob[i] = resultlasttenjobs[i][0];
+              datalasttenjob[i] = resultlasttenjobs[i][1];
+            }
           });
-          console.log(resultlasttenjobs, "is the length");
-          var i;
-
-          for (i = 0; i < resultlasttenjobs.length; i++) {
-            labellasttenjob[i] = resultlasttenjobs[i][0];
-            datalasttenjob[i] = resultlasttenjobs[i][1];
-          }
-        });
-        console.log("label last  job  for db", labellasttenjob);
-        console.log("label last job data for db", datalasttenjob);
-        this.setState({
-          ...this.state,
-          lasttenjobdata: {
-            labels: labellasttenjob,
-            datasets: [
-              {
-                label: "Top 10 Jobs with fewer applicants",
-                data: datalasttenjob,
-                backgroundColor: [
-                  "rgba(255, 99, 132, 0.6)",
-                  "rgba(54, 162, 235, 0.6)",
-                  "rgba(255, 206, 86, 0.6)",
-                  "rgba(75, 192, 192, 0.6)",
-                  "rgba(153, 102, 255, 0.6)",
-                  "rgba(255, 159, 64, 0.6)",
-                  "rgba(255, 99, 132, 0.6)"
-                ]
-              }
-            ]
-          },
-          showlasttenjobs: true
-        });
-      },
-      error => {
-        // dispatch(alertActions.projectPostError(error.data.message));
-      }
-    );
+          console.log("label last  job  for db", labellasttenjob);
+          console.log("label last job data for db", datalasttenjob);
+          this.setState({
+            ...this.state,
+            lasttenjobdata: {
+              labels: labellasttenjob,
+              datasets: [
+                {
+                  label: "Top 10 Jobs with fewer applicants",
+                  data: datalasttenjob,
+                  backgroundColor: [
+                    "rgba(255, 99, 132, 0.6)",
+                    "rgba(54, 162, 235, 0.6)",
+                    "rgba(255, 206, 86, 0.6)",
+                    "rgba(75, 192, 192, 0.6)",
+                    "rgba(153, 102, 255, 0.6)",
+                    "rgba(255, 159, 64, 0.6)",
+                    "rgba(255, 99, 132, 0.6)"
+                  ]
+                }
+              ]
+            },
+            showlasttenjobs: true
+          });
+        },
+        error => {
+          // dispatch(alertActions.projectPostError(error.data.message));
+        }
+      );
   }
 
   getselectedJobData = jobId => {
@@ -244,7 +259,7 @@ class RecruiterDashoard extends Component {
 
   render() {
     var redirectVar = null;
-    console.log(this.props.loginStateStore);
+    console.log("login state store", this.props.loginStateStore);
     if (!this.props.loginStateStore) {
       redirectVar = <Redirect to="/signup" />;
     }

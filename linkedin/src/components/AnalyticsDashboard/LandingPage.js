@@ -39,9 +39,14 @@ class LandingPage extends Component {
     // this.getJobList();
   }
   componentDidMount() {
-    this.getClickedData();
-    this.getSavedJobData();
-    this.getJobList();
+    if (
+      this.props.loginStateStore !== null &&
+      this.props.loginStateStore !== undefined
+    ) {
+      this.getClickedData();
+      this.getSavedJobData();
+      this.getJobList();
+    }
   }
   handleClickPage(event) {
     this.setState({
@@ -53,142 +58,165 @@ class LandingPage extends Component {
   getClickedData() {
     var labeldb = [];
     var labeldatadb = [];
+
     axios.defaults.withCredentials = true;
-    axios.get("http://localhost:3001/getuserclicks").then(
-      response => {
-        console.log("Clicke job data from db", response.data.result);
-        var clickedJobdatadb = [];
-        clickedJobdatadb = response.data.result;
+    axios
+      .get(
+        "http://localhost:3001/getuserclicks/" +
+          this.props.loginStateStore.email
+      )
+      .then(
+        response => {
+          console.log("Clicke job data from db", response.data.result);
+          var clickedJobdatadb = [];
+          clickedJobdatadb = response.data.result;
 
-        var counterdb = {};
-        clickedJobdatadb.forEach(function(obj) {
-          // console.log("obj.jobData.jobId", obj.jobData.jobId);
-          var key =
-            obj.jobData.jobData.jobId + " " + obj.jobData.jobData.jobTitle;
-          counterdb[key] = (counterdb[key] || 0) + 1;
+          var counterdb = {};
+          clickedJobdatadb.forEach(function(obj) {
+            // console.log("obj.jobData.jobId", obj.jobData.jobId);
+            var key =
+              obj.jobData.jobData.jobId + " " + obj.jobData.jobData.jobTitle;
+            counterdb[key] = (counterdb[key] || 0) + 1;
 
-          var resultClickedJobsdb = Object.keys(counterdb).map(function(key) {
-            var key1 = key.substr(key.indexOf(" ") + 1);
-            return [key1, counterdb[key]];
+            var resultClickedJobsdb = Object.keys(counterdb).map(function(key) {
+              var key1 = key.substr(key.indexOf(" ") + 1);
+              return [key1, counterdb[key]];
+            });
+            //   console.log(result.length, "is the length");
+            var i;
+
+            for (i = 0; i < resultClickedJobsdb.length; i++) {
+              labeldb[i] = resultClickedJobsdb[i][0];
+              labeldatadb[i] = resultClickedJobsdb[i][1];
+            }
           });
-          //   console.log(result.length, "is the length");
-          var i;
-
-          for (i = 0; i < resultClickedJobsdb.length; i++) {
-            labeldb[i] = resultClickedJobsdb[i][0];
-            labeldatadb[i] = resultClickedJobsdb[i][1];
-          }
-        });
-        console.log("labelk for db", labeldb);
-        console.log("labeldayta for db", labeldatadb);
-        //   console.log("counter db is", counterdb);
-        this.setState({
-          ...this.state,
-          clickJobData: {
-            labels: labeldb,
-            datasets: [
-              {
-                label: "Most Clicked Jobs",
-                data: labeldatadb,
-                backgroundColor: [
-                  "rgba(255, 99, 132, 0.6)",
-                  "rgba(54, 162, 235, 0.6)",
-                  "rgba(255, 206, 86, 0.6)",
-                  "rgba(75, 192, 192, 0.6)",
-                  "rgba(153, 102, 255, 0.6)",
-                  "rgba(255, 159, 64, 0.6)",
-                  "rgba(255, 99, 132, 0.6)"
-                ]
-              }
-            ]
-          },
-          showClickGraph: true
-        });
-      },
-      error => {
-        // dispatch(alertActions.projectPostError(error.data.message));
-      }
-    );
+          console.log("labelk for db", labeldb);
+          console.log("labeldayta for db", labeldatadb);
+          //   console.log("counter db is", counterdb);
+          this.setState({
+            ...this.state,
+            clickJobData: {
+              labels: labeldb,
+              datasets: [
+                {
+                  label: "Most Clicked Jobs",
+                  data: labeldatadb,
+                  backgroundColor: [
+                    "rgba(255, 99, 132, 0.6)",
+                    "rgba(54, 162, 235, 0.6)",
+                    "rgba(255, 206, 86, 0.6)",
+                    "rgba(75, 192, 192, 0.6)",
+                    "rgba(153, 102, 255, 0.6)",
+                    "rgba(255, 159, 64, 0.6)",
+                    "rgba(255, 99, 132, 0.6)"
+                  ]
+                }
+              ]
+            },
+            showClickGraph: true
+          });
+        },
+        error => {
+          // dispatch(alertActions.projectPostError(error.data.message));
+        }
+      );
     //console.log("labeldb.length", labeldb.length);
   }
   getSavedJobData() {
     var labelsavedjob = [];
     var datasavedjob = [];
-    axios.defaults.withCredentials = true;
-    axios.get("http://localhost:3001/getsavedjobs").then(
-      response => {
-        console.log("saved job data from the db", response.data.result);
-        var clickedJobdatadb = [];
-        clickedJobdatadb = response.data.result;
+    if (
+      this.props.loginStateStore !== null &&
+      this.props.loginStateStore !== undefined
+    ) {
+      axios.defaults.withCredentials = true;
+      axios
+        .get(
+          "http://localhost:3001/getsavedjobs/" +
+            this.props.loginStateStore.email
+        )
+        .then(
+          response => {
+            console.log("saved job data from the db", response.data.result);
+            var clickedJobdatadb = [];
+            clickedJobdatadb = response.data.result;
 
-        var countersavedjob = {};
-        clickedJobdatadb.forEach(function(obj) {
-          //  console.log("obj.jobData.jobId", obj.jobId);
-          var key = obj.jobId + " " + obj.jobTitle;
-          countersavedjob[key] = (countersavedjob[key] || 0) + 1;
+            var countersavedjob = {};
+            clickedJobdatadb.forEach(function(obj) {
+              //  console.log("obj.jobData.jobId", obj.jobId);
+              var key = obj.jobId + " " + obj.jobTitle;
+              countersavedjob[key] = (countersavedjob[key] || 0) + 1;
 
-          var resultsavedJobs = Object.keys(countersavedjob).map(function(key) {
-            var key1 = key.substr(key.indexOf(" ") + 1);
-            return [key1, countersavedjob[key]];
-          });
-          console.log(resultsavedJobs, "is the length");
-          var i;
+              var resultsavedJobs = Object.keys(countersavedjob).map(function(
+                key
+              ) {
+                var key1 = key.substr(key.indexOf(" ") + 1);
+                return [key1, countersavedjob[key]];
+              });
+              console.log(resultsavedJobs, "is the length");
+              var i;
 
-          for (i = 0; i < resultsavedJobs.length; i++) {
-            labelsavedjob[i] = resultsavedJobs[i][0];
-            datasavedjob[i] = resultsavedJobs[i][1];
-          }
-        });
-        console.log("label saved job  for db", labelsavedjob);
-        console.log("label saved jab data for db", datasavedjob);
-        this.setState({
-          ...this.state,
-          savedJobData: {
-            labels: labelsavedjob,
-            datasets: [
-              {
-                label: "Most Saved Jobs",
-                data: datasavedjob,
-                backgroundColor: [
-                  "rgba(255, 99, 132, 0.6)",
-                  "rgba(54, 162, 235, 0.6)",
-                  "rgba(255, 206, 86, 0.6)",
-                  "rgba(75, 192, 192, 0.6)",
-                  "rgba(153, 102, 255, 0.6)",
-                  "rgba(255, 159, 64, 0.6)",
-                  "rgba(255, 99, 132, 0.6)"
-                ]
+              for (i = 0; i < resultsavedJobs.length; i++) {
+                labelsavedjob[i] = resultsavedJobs[i][0];
+                datasavedjob[i] = resultsavedJobs[i][1];
               }
-            ]
+            });
+            console.log("label saved job  for db", labelsavedjob);
+            console.log("label saved jab data for db", datasavedjob);
+            this.setState({
+              ...this.state,
+              savedJobData: {
+                labels: labelsavedjob,
+                datasets: [
+                  {
+                    label: "Most Saved Jobs",
+                    data: datasavedjob,
+                    backgroundColor: [
+                      "rgba(255, 99, 132, 0.6)",
+                      "rgba(54, 162, 235, 0.6)",
+                      "rgba(255, 206, 86, 0.6)",
+                      "rgba(75, 192, 192, 0.6)",
+                      "rgba(153, 102, 255, 0.6)",
+                      "rgba(255, 159, 64, 0.6)",
+                      "rgba(255, 99, 132, 0.6)"
+                    ]
+                  }
+                ]
+              },
+              showSavedJobs: true
+            });
           },
-          showSavedJobs: true
-        });
-      },
-      error => {
-        // dispatch(alertActions.projectPostError(error.data.message));
-      }
-    );
+          error => {
+            // dispatch(alertActions.projectPostError(error.data.message));
+          }
+        );
+    }
   }
 
   getJobList() {
     var labeldb = [];
     var joblistdata = [];
-    axios.defaults.withCredentials = true;
-    axios.get("http://localhost:3001/JobPostingHistory").then(
-      response => {
-        // console.log("job list job data from db", response.data.value);
-        joblistdata = response.data.value;
-        console.log("joblistdata", joblistdata);
-        this.setState({
-          ...this.state,
-          JobHistory: joblistdata,
-          showjoblist: true
-        });
-      },
-      error => {
-        // dispatch(alertActions.projectPostError(error.data.message));
-      }
-    );
+    if (
+      this.props.loginStateStore !== null &&
+      this.props.loginStateStore !== undefined
+    ) {
+      axios.defaults.withCredentials = true;
+      axios.get("http://localhost:3001/JobPostingHistory").then(
+        response => {
+          // console.log("job list job data from db", response.data.value);
+          joblistdata = response.data.value;
+          console.log("joblistdata", joblistdata);
+          this.setState({
+            ...this.state,
+            JobHistory: joblistdata,
+            showjoblist: true
+          });
+        },
+        error => {
+          // dispatch(alertActions.projectPostError(error.data.message));
+        }
+      );
+    }
   }
 
   getselectedJobData = jobId => {
