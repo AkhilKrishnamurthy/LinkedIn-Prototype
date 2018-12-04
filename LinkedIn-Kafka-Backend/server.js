@@ -29,6 +29,7 @@ var fetchprofile = require("./services/fetchprofile");
 var updatepersonaldetails = require("./services/updatepersonaldetails");
 var updateskills = require("./services/updateskills");
 var updateexperience = require("./services/updateexperience");
+var updateeducation = require("./services/updateeducation");
 //pratik- code ends
 var logProfileView = require("./services/logProfileView");
 var searchPeople = require("./services/searchPeople");
@@ -105,6 +106,7 @@ handleTopicRequest("fetchprofile1_topic", fetchprofile);
 handleTopicRequest("updatepd_topic", updatepersonaldetails);
 handleTopicRequest("updateskills_topic", updateskills);
 handleTopicRequest("updateexp_topic", updateexperience);
+handleTopicRequest("updateedu_topic", updateeducation);
 //pratiks topic ends
 handleTopicRequest("log_profile_view_topic", logProfileView);
 handleTopicRequest("searchPeople_topic", searchPeople);

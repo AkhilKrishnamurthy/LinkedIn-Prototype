@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { userActions } from "../../actions/recruitersignup";
 import "../../static/css/RecruiterSignup.css";
 
-class Signup extends React.Component {
+class RecruiterSignup extends React.Component {
   constructor(props) {
     super(props);
     console.log(props);
@@ -182,5 +182,5 @@ export default reduxForm({ validate, form: "NewBookForm" })(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Signup)
+  )(RecruiterSignup)
 );

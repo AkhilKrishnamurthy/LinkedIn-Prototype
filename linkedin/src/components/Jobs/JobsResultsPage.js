@@ -30,16 +30,44 @@ class JobsResultsPage extends Component {
       employmentTypeSearchFilter: "",
       easyApplySearchFilter: "",
       currentPage: 1,
-      pageSize: 3
+      pageSize: 3,
+      fromDate: '',
+      today: new Date()
     };
 
     //bind
     this.handleSaveClick = this.handleSaveClick.bind(this);
     this.toggleDetailsPane = this.toggleDetailsPane.bind(this);
   }
+  // updateDateSearch = fromDate => this.setState({ this.state.dateSearchFilter: e.target.value });
+  updateDateSearch = (e) => {
+    console.log(e.target.value);
+    this.setState({
+      dateSearchFilter : e.target.value
+    })
+    if(e.target.value==1) {
+      var d = new Date();  var x =1; 
+      d.setDate(d.getDate() - x);
+      this.setState({ fromDate: d })
+    }
+    if(e.target.value==2) {
+    var d = new Date();  var x =7; 
+    d.setDate(d.getDate() - x);
+    this.setState({ fromDate: d })
+  }
+
+  if(e.target.value==3) {
+    var d = new Date();  var x =30; 
+    d.setDate(d.getDate() - x);
+    this.setState({ fromDate: d })
+  }
+
+}
+
   handlePageChange = page => {
     this.setState({ currentPage: page });
   };
+
 
   componentDidMount() {
     axios.defaults.withCredentials = true;
@@ -92,19 +120,18 @@ class JobsResultsPage extends Component {
     // console.log("jobDetail", jobDetail);
     jobDetail.applyClassName = "btn btn-lg ml-3 apply-btn";
     jobDetail.easyApplyClassName = "btn btn-lg ml-3 easy-apply-btn";
-
     if (jobDetail.easyApply == "Yes") {
       jobDetail.applyClassName = jobDetail.applyClassName + " block-btn";
     } else {
       jobDetail.easyApplyClassName =
         jobDetail.easyApplyClassName + " block-btn";
     }
-
     // console.log("job details", jobDetail);
     this.setState({
       jobDetails: jobDetail
     });
   };
+ 
 
   saveJobDetailsToStore = () => {
     console.log("Inside saveJobDetailstoStore");
@@ -146,26 +173,23 @@ class JobsResultsPage extends Component {
   };
 
   updateCompanySearch(event) {
-    this.setState({
-      companyNameSearchFilter: event.target.value.substr(0, 20)
-    });
-  }
-  updateExperienceLevelSearch(event) {
-    this.setState({
-      experienceLevelSearchFilter: event.target.value.substr(0, 20)
-    });
-  }
-  updateIndustrySearch(event) {
-    this.setState({ IndustrySearchFilter: event.target.value.substr(0, 20) });
-  }
-  updateEmploymentTypeSearch(event) {
-    this.setState({
-      employmentTypeSearchFilter: event.target.value.substr(0, 20)
-    });
-  }
-  updateEasyApplySearch(event) {
-    this.setState({ easyApplySearchFilter: event.target.value.substr(0, 20) });
-  }
+    this.setState({companyNameSearchFilter: event.target.value.substr(0,20)});
+}
+updateExperienceLevelSearch(event) {
+  this.setState({experienceLevelSearchFilter: event.target.value.substr(0,20)});
+}
+updateIndustrySearch(event) {
+  this.setState({IndustrySearchFilter: event.target.value.substr(0,20)});
+}
+updateEmploymentTypeSearch(event) {
+  this.setState({employmentTypeSearchFilter: event.target.value.substr(0,20)});
+}
+updateEasyApplySearch(event) {
+  this.setState({easyApplySearchFilter: event.target.value.substr(0,20)});
+}
+
+
+
 
   render() {
     //left-pane content
@@ -177,27 +201,40 @@ class JobsResultsPage extends Component {
     if (this.state.redirectToJobApplication === true) {
       redirectVar = <Redirect to="/jobs/apply-job" />;
     }
+    if(this.state.dateSearchFilter==1) {
+      console.log(this.state.fromDate);
+      console.log(new Date());
+    }
+    if(this.state.dateSearchFilter==2) {
+      console.log(this.state.fromDate);
+      console.log(new Date());
+    }
+    if(this.state.dateSearchFilter==3) {
+      console.log(this.state.fromDate);
+      console.log(new Date());
+    }
 
     const { length: count } = this.state.jobData;
     const { pageSize, currentPage } = this.state;
+    console.log("date", this.state.fromDate);
+    let filteredProperties = this.state.jobData
+    .filter(
+        (job) => {
+            
+           return job.companyName.indexOf(this.state.companyNameSearchFilter) !== -1 
+           && job.seniorityLevel.indexOf(this.state.experienceLevelSearchFilter) !== -1
+           && job.industry.indexOf(this.state.IndustrySearchFilter) !== -1
+           && job.employmentType.indexOf(this.state.employmentTypeSearchFilter) !== -1
+           && job.easyApply.indexOf(this.state.easyApplySearchFilter) !== -1
+        //    && properties.availableStartingDate>=this.state.fromDate;
+        && (this.state.dateSearchFilter ? new Date(job.postedDate)>=this.state.fromDate: {});
+        // && (this.state.toDate ? new Date(properties.availableEndingDate)>=this.state.toDate: {});
+        console.log(this.state.jobData);
+        });
 
-    let filteredProperties = this.state.jobData.filter(job => {
-      // console.log(this.state.jobData);
-      return (
-        job.companyName.indexOf(this.state.companyNameSearchFilter) !== -1 &&
-        job.seniorityLevel.indexOf(this.state.experienceLevelSearchFilter) !==
-          -1 &&
-        job.industry.indexOf(this.state.IndustrySearchFilter) !== -1 &&
-        job.employmentType.indexOf(this.state.employmentTypeSearchFilter) !==
-          -1 &&
-        job.easyApply.indexOf(this.state.easyApplySearchFilter) !== -1
-      );
-      //    && properties.availableStartingDate>=this.state.fromDate;
-    });
+        const movies = paginate(filteredProperties, currentPage, pageSize)
 
-    const movies = paginate(filteredProperties, currentPage, pageSize);
-
-    var briefPaneContent = movies.map((job, index) => {
+    var briefPaneContent = movies.map((job, index)=> {
       return (
         <div className="job-result-data p-3 mt-2 mb-2 row border" key={index}>
           <span className="job-logo-container col-lg-2">
@@ -210,9 +247,7 @@ class JobsResultsPage extends Component {
           <span className="col-lg-10">
             <div className="">
               <b>
-                <Link to="#" onClick={() => this.toggleDetailsPane(job, index)}>
-                  {job.jobTitle}
-                </Link>
+                <Link to="#" onClick={() => this.toggleDetailsPane(job, index)}>{job.jobTitle}</Link>
               </b>
               <br />
             </div>
@@ -300,12 +335,12 @@ class JobsResultsPage extends Component {
             {/* <b>Jobs</b> */}
             {/* </span> */}
             <span>
-              <select className="custom-select">
-                <option defaultValue>Date Posted</option>
+              <select value = {this.state.dateSearchFilter} onChange={this.updateDateSearch} className="custom-select">
+                <option value="">Date Posted</option>
                 <option value="1">Past 24 hours</option>
                 <option value="2">Past Week</option>
                 <option value="3">Past Month</option>
-                <option value="4">Any Time</option>
+                <option value="">Any Time</option>
               </select>
             </span>
 

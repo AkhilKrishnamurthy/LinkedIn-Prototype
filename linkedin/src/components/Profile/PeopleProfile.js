@@ -39,7 +39,7 @@ class PeopleProfile extends Component{
        if(this.props.loginStateStore.isAuthenticated == "true"){
             this.isConnection();
         this.logProfileView();
-        this.loadProfileImage();
+       // this.loadProfileImage();
         axios.defaults.withCredentials=true;
         console.log("profile",this.props.profileResultsStateStore.result.user.experience.length);
         var skillsresult = (this.props.profileResultsStateStore.result.user.skills).split(',');
@@ -79,7 +79,8 @@ class PeopleProfile extends Component{
     }
 
     loadProfileImage = ()=>{
-        axios.post('http://localhost:3001/download-file/' +  this.props.profileResultsStateStore.result.user.profileimage).then(response =>{
+        console.log("profileimage:",this.props.profileResultsStateStore.result.user.profileimage)
+        axios.post('http://localhost:3001/download/' +  this.props.profileResultsStateStore.result.user.profileimage).then(response =>{
             console.log("inside download file");
          this.setState({   
              profileImage : 'data:image/jpg;base64, ' + response.data
@@ -283,7 +284,7 @@ class PeopleProfile extends Component{
                                 <img src="https://wallpapercave.com/wp/0557mer.jpg" alt="cover-img" />
                             </div>
                             <div className="profile-img-container ml-4">
-                                <img className="profile-img" src={this.state.profileImage} alt="profile-img"/>
+                                <img className="profile-img" src={this.state.profile.profileimage} alt="profile-img"/>
                             </div>
                             <div className="pull-down-div ml-4 row">
                                 <div className="col-7">
