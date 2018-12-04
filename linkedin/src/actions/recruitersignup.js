@@ -24,6 +24,7 @@ function recruitersignup(data) {
         dispatch(signupsuccess(response.data));
       })
       .catch(error => {
+        dispatch(signupfailure());
         throw error;
       });
   };
@@ -32,5 +33,10 @@ function signupsuccess(message) {
   return {
     type: UserConstants.RECRUITER_SIGNUP_SUCCESS,
     message: message
+  };
+}
+function signupfailure() {
+  return {
+    type: UserConstants.SIGNUP_FAILURE
   };
 }

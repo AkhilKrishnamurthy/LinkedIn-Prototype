@@ -3,10 +3,10 @@ import LoginHeader from "../Header/LoginHeader";
 import { Field, reduxForm } from "redux-form";
 import { Redirect } from "react-router";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { userActions } from "../../actions/recruitersignup";
-import '../../static/css/RecruiterSignup.css'
-
+import "../../static/css/RecruiterSignup.css";
 
 class RecruiterSignup extends React.Component {
   constructor(props) {
@@ -50,87 +50,90 @@ class RecruiterSignup extends React.Component {
 
     if (this.props.isSignedup) {
       console.log("issigned", this.props.isSignedup);
-      redirectVar = <Redirect to="/signup" />;
+      redirectVar = <Redirect to="/login" />;
     }
-    // if (this.props.loginStateStore.result.responseFlag == "") {
-    //   console.log("error");
-    //   error = <div class="alert alert-danger">Invalid login</div>;
-    // }
+    if (this.props.isinvalid) {
+      console.log("this.props.isinvalid", this.props.isinvalid);
+      error = <div className="alert alert-danger">Invalid Signup</div>;
+    }
 
     const { handleSubmit } = this.props;
     return (
       <div>
-        
         {redirectVar}
-        <LoginHeader />
-        
+
         {/* <div className = "bg-signup"> */}
         <div className="login-form pad-3-pc">
-        {/* <br></br><br></br><br></br> */}
+          {/* <br></br><br></br><br></br> */}
           <div className="main-div">
-          {/* <br></br><br></br> */}
-          <div class="container login-container">
-            <div className="panel">
-              <h2>Be great at what you do</h2>
-              <p>Get started - it's free.</p>
-            </div>
-            <div className="container">
-              <form>
-                <div className="form-group">
-                  <Field
-                    //  type="text"
-                    className="form-control"
-                    name="Fname"
-                    type="Fname"
-                    placeholder="First Name"
-                    component={this.renderField}
-                    // onChange={this.handleChange}
-                  />
-                </div>
-                <br />
-                <div className="form-group">
-                  <Field
-                    // type="text"
-                    className="form-control"
-                    name="Lname"
-                    type="Lname"
-                    placeholder="Last Name"
-                    component={this.renderField}
-                  />
-                </div>
-                <br />
-                <div className="form-group">
-                  <Field
-                    //   type="text"
-                    className="form-control"
-                    name="Email"
-                    type="Email"
-                    placeholder="Email"
-                    component={this.renderField}
-                  />
-                </div>
-                <br />
-                <div className="form-group">
-                  <Field
-                    // type="password"
-                    className="form-control"
-                    name="Password"
-                    type="Password"
-                    placeholder="Password"
-                    component={this.renderField}
-                  />
-                </div>
-                <br />
-                <div>
-                  <button
-                    onClick={handleSubmit(this.submitSignUp.bind(this))}
-                    className="btn btn-success"
-                    type="submit"
-                  >
-                    Join Now
-                  </button>
-                </div>
-              </form>
+            {/* <br></br><br></br> */}
+            <div class="container login-container">
+              <div className="panel">
+                <h2>Be great at what you do</h2>
+                <p>Get started - it's free.</p>
+                {error}
+              </div>
+              <div className="container">
+                <form>
+                  <div className="form-group">
+                    <Field
+                      //  type="text"
+                      className="form-control"
+                      name="Fname"
+                      type="Fname"
+                      placeholder="First Name"
+                      component={this.renderField}
+                      // onChange={this.handleChange}
+                    />
+                  </div>
+                  <br />
+                  <div className="form-group">
+                    <Field
+                      // type="text"
+                      className="form-control"
+                      name="Lname"
+                      type="Lname"
+                      placeholder="Last Name"
+                      component={this.renderField}
+                    />
+                  </div>
+                  <br />
+                  <div className="form-group">
+                    <Field
+                      //   type="text"
+                      className="form-control"
+                      name="Email"
+                      type="Email"
+                      placeholder="Email"
+                      component={this.renderField}
+                    />
+                  </div>
+                  <br />
+                  <div className="form-group">
+                    <Field
+                      // type="password"
+                      className="form-control"
+                      name="Password"
+                      type="Password"
+                      placeholder="Password"
+                      component={this.renderField}
+                    />
+                  </div>
+                  <br />
+                  <div>
+                    <button
+                      onClick={handleSubmit(this.submitSignUp.bind(this))}
+                      className="btn btn-success"
+                      type="submit"
+                    >
+                      Join Now
+                    </button>
+                  </div>
+                  <br />
+                  <div>
+                    <Link to="/login">Login</Link>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -164,7 +167,8 @@ function validate(values) {
 
 const mapStateToProps = state => {
   return {
-    isSignedup: state.signup.isRecruiterSignedUp
+    isSignedup: state.signup.isRecruiterSignedUp,
+    isinvalid: state.signup.isinvalid
   };
 };
 

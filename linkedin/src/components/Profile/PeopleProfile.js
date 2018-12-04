@@ -19,9 +19,9 @@ class PeopleProfile extends Component{
             senderEmailId : '',
             receiverEmailId : '',
             FName : '',
-            isConnection : false
-        };
-
+            isConnection : false,
+            profileImage: "data:image/png;base64,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",
+          };
         //bind
         this.addConnection = this.addConnection.bind(this);
         this.logProfileView = this.logProfileView.bind(this);
@@ -33,11 +33,13 @@ class PeopleProfile extends Component{
         console.log(nextprops)
     }
 
-    componentDidMount(){
         
-        this.isConnection();
+    async componentDidMount(){
+
+       if(this.props.loginStateStore.isAuthenticated == "true"){
+            this.isConnection();
         this.logProfileView();
-        
+        this.loadProfileImage();
         axios.defaults.withCredentials=true;
         console.log("profile",this.props.profileResultsStateStore.result.user.experience.length);
         var skillsresult = (this.props.profileResultsStateStore.result.user.skills).split(',');
@@ -47,12 +49,9 @@ class PeopleProfile extends Component{
             profile :  this.props.profileResultsStateStore.result.user,
             senderEmailId : this.props.loginStateStore.result.email 
         });
-        // this.setState({
-        //     senderEmailId : this.props.loginStateStore.result.email,
-        //     receiverEmailId : "aehari2010@gmail.com",
-        //     FName : this.props.loginStateStore.result.FName
-        // }) 
-          // var profileData = this.props.profileResultsStateStore.result.user      
+        }
+        
+        
     }
 
     isConnection = () => {
@@ -79,6 +78,15 @@ class PeopleProfile extends Component{
 
     }
 
+    loadProfileImage = ()=>{
+        axios.post('http://localhost:3001/download-file/' +  this.props.profileResultsStateStore.result.user.profileimage).then(response =>{
+            console.log("inside download file");
+         this.setState({   
+             profileImage : 'data:image/jpg;base64, ' + response.data
+        } 
+         )}   
+        )
+    }
     
     logProfileView = ()=>{
         axios.defaults.withCredentials=true;
@@ -132,9 +140,9 @@ class PeopleProfile extends Component{
     sendMessageHandler = ()=>{
         console.log("Sender Email ID " + this.state.senderEmailId)
         var values = {
-            messageThread : "this.state.FName" + " : " + this.state.message,
-            senderEmailId :  "amruta@gmail.com", //this.state.senderEmailId,
-            receiverEmailId : "aehari2010@gmail.com" //this.state.receiverEmailId
+            messageThread : this.props.loginStateStore.result.FName + " : " + this.state.message,
+            senderEmailId :  this.props.loginStateStore.result.email,
+            receiverEmailId : this.props.profileResultsStateStore.result.user.email
         }
         console.log(JSON.stringify(values))
         axios.post('http://localhost:3001/sendmessage', values)
@@ -150,54 +158,57 @@ class PeopleProfile extends Component{
 
         var redirectVar = null;
         if(this.props.loginStateStore.isAuthenticated === false){
-            redirectVar  = <Redirect to="/signup"/>
+            redirectVar  = <Redirect to="/login"/>
         }
-
-         var experience = null;
-        if(this.props.profileResultsStateStore.result.user.experience.length > 0){
-            experience = this.props.profileResultsStateStore.result.user.experience.map((exp, index)=>{
-                return (
-                    <div key={index}>
-                     <div className="exp-content-container ml-4 row">
-                                <div className="col-1">
-                                    <img className="profile-company-img-container" src="https://media.licdn.com/dms/image/C4D0BAQEl0ggQ_q2eow/company-logo_400_400/0?e=1551916800&v=beta&t=bRRW076zg7OTMag2B9OrXHSfIXdP9GRXVd5YVUNr3bw" alt="profile-company-img"/>
+        else{
+            var experience = null;
+        if(this.props.profileResultsStateStore.result != null){
+            if(this.props.profileResultsStateStore.result.user.experience.length > 0){
+                experience = this.props.profileResultsStateStore.result.user.experience.map((exp, index)=>{
+                    return (
+                        <div key={index}>
+                         <div className="exp-content-container ml-4 row">
+                                    <div className="col-1">
+                                        <img className="profile-company-img-container" src="https://static.pulse.ng/img/incoming/origs8609049/1036368589-w644-h960/work-experience.jpg" alt="profile-company-img"/>
+                                    </div>
+                                    <div className="col-6 ml-4">
+                                        <div>{exp.designation}</div>
+                                        <div>{exp.companyname}</div>
+                                        <div>{exp.responsibility}</div>
+                                        <div>{exp.location}</div>
+                                    </div>
                                 </div>
-                                <div className="col-6 ml-4">
-                                    <div>{exp.designation}</div>
-                                    <div>{exp.companyname}</div>
-                                    <div>{exp.responsibility}</div>
-                                    <div>{exp.location}</div>
+                                <hr/>
                                 </div>
-                            </div>
-                            <hr/>
-                            </div>
-                            )
-                        });
-                    } 
+                                )
+                            });
+                        } 
+        }
+        
 
                     var education = null;
-        if(this.props.profileResultsStateStore.result.user.education.length > 0){
-            education = this.props.profileResultsStateStore.result.user.education.map((edu, index)=>{
-                return (
-                    <div key={index}>
-                     <div className="exp-content-container ml-4 row">
-                                <div className="col-1">
-                                    <img className="profile-company-img-container" src="https://media.licdn.com/dms/image/C4D0BAQEl0ggQ_q2eow/company-logo_400_400/0?e=1551916800&v=beta&t=bRRW076zg7OTMag2B9OrXHSfIXdP9GRXVd5YVUNr3bw" alt="profile-company-img"/>
+        if(this.props.profileResultsStateStore.result != null){
+            if(this.props.profileResultsStateStore.result.user.education.length > 0){
+                education = this.props.profileResultsStateStore.result.user.education.map((edu, index)=>{
+                    return (
+                        <div key={index}>
+                         <div className="exp-content-container ml-4 row">
+                                    <div className="col-1">
+                                        <img className="profile-company-img-container" src="https://st2.depositphotos.com/2586633/10219/v/950/depositphotos_102194092-stock-illustration-books-vector-illustrator-stack-of.jpg" alt="profile-company-img"/>
+                                    </div>
+                                    <div className="col-6 ml-4">
+                                        <div>{edu.school}</div>
+                                        <div>{edu.degree}</div>
+                                        <div>{edu.fromyear} - {edu.toyear}</div>
+                                    </div>
                                 </div>
-                                <div className="col-6 ml-4">
-                                    <div>{edu.school}</div>
-                                    <div>{edu.degree}</div>
-                                    <div>{edu.fromyear} - {edu.toyear}</div>
+                                <hr/>
                                 </div>
-                            </div>
-                            <hr/>
-                            </div>
-                            )
-                        });
-                    } 
-
-            var skillsresult = (this.props.profileResultsStateStore.result.user.skills).split(',');
-            var skillsresult1 = null;
+                                )
+                            });
+                        } 
+                        var skillsresult = (this.props.profileResultsStateStore.result.user.skills).split(',');
+                        var skillsresult1 = null;
             console.log(skillsresult);
             if(skillsresult.length > 0){
                  skillsresult1 = skillsresult.map((skill, index)=>{
@@ -211,6 +222,11 @@ class PeopleProfile extends Component{
               )
             });
         } 
+        }
+        
+        
+        
+            
 
         var connectButton = null;
         var messageButton = null;
@@ -227,7 +243,7 @@ class PeopleProfile extends Component{
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                 <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">Send message to Arivoli</h5>
+                    <h5 className="modal-title" id="exampleModalLabel">Send message </h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -249,12 +265,16 @@ class PeopleProfile extends Component{
             </div>
             </div>
         }
+        }
+
+         
         
 
         return(
             <div>
-                 {redirectVar}
+                 
                 <Header />
+                {redirectVar}
                 <div className="row people-profile-container">
                     <div className="col-lg-1"></div>
                     <div className="content-container col-lg-8 mt-5">
@@ -263,7 +283,7 @@ class PeopleProfile extends Component{
                                 <img src="https://wallpapercave.com/wp/0557mer.jpg" alt="cover-img" />
                             </div>
                             <div className="profile-img-container ml-4">
-                                <img className="profile-img" src="https://img.freepik.com/free-icon/user-filled-person-shape_318-74922.jpg?size=338c&ext=jpg" alt="profile-img"/>
+                                <img className="profile-img" src={this.state.profileImage} alt="profile-img"/>
                             </div>
                             <div className="pull-down-div ml-4 row">
                                 <div className="col-7">

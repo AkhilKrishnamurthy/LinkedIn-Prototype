@@ -70,12 +70,12 @@ class Login extends Component {
       }
       const { handleSubmit } = this.props;
       return (
-        <div class="container">
+        <div class="">
           {redirectVar}
-          <div class="login-form">
+          <div class="login-form one">
             <form>
-              <div class="main-div">
-                <div class="panel">
+              <div className="main-div">
+                <div className="panel">
                   <h2>Welcome Back</h2>
                   <p>
                     Don't miss your next opportunity. Sign in to stay updated on
@@ -83,7 +83,7 @@ class Login extends Component {
                   </p>
                 </div>
                 {error}
-                <div class="form-group">
+                <div className="form-group">
                   <Field
                     label=""
                     className="form-control"
@@ -94,7 +94,7 @@ class Login extends Component {
                   />
                   {/* <input type="text" class="form-control" name="email" placeholder="Email"/> */}
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <Field
                     label=""
                     className="form-control"
@@ -106,7 +106,7 @@ class Login extends Component {
                   {/* <input type="password" class="form-control" name="password" placeholder="Password"/> */}
                 </div>
                 <button
-                  class="btn btn-primary"
+                  className="btn btn-primary"
                   type="submit"
                   onClick={handleSubmit(this.submitLogin.bind(this))}
                 >
@@ -124,54 +124,62 @@ class Login extends Component {
     }
     const { handleSubmit } = this.props;
     return (
-      <div class="container">
+      <div class="">
         {redirectVar}
         <div class="login-form">
-          <form>
-            <div class="main-div">
-              <div class="panel">
-                <h2>Welcome Back</h2>
-                <p>
-                  Don't miss your next opportunity. Sign in to stay updated on
-                  your professional world.
-                </p>
+          <div className="">
+            <form className="pad-10-pc-top">
+              <div class="main-div">
+                <div class="panel pt-3">
+                  <h2 className="">Welcome Back</h2>
+                  <p>
+                    Don't miss your next opportunity. Sign in to stay updated on
+                    your professional world.
+                  </p>
+                </div>
+                {error}
+                <div className="pl-5 pr-5">
+
+                
+                <div className="form-group">
+                  <Field
+                    label=""
+                    className="form-control"
+                    name="username"
+                    type="username"
+                    component={this.renderField}
+                    placeholder="username"
+                  />
+                  {/* <input type="text" class="form-control" name="email" placeholder="Email"/> */}
+                </div>
+                <div className="form-group">
+                  <Field
+                    label=""
+                    className="form-control"
+                    name="password"
+                    type="password"
+                    component={this.renderField}
+                    placeholder="Password"
+                  />
+                  {/* <input type="password" class="form-control" name="password" placeholder="Password"/> */}
+                </div>
+                <div className="form-group">
+                <button
+                  className="btn btn-primary form-control "
+                  type="submit"
+                  onClick={handleSubmit(this.submitLogin.bind(this))}
+                >
+                  <b>Signin</b>
+                </button>
+                </div>
+                <br />
+                <br />
+                <p>New to LinkedIn? Join now</p>
+                <Link to="/signup">Signup</Link>/<Link to="/recruiter-signup">Signup as a recruiter</Link>
+                </div>
               </div>
-              {error}
-              <div class="form-group">
-                <Field
-                  label=""
-                  className="form-control"
-                  name="username"
-                  type="username"
-                  component={this.renderField}
-                  placeholder="username"
-                />
-                {/* <input type="text" class="form-control" name="email" placeholder="Email"/> */}
-              </div>
-              <div class="form-group">
-                <Field
-                  label=""
-                  className="form-control"
-                  name="password"
-                  type="password"
-                  component={this.renderField}
-                  placeholder="Password"
-                />
-                {/* <input type="password" class="form-control" name="password" placeholder="Password"/> */}
-              </div>
-              <button
-                class="btn btn-primary"
-                type="submit"
-                onClick={handleSubmit(this.submitLogin.bind(this))}
-              >
-                Signin
-              </button>
-              <br />
-              <br />
-              <p>New to LinkedIn? Join now</p>
-              <Link to="/signup">Signup</Link>/<Link to="/recruiter-signup">Signup as a recruiter</Link>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     );

@@ -12,6 +12,12 @@ var Messages = new Schema({
     messageThread: {
         type: Array
     }
+    // senderFName:{
+    //     type : String
+    // },
+    // receiverFName:{
+    //     type : String
+    // }
 });
 
 

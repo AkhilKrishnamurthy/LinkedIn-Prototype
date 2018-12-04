@@ -18,6 +18,7 @@ import PeopleSearch from "./PeopleSearch/PeopleSearch";
 import RecruiterDashboard from "./AnalyticsDashboard/RecruiterDashboard";
 import SavedJobs from "./Jobs/SavedJobs";
 import JobApplication from './Jobs/JobApplication';
+import EasyJobApplication from './Jobs/EasyJobApplication';
 import AppliedJobs from './Jobs/AppliedJobs';
 import PeopleProfile from './Profile/PeopleProfile';
 import MyMessages from './MyMessages/Inbox';
@@ -56,6 +57,7 @@ class Main extends Component {
         <Route path="/people/results" component={PeopleSearch} />
         <Route path="/jobs/saved-jobs" component={SavedJobs} />
         <Route path="/jobs/apply-job" component={JobApplication} />
+        <Route path="/jobs/easy-apply-job" component={EasyJobApplication} />
         <Route path="/jobs/applied-jobs" component={AppliedJobs} />
         <Route path="/profile/:id" component={PeopleProfile} />
         <Route path="/mymessages" component={MyMessages} />

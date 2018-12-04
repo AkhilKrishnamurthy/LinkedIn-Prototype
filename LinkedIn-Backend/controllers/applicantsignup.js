@@ -15,10 +15,13 @@ exports.applicantsignup = function(req, res) {
       if (err) {
         throw err;
       } else {
-        console.log("applicant inserted");
-        const body = { _id: req.body.Email, type: "applicant" };
-        const token = jwt.sign({ user: body }, "verified_linkedinUser");
-        res.status(200).send(token);
+        if (result.code === 400) res.status(400).send(result.msg);
+        else {
+          console.log("applicant inserted", result);
+          const body = { _id: req.body.Email, type: "applicant" };
+          const token = jwt.sign({ user: body }, "verified_linkedinUser");
+          res.status(200).send(token);
+        }
       }
     }
   );

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import linkedinlogo from '../../images/linkedin_signup_logo.png';
+import linkedinlogo from "../../images/linkedin_signup_logo.png";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import { login } from "../../actions/LoginAction";
@@ -17,7 +17,9 @@ class LoginHeader extends Component {
     const {
       meta: { touched, error }
     } = field;
-    const className = `form-group loginAdjustment ${touched && error ? "has-danger" : ""}`;
+    const className = `form-group loginAdjustment ${
+      touched && error ? "has-danger" : ""
+    }`;
     const fieldType = field.type;
     const filedPlaceHolder = field.placeholder;
     return (
@@ -56,45 +58,45 @@ class LoginHeader extends Component {
       }
     }
 
-      if (this.props.loginStateStore.result) {
-        if (this.props.loginStateStore.result.responseFlag == "true") {
-          redirectVar = <Redirect to="/home" />;
-        }
-        if (this.props.loginStateStore.result.responseFlag == "") {
-          console.log("error");
-          error = <div className="alert alert-danger">Invalid login</div>;
-        }
+    if (this.props.loginStateStore.result) {
+      if (this.props.loginStateStore.result.responseFlag == "true") {
+        redirectVar = <Redirect to="/home" />;
       }
-      const { handleSubmit } = this.props;
+      if (this.props.loginStateStore.result.responseFlag == "") {
+        console.log("error");
+        error = <div className="alert alert-danger">Invalid login</div>;
+      }
+    }
+    const { handleSubmit } = this.props;
     return (
       <div className="header-container">
-      {redirectVar}
+        {redirectVar}
         <div className="container">
           <div className="header-content-container">
             <img
               className="linkedIn-logo-login"
               // src="http://www.theredbrickroad.com/wp-content/uploads/2017/05/linkedin-logo-copy.png"
-              src = {linkedinlogo}
+              src={linkedinlogo}
               alt="logo"
             />
             <span className="nav-links">
-            {/* <input type="search" placeholder="Email" aria-label="Email" /> */}
-            <Field
-                    label=""
-                    className="form-control loginForm"
-                    name="username"
-                    type="username"
-                    component={this.renderField}
-                    placeholder="username"
-                  />
+              {/* <input type="search" placeholder="Email" aria-label="Email" /> */}
               <Field
-                    label=""
-                    className="form-control loginForm"
-                    name="password"
-                    type="password"
-                    component={this.renderField}
-                    placeholder="Password"
-                  />
+                label=""
+                className="form-control loginForm"
+                name="username"
+                type="username"
+                component={this.renderField}
+                placeholder="username"
+              />
+              <Field
+                label=""
+                className="form-control loginForm"
+                name="password"
+                type="password"
+                component={this.renderField}
+                placeholder="Password"
+              />
               <button
                 className="btn btn-outline-success btn-login my-2 my-sm-0"
                 type="submit"
@@ -107,8 +109,7 @@ class LoginHeader extends Component {
         </div>
       </div>
     );
-  
-}
+  }
 }
 
 function validate(values) {
@@ -127,7 +128,6 @@ function validate(values) {
 const mapStateToProps = state => ({
   loginStateStore: state.Login
 });
-
 
 // export default LoginHeader;
 export default reduxForm({ validate, form: "NewBookForm" })(

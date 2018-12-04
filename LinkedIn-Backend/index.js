@@ -100,6 +100,7 @@ var logProfileView = require("./controllers/logProfileView");
 var searchPeople = require("./controllers/searchPeople");
 var submitEditedJobDetails = require("./controllers/submitEditedJobDetails");
 var getProfileData = require("./controllers/getProfileData");
+var getProfileDataUpdated = require('./controllers/getprofileDataUpdated')
 
 //Analytics
 var analytics = require("./controllers/analytics");
@@ -138,6 +139,11 @@ var getAppliedJobs = require("./controllers/getAppliedJobs");
 
 app.post("/applicant/signup", (req, res) => {
   applicantsignup.applicantsignup(req, res);
+});
+
+app.get("/getProfileData", (req, res) => {
+  console.log("inside profiledata");
+  getProfileData.getProfileData(req, res);
 });
 
 app.post("/peopleSearch", (req, res) => {
@@ -433,8 +439,8 @@ app.get("/getcitywisejobdata/:id", (req, res) => {
 
 /**Analytics */
 
-app.post("/upload_file", upload.any(), (req, res) => {
-  res.send();
+app.post('/upload_file', upload.any(), (req, res) => {
+res.send();
 });
 
 app.use("/jobs", jobs);
@@ -460,7 +466,7 @@ app.use("/log-job-viewed", logJobViewed);
 app.use("/log-app-halffilled", logAppHalffilled);
 app.use("/log-application-submitted", logApplicationSubmitted);
 app.use("/log-profile-view", logProfileView);
-app.use("/get-profile-data", getProfileData);
+app.use("/get-profile-data", getProfileDataUpdated);
 
 app.use('/sendmessage', sendMessage);
 app.use('/getmessages', getMessages);

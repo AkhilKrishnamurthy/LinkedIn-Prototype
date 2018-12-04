@@ -6,6 +6,7 @@ import axios from 'axios';
 import {Redirect} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import {saveJobDetailsToStore} from '../../actions/jobResultsAction';
+import JobHeader from "../Header/JobHeader";
 
 class JobDisplayPage extends Component {
     constructor(props) {
@@ -14,7 +15,8 @@ class JobDisplayPage extends Component {
 
         this.state = {
             saveClicked : false,
-            redirectToJobApplication : false
+            redirectToJobApplication : false,
+            imageData:""
         }
         //bind
         this.handleSaveClick = this.handleSaveClick.bind(this);
@@ -25,19 +27,12 @@ class JobDisplayPage extends Component {
     componentDidMount(){
         axios.defaults.withCredentials=true;
         
-      
+        /**Get company logo */
+        this.getLogo();
 
+        /**To toggle apply and Easy apply */
+        this.toggleApplyEasyApply();
         
-        
-        this.props.jobResultsStateStore.result.applyClassName = 'btn btn-lg ml-3 apply-btn';
-        this.props.jobResultsStateStore.result.easyApplyClassName = 'btn btn-lg ml-3 easy-apply-btn';
-
-        if(this.props.jobResultsStateStore.result.easyApply == "Yes"){
-            this.props.jobResultsStateStore.result.applyClassName = this.props.jobResultsStateStore.result.applyClassName + ' block-btn';
-        }
-        else{
-            this.props.jobResultsStateStore.result.easyApplyClassName = this.props.jobResultsStateStore.result.easyApplyClassName + ' block-btn';
-        }
 
         console.log('data sent', data);
         if(this.props.jobResultsStateStore.result != null){
@@ -57,6 +52,32 @@ class JobDisplayPage extends Component {
         
     }
 
+    getLogo = ()=>{
+        console.log('logo', this.props.jobResultsStateStore.result.companyLogo);
+        axios.post('http://localhost:3001/download/' + this.props.jobResultsStateStore.result.companyLogo)
+            .then((response)=>{
+                if(response.status === 200){
+                    console.log('resonse logo', response.data );
+                    this.setState({
+                        imageData : 'data:image/jpg;base64, ' + response.data
+                    });
+                }
+                
+            });
+    };  
+
+    toggleApplyEasyApply = () =>{
+        this.props.jobResultsStateStore.result.applyClassName = 'btn btn-lg ml-3 apply-btn';
+        this.props.jobResultsStateStore.result.easyApplyClassName = 'btn btn-lg ml-3 easy-apply-btn';
+
+        if(this.props.jobResultsStateStore.result.easyApply == "Yes"){
+            this.props.jobResultsStateStore.result.applyClassName = this.props.jobResultsStateStore.result.applyClassName + ' block-btn';
+        }
+        else{
+            this.props.jobResultsStateStore.result.easyApplyClassName = this.props.jobResultsStateStore.result.easyApplyClassName + ' block-btn';
+        }
+    }
+
     handleApplyJob = ()=>{
         //this.saveJobDetailsToStore();
         this.setState({
@@ -66,7 +87,7 @@ class JobDisplayPage extends Component {
       handleEasyApply = ()=>{
         //this.saveJobDetailsToStore();
         this.setState({
-          redirectToJobApplication: true
+          redirectToEasyJobApplication: true
         });
       }
 
@@ -99,17 +120,21 @@ class JobDisplayPage extends Component {
 
     render() {
         var redirectVar = null;
-        console.log('props login', this.props.loginStateStore.isAuthenticated );
-        if(this.props.loginStateStore.isAuthenticated == false){
-            console.log('inside signup');
-            redirectVar  = <Redirect to="/signup"/>
+        if(!this.props.loginStateStore) {
+            redirectVar = <Redirect to= "/signup"/>
         }
           if(this.state.redirectToJobApplication === true){
             redirectVar = <Redirect to="/jobs/apply-job"/>
           }
+          if(this.state.redirectToEasyJobApplication === true){
+            redirectVar = <Redirect to="/jobs/easy-apply-job"/>
+          }
+
+          console.log('Image data: ',this.state.logo );
         return (
             <div>
                 {redirectVar}
+                <JobHeader/>
                 <div className="cover-image-container">
                     <img src="https://wallpapercave.com/wp/0557mer.jpg" alt="cover-img" />
                 </div>
@@ -121,7 +146,8 @@ class JobDisplayPage extends Component {
                                 <div className="job-display-img-container col-lg-2 col-md-2 col-sm-2">
                                     <img
                                         className="job-display-logo"
-                                        src="https://media.licdn.com/dms/image/C4D0BAQHcZzoBjmYdvA/company-logo_200_200/0?e=1550102400&v=beta&t=oXB0dGr7pUu2H-c8gPeoMDbl2cVIMSMXInCOZ74fjJc"
+                                        // src="https://media.licdn.com/dms/image/C4D0BAQHcZzoBjmYdvA/company-logo_200_200/0?e=1550102400&v=beta&t=oXB0dGr7pUu2H-c8gPeoMDbl2cVIMSMXInCOZ74fjJc"
+                                        src = {this.state.imageData}
                                         alt="company-logo"
                                     />
                                 </div>
@@ -162,7 +188,7 @@ class JobDisplayPage extends Component {
 //
 const mapStateToProps = state =>({
     jobResultsStateStore : state.jobResultsStateStore,
-    loginStateStore : state.Login
+    loginStateStore : state.Login.result
 });
 
 //export default JobDisplayPage;

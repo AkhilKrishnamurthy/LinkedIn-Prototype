@@ -6,7 +6,7 @@ function handle_request(msg, callback) {
   var res = {};
 
   var pipeline = [
-    { $match: { user: "abc@gmail.com" } },
+    { $match: { user: msg.username } },
     { $unwind: "$applicantData" },
     {
       $group: {

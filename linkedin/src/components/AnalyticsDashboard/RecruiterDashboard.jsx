@@ -364,7 +364,15 @@ class RecruiterDashoard extends Component {
           <div className="col-md-5">{redirecty_value}</div>
           <div className="col-md-2" />
 
-          <div className="col-md-5"> {showbar}</div>
+          <div className="col-md-5">
+            {" "}
+            <div>{showbar}</div>{" "}
+            <div>
+              <button className="btn btn-default">
+                <Link to={"/analytics-dashboard"}>Prev</Link>
+              </button>
+            </div>
+          </div>
         </div>
         <div>{renderPageNumbers}</div>
       </div>

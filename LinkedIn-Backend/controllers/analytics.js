@@ -61,8 +61,11 @@ exports.completeforms = function(req, res) {
 
 exports.getuserclicks = function(req, res) {
   //console.log(req.body);
+  var user = {
+    username: req.session.user //req.session.user
+  };
   console.log("inside fetch click data req");
-  kafka.make_request("get_userclicks_topic", null, function(err, result) {
+  kafka.make_request("get_userclicks_topic", user, function(err, result) {
     console.log("in get_userclicks_topic");
     //  console.log(req.body);
     if (err) {
@@ -77,9 +80,12 @@ exports.getuserclicks = function(req, res) {
 };
 
 exports.getsavedjobs = function(req, res) {
-  //console.log(req.body);
+  console.log("session user", req.session.user);
+  var user = {
+    username: req.session.user //req.session.user
+  };
   console.log("inside fetch saved job data req");
-  kafka.make_request("get_savedjobs_topic", null, function(err, result) {
+  kafka.make_request("get_savedjobs_topic", user, function(err, result) {
     console.log("in get_savedjobs_topic");
     //  console.log(req.body);
     if (err) {
@@ -96,7 +102,7 @@ exports.getsavedjobs = function(req, res) {
 exports.gettoptenjobposts = function(req, res) {
   //console.log(req.body);
   var user = {
-    username: "abc@gmail.com" //req.session.user
+    username: req.session.user //"abc@gmail.com"
   };
   console.log("inside fetch saved job data req");
   kafka.make_request("get_top10_job_topic", user, function(err, result) {
@@ -116,7 +122,7 @@ exports.gettoptenjobposts = function(req, res) {
 exports.getlasttenjobposts = function(req, res) {
   //console.log(req.body);
   var user = {
-    username: "abc@gmail.com" //req.session.user
+    username: req.session.user //"abc@gmail.com"
   };
   console.log("inside get last ten job data req");
   kafka.make_request("get_last10_job_topic", user, function(err, result) {
