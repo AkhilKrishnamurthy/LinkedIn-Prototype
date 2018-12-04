@@ -108,7 +108,7 @@ class JobsLandingPage extends Component {
         console.log(this.state.redirectToJobResultsPage)
 
         if(!this.props.loginStateStore) {
-            redirectVar = <Redirect to= "/signup"/>
+            redirectVar = <Redirect to= "/login"/>
         }
         if(this.state.redirectToJobResultsPage == true){
           redirectVar = <Redirect to="/jobs/results"/>
