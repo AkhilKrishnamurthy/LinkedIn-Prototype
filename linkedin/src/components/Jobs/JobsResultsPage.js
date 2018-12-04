@@ -248,7 +248,7 @@ updateEasyApplySearch(event) {
           <span className="job-logo-container col-lg-2">
             <img
               className="job-logo"
-              src="https://media.licdn.com/dms/image/C4D0BAQHcZzoBjmYdvA/company-logo_200_200/0?e=1550102400&v=beta&t=oXB0dGr7pUu2H-c8gPeoMDbl2cVIMSMXInCOZ74fjJc"
+              src="https://www.klipfolio.com/sites/default/files/integrations/mongo.png"
               alt="company-logo"
             />
           </span>
@@ -278,7 +278,7 @@ updateEasyApplySearch(event) {
           <div className="col-lg-3">
             <img
               className="job-details-logo"
-              src="https://media.licdn.com/dms/image/C4D0BAQHcZzoBjmYdvA/company-logo_200_200/0?e=1550102400&v=beta&t=oXB0dGr7pUu2H-c8gPeoMDbl2cVIMSMXInCOZ74fjJc"
+              src="https://www.klipfolio.com/sites/default/files/integrations/mongo.png"
               alt="company-logo"
             />
           </div>
